@@ -1,0 +1,5 @@
+DEVICE = ledPy  TYPE=MESH  node=1000  ADDRESS = B8:27:EB:CB:92:8A
+  ;LECHAR = NAME     PERMIT=02     SIZE=8    HANDLE=0005 UUID=2A00   ; index 0
+  LECHAR = UserData PERMIT=06     SIZE=8    HANDLE=0005 UUID=181C   ; index 1
+  LECHAR = Test     PERMIT=06     SIZE=8    HANDLE=0007             ; index 2
+
