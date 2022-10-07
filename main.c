@@ -1,14 +1,48 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "btlib.h"
+#include "led-matrix-c.h"
+
+typedef struct sColor
+{
+  uint8_t r;
+  uint8_t g;
+  uint8_t b;
+  uint8_t test;
+} sColor_t;
 
 int le_callback(int clientnode,int operation,int cticn);
+void vWritePixel(struct LedCanvas *canvas, u_int32_t u32PosX, u_int32_t u32PosY, sColor_t sPixelColor);
 
-int main()
+int main(int argc, char **argv)
 {
   if(init_blue("devices.txt") == 0)
+  {
+    //Stop if couldn't initialise
+    printf("Could not initalise Bluetooth. Stopping...\n");
     return(0);
-  
+  }
+  printf("Bluetooth initalised successfully\n");
+  struct RGBLedMatrixOptions options;
+  struct RGBLedMatrix *matrix;
+  struct LedCanvas *canvas;
+  int width, height;
+
+  //Parameters
+  memset(&options, 0, sizeof(options));
+  options.rows = 32;
+  options.chain_length = 2;
+
+  matrix = led_matrix_create_from_options(&options, &argc, &argv);
+  if (matrix == NULL)
+  {
+    printf("Could not initialise matrix\n");
+    return 1;
+  }
+    
+  canvas = led_matrix_get_canvas(matrix);
+
   printf("Device initalised successfully\n");
 
   list_ctics(1000,LIST_FULL); //node 1000 is me
@@ -48,3 +82,8 @@ int le_callback(int clientnode,int operation,int cticn)
     }
   return(SERVER_CONTINUE);
   }  
+
+  void vWritePixel(struct LedCanvas *canvas, u_int32_t u32PosX, u_int32_t u32PosY, sColor_t sPixelColor)
+  {
+    led_canvas_set_pixel(canvas, u32PosX, u32PosY, sPixelColor.r, sPixelColor.b, sPixelColor.g);
+  }
