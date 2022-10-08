@@ -1,5 +1,10 @@
+# Ignore all
+*
+
+# Unignore all with extensions
+!*.*
+
 #Output file
-./main
 .vscode/
 
 # Prerequisites
