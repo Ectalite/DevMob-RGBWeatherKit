@@ -12,7 +12,7 @@ typedef struct sColor
 } sColor_t;
 
 int le_callback(int clientnode,int operation,int cticn, void *pvParameter);
-void vWritePixel(struct LedCanvas *canvas, uint8_t u8PosX, uint8_t u8PosY, sColor_t sPixelColor);
+void vWritePixel(struct RGBLedMatrix *matrix, uint8_t u8PosX, uint8_t u8PosY, sColor_t sPixelColor);
 
 int main(int argc, char **argv)
 {
@@ -25,7 +25,6 @@ int main(int argc, char **argv)
   printf("Bluetooth initalised successfully\n");
   struct RGBLedMatrixOptions options;
   struct RGBLedMatrix *matrix;
-  struct LedCanvas *canvas;
   int width, height;
 
   //Parameters
@@ -39,11 +38,8 @@ int main(int argc, char **argv)
     printf("Could not initialise matrix\n");
     return 1;
   }
-    
-  canvas = led_matrix_get_canvas(matrix);
 
   printf("Device initalised successfully\n");
-
   list_ctics(1000,LIST_FULL); //node 1000 is me
   uint32_t ui32Handles = 327697; //0x00 05 00 11
   uint8_t *ui8Handles = (uint8_t*)&ui32Handles;
@@ -54,7 +50,7 @@ int main(int argc, char **argv)
   char dat[5];
   read_ctic(localnode(),5,dat,sizeof(dat));
   printf("%x %x %x %x\n",dat[3],dat[2],dat[1],dat[0]);
-  le_server(le_callback,0,(void*)canvas);
+  le_server(le_callback,0,(void*)matrix);
   
   close_all();
   return(0);
@@ -64,7 +60,7 @@ int le_callback(int clientnode,int operation,int cticn, void *pvParameter)
 {  
   int nread;
   char dat[1];
-  struct LedCanvas *canvas = (struct LedCanvas *)pvParameter;
+  struct RGBLedMatrix *matrix = (struct RGBLedMatrix *)pvParameter;
   
   if(operation == LE_CONNECT)
   {
@@ -120,7 +116,7 @@ int le_callback(int clientnode,int operation,int cticn, void *pvParameter)
         {
           printf("Fatal error by Color reading\n");
         }
-        vWritePixel(canvas, u8PosX, u8PosY, sChoosedColor);
+        vWritePixel(matrix, u8PosX, u8PosY, sChoosedColor);
         write_ctic(localnode(),cticn,pui8Reset,1);
       }
     }
@@ -135,11 +131,18 @@ int le_callback(int clientnode,int operation,int cticn, void *pvParameter)
   return(SERVER_CONTINUE);
   }  
 
-  void vWritePixel(struct LedCanvas *canvas, uint8_t u8PosX, uint8_t u8PosY, sColor_t sPixelColor)
+  void vWritePixel(struct RGBLedMatrix *matrix, uint8_t u8PosX, uint8_t u8PosY, sColor_t sPixelColor)
   {
-    if(u8PosX < 64 && u8PosY < 32 && canvas != NULL)
+    struct LedCanvas *canvas;
+    canvas = led_matrix_get_canvas(matrix);
+    int width, height;
+    int x, y, i;
+    //led_canvas_get_size(canvas, &width, &height);
+    //fprintf(stderr, "Size: %dx%d.\n", width, height);
+    if(u8PosX < width && u8PosY < height&& canvas != NULL)
     {
-      led_canvas_set_pixel(canvas, u8PosX, u8PosY, sPixelColor.r, sPixelColor.b, sPixelColor.g);
+      led_canvas_set_pixel(canvas, u8PosX, u8PosY, 128, 128, 128);
+      canvas = led_matrix_swap_on_vsync(matrix, canvas);
     }
     else
     {
