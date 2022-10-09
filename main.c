@@ -104,7 +104,7 @@ int le_callback(int clientnode,int operation,int cticn, void *pvParameter)
         {
           printf("Fatal error by PosY reading\n");
         }
-        iError = read_ctic(localnode(),3,cBuffer,1);
+        iError = read_ctic(localnode(),3,cBuffer,4);
         if(ERROR_FATAL != iError)
         {
           sChoosedColor.r = (uint8_t)cBuffer[0];
@@ -141,7 +141,7 @@ int le_callback(int clientnode,int operation,int cticn, void *pvParameter)
     //fprintf(stderr, "Size: %dx%d.\n", width, height);
     if(u8PosX < width && u8PosY < height&& canvas != NULL)
     {
-      led_canvas_set_pixel(canvas, u8PosX, u8PosY, 128, 128, 128);
+      led_canvas_set_pixel(canvas, u8PosX, u8PosY, sPixelColor.r, sPixelColor.g, sPixelColor.b);
       canvas = led_matrix_swap_on_vsync(matrix, canvas);
     }
     else
