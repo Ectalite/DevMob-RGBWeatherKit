@@ -9,11 +9,10 @@ typedef struct sColor
   uint8_t r;
   uint8_t g;
   uint8_t b;
-  uint8_t test;
 } sColor_t;
 
-int le_callback(int clientnode,int operation,int cticn);
-void vWritePixel(struct LedCanvas *canvas, u_int32_t u32PosX, u_int32_t u32PosY, sColor_t sPixelColor);
+int le_callback(int clientnode,int operation,int cticn, void *pvParameter);
+void vWritePixel(struct LedCanvas *canvas, uint8_t u8PosX, uint8_t u8PosY, sColor_t sPixelColor);
 
 int main(int argc, char **argv)
 {
@@ -46,33 +45,86 @@ int main(int argc, char **argv)
   printf("Device initalised successfully\n");
 
   list_ctics(1000,LIST_FULL); //node 1000 is me
-  le_server(le_callback,0);
+  uint32_t ui32Handles = 327697; //0x00 05 00 11
+  uint8_t *ui8Handles = (uint8_t*)&ui32Handles;
+  //memset(ui8Handles,327697,4); 
+  printf("%x %x %x %x\n",ui8Handles[3],ui8Handles[2],ui8Handles[1],ui8Handles[0]);
+  write_ctic(localnode(),5,(unsigned char*)ui8Handles,0);
+  printf("Write worked fine\n");
+  char dat[5];
+  read_ctic(localnode(),5,dat,sizeof(dat));
+  printf("%x %x %x %x\n",dat[3],dat[2],dat[1],dat[0]);
+  le_server(le_callback,0,(void*)canvas);
   
   close_all();
   return(0);
 }
 
-int le_callback(int clientnode,int operation,int cticn)
-  {  
+int le_callback(int clientnode,int operation,int cticn, void *pvParameter)
+{  
   int nread;
-  char dat[32];
+  char dat[1];
+  struct LedCanvas *canvas = (struct LedCanvas *)pvParameter;
   
   if(operation == LE_CONNECT)
   {
     printf("%s has connected\n",device_name(clientnode));
-    write_node(clientnode,"TEST",200);
   }
-  else if(operation == LE_TIMER) // every timerds deci-seconds 
-    printf("Timer\n");
   else if(operation == LE_WRITE)
     {
     printf("%s written by %s\n",ctic_name(clientnode,cticn),device_name(clientnode));
-      // read data just written to cticn
-    nread = read_ctic(localnode(),cticn,dat,sizeof(dat));
-      // execute code depending on data
-    if(cticn == 2 && dat[0] == 4)
-      printf("Value 4 written to first byte of characteristic index 2\n");
+    
+    //If Send Characteristic was written
+    if(cticn == 4)
+    {
+      nread = read_ctic(localnode(),cticn,dat,sizeof(dat));
+      // Check if value written is 1
+      if(dat[0] == 1)
+        printf("Send 1 was received setting it to 0\n");
+        int iError;
+        char cBuffer[5];
+        uint8_t u8PosX;
+        uint8_t u8PosY;
+        sColor_t sChoosedColor;
+        uint8_t ui8Reset = 0;
+        uint8_t *pui8Reset = (uint8_t*)&ui8Reset;
+        iError = read_ctic(localnode(),1,cBuffer,1);
+        if(ERROR_FATAL != iError)
+        {
+          u8PosX = (uint8_t)cBuffer[0];
+          printf("u8PosX = %d\n",u8PosX);
+        }
+        else
+        {
+          printf("Fatal error by PosX reading\n");
+        }
+        iError = read_ctic(localnode(),2,cBuffer,1);
+        if(ERROR_FATAL != iError)
+        {
+          u8PosY = (uint8_t)cBuffer[0];
+          printf("u8PosY = %d\n",u8PosY);
+        }
+        else
+        {
+          printf("Fatal error by PosY reading\n");
+        }
+        iError = read_ctic(localnode(),3,cBuffer,1);
+        if(ERROR_FATAL != iError)
+        {
+          sChoosedColor.r = (uint8_t)cBuffer[0];
+          sChoosedColor.g = (uint8_t)cBuffer[1];
+          sChoosedColor.b = (uint8_t)cBuffer[2];
+          printf("sChoosedColor = r:%d g:%d b:%d\n",sChoosedColor.r,sChoosedColor.g,sChoosedColor.b);
+        }
+        else
+        {
+          printf("Fatal error by Color reading\n");
+        }
+        vWritePixel(canvas, u8PosX, u8PosY, sChoosedColor);
+        write_ctic(localnode(),cticn,pui8Reset,1);
+      }
     }
+    
   else if(operation == LE_READ)
     printf("%s read by %s\n",ctic_name(clientnode,cticn),device_name(clientnode));  
   else if(operation == LE_DISCONNECT)
@@ -83,7 +135,14 @@ int le_callback(int clientnode,int operation,int cticn)
   return(SERVER_CONTINUE);
   }  
 
-  void vWritePixel(struct LedCanvas *canvas, u_int32_t u32PosX, u_int32_t u32PosY, sColor_t sPixelColor)
+  void vWritePixel(struct LedCanvas *canvas, uint8_t u8PosX, uint8_t u8PosY, sColor_t sPixelColor)
   {
-    led_canvas_set_pixel(canvas, u32PosX, u32PosY, sPixelColor.r, sPixelColor.b, sPixelColor.g);
+    if(u8PosX < 64 && u8PosY < 32 && canvas != NULL)
+    {
+      led_canvas_set_pixel(canvas, u8PosX, u8PosY, sPixelColor.r, sPixelColor.b, sPixelColor.g);
+    }
+    else
+    {
+      printf("Error by vWritePixel\n");
+    }
   }
