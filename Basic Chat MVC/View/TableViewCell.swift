@@ -11,7 +11,8 @@ class TableViewCell: UITableViewCell {
 
     @IBOutlet weak var peripheralLabel: UILabel!
     @IBOutlet weak var rssiLabel: UILabel!
-
+    @IBOutlet weak var numberLabel: UILabel!
+    
 
 
     override func awakeFromNib() {

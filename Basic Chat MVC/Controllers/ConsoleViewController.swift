@@ -10,97 +10,118 @@ import CoreBluetooth
 
 class ConsoleViewController: UIViewController {
 
-  //Data
-  var peripheralManager: CBPeripheralManager?
-  var peripheral: CBPeripheral?
-  var periperalTXCharacteristic: CBCharacteristic?
+    //Data
+    var peripheralManager: CBPeripheralManager?
+    var peripheral: CBPeripheral?
 
-  @IBOutlet weak var peripheralLabel: UILabel!
-  @IBOutlet weak var serviceLabel: UILabel!
-  @IBOutlet weak var consoleTextView: UITextView!
-  @IBOutlet weak var consoleTextField: UITextField!
-  @IBOutlet weak var txLabel: UILabel!
-  @IBOutlet weak var rxLabel: UILabel!
+    @IBOutlet weak var peripheralLabel: UILabel!
+    @IBOutlet weak var serviceLabel: UILabel!
+    @IBOutlet weak var xPosLabel: UILabel!
+    @IBOutlet weak var yPosLabel: UILabel!
+    @IBOutlet weak var xPosValue: UILabel!
+    @IBOutlet weak var yPosValue: UILabel!
+    @IBOutlet weak var xPosSlider: UISlider!
+    @IBOutlet weak var yPosSlider: UISlider!
+    @IBOutlet weak var testLabel: UILabel!
+    @IBOutlet weak var sendButton: UIButton!
+    
+    var testInt : Int = 0
+    
+    override func viewDidLoad()
+    {
+        super.viewDidLoad()
 
-  override func viewDidLoad() {
-      super.viewDidLoad()
+        keyboardNotifications()
 
-    keyboardNotifications()
-
-    NotificationCenter.default.addObserver(self, selector: #selector(self.appendRxDataToTextView(notification:)), name: NSNotification.Name(rawValue: "Notify"), object: nil)
-
-    consoleTextField.delegate = self
-
-    peripheralLabel.text = BlePeripheral.connectedPeripheral?.name
-
-    txLabel.text = "TX:\(String(BlePeripheral.connectedTXChar!.uuid.uuidString))"
-    rxLabel.text = "RX:\(String(BlePeripheral.connectedRXChar!.uuid.uuidString))"
-
-    if let service = BlePeripheral.connectedService {
-      serviceLabel.text = "Number of Services: \(String((BlePeripheral.connectedPeripheral?.services!.count)!))"
-    } else{
-      print("Service was not found")
+        /*NotificationCenter.default.addObserver(self, selector: #selector(self.appendRxDataToTextView(notification:)), name: NSNotification.Name(rawValue: "Notify"), object: nil)*/
+        //sendButton.addTarget(self, action: #selector(self.onClick(_:)), for: .touchDown)
+        //sendButton.addTarget(self, action: #selector(self.onRelease(_:)), for: .touchUpInside)
+        peripheralLabel.text = BlePeripheral.connectedPeripheral?.name
+    
+        if (BlePeripheral.connectedService != nil) {
+          serviceLabel.text = "Number of Services: \(String((BlePeripheral.connectedPeripheral?.services!.count)!))"
+        }
+        else
+        {
+          print("Service was not found")
+        }
     }
-  }
+    
+    @IBAction func xPosSliding(_ sender: Any)
+    {
+        xPosValue.text = "\(Int(xPosSlider.value))"
+        xPosValue.sizeToFit()
+        sendButton.tintColor = UIColor.gray
+    }
+    
+    @IBAction func yPosSliding(_ sender: Any)
+    {
+        yPosValue.text = "\(Int(yPosSlider.value))"
+        yPosValue.sizeToFit()
+        sendButton.tintColor = UIColor.black
+    }
+    @IBAction func onClick(_ sender: Any)
+    {
+        print("Pressed")
+        testInt+=1
+        testLabel.text = "Test Var: \(testInt)"
+        testLabel.sizeToFit()
+        sendBT(xPos: Int(xPosSlider.value), yPos: Int(yPosSlider.value))
+    }
+    
+    func keyboardNotifications()
+    {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 
-  @objc func appendRxDataToTextView(notification: Notification) -> Void{
-    consoleTextView.text.append("\n[Recv]: \(notification.object!) \n")
-  }
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(notification:)), name: UIResponder.keyboardDidHideNotification, object: nil)
 
-  func appendTxDataToTextView(){
-    consoleTextView.text.append("\n[Sent]: \(String(consoleTextField.text!)) \n")
-  }
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+    }
 
-  func keyboardNotifications() {
-    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-
-    NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(notification:)), name: UIResponder.keyboardDidHideNotification, object: nil)
-
-    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-  }
-
-  deinit {
-    NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-    NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidHideNotification, object: nil)
-    NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-  }
+    deinit
+    {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+    }
 
   // MARK:- Keyboard
-  @objc func keyboardWillChange(notification: Notification) {
+    @objc func keyboardWillChange(notification: Notification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+        {
 
-    if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-
-      let keyboardHeight = keyboardSize.height
-      print(keyboardHeight)
-      view.frame.origin.y = (-keyboardHeight + 50)
+          let keyboardHeight = keyboardSize.height
+          print(keyboardHeight)
+          view.frame.origin.y = (-keyboardHeight + 50)
+        }
     }
-  }
 
-  @objc func keyboardDidHide(notification: Notification) {
-    view.frame.origin.y = 0
-  }
+    @objc func keyboardDidHide(notification: Notification)
+    {
+        view.frame.origin.y = 0
+    }
 
-  @objc func disconnectPeripheral() {
-    print("Disconnect for peripheral.")
-  }
+    @objc func disconnectPeripheral()
+    {
+        print("Disconnect for peripheral.")
+    }
 
-  // Write functions
-  func writeOutgoingValue(data: String){
-      let valueString = (data as NSString).data(using: String.Encoding.utf8.rawValue)
-      //change the "data" to valueString
-    if let blePeripheral = BlePeripheral.connectedPeripheral {
-          if let txCharacteristic = BlePeripheral.connectedTXChar {
-              blePeripheral.writeValue(valueString!, for: txCharacteristic, type: CBCharacteristicWriteType.withResponse)
-          }
-      }
-  }
-
-  func writeCharacteristic(incomingValue: Int8){
-    var val = incomingValue
-
-    let outgoingData = NSData(bytes: &val, length: MemoryLayout<Int8>.size)
-    peripheral?.writeValue(outgoingData as Data, for: BlePeripheral.connectedTXChar!, type: CBCharacteristicWriteType.withResponse)
-  }
+    // Write functions
+    func sendBT(xPos: Int, yPos: Int){
+        var pxPos = xPos
+        var pyPos = yPos
+        var send = 1
+        let xPosData = Data(bytes: &pxPos, count: 1)
+        let yPosData = Data(bytes: &pyPos, count: 1)
+        let colorString = ("test" as NSString).data(using: String.Encoding.ascii.rawValue)
+        let sendData = Data(bytes: &send, count: 1)
+        //change the "data" to valueString
+        let blePeripheral = BlePeripheral.connectedPeripheral
+        blePeripheral!.writeValue(xPosData, for: BlePeripheral.connectedPixelXChar!, type: CBCharacteristicWriteType.withoutResponse)
+        blePeripheral!.writeValue(yPosData, for: BlePeripheral.connectedPixelYChar!, type: CBCharacteristicWriteType.withoutResponse)
+        blePeripheral!.writeValue(colorString!, for: BlePeripheral.connectedColorChar!, type: CBCharacteristicWriteType.withoutResponse)
+        blePeripheral!.writeValue(sendData, for: BlePeripheral.connectedSendChar!, type: CBCharacteristicWriteType.withoutResponse)
+    }
 }
 
 extension ConsoleViewController: CBPeripheralManagerDelegate {
@@ -124,7 +145,6 @@ extension ConsoleViewController: CBPeripheralManagerDelegate {
     }
   }
 
-
   //Check when someone subscribe to our characteristic, start sending the data
   func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didSubscribeTo characteristic: CBCharacteristic) {
       print("Device subscribe to characteristic")
@@ -132,24 +152,4 @@ extension ConsoleViewController: CBPeripheralManagerDelegate {
 
 }
 
-extension ConsoleViewController: UITextViewDelegate {
 
-}
-
-extension ConsoleViewController: UITextFieldDelegate {
-
-  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    writeOutgoingValue(data: textField.text ?? "")
-    appendTxDataToTextView()
-    textField.resignFirstResponder()
-    textField.text = ""
-    return true
-
-  }
-
-  func textFieldShouldClear(_ textField: UITextField) -> Bool {
-    textField.clearsOnBeginEditing = true
-    return true
-  }
-
-}

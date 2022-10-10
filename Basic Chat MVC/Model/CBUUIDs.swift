@@ -9,14 +9,22 @@ import Foundation
 import CoreBluetooth
 
 struct CBUUIDs{
-
-    static let kBLEService_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e"
-    static let kBLE_Characteristic_uuid_Tx = "6e400002-b5a3-f393-e0a9-e50e24dcca9e"
-    static let kBLE_Characteristic_uuid_Rx = "6e400003-b5a3-f393-e0a9-e50e24dcca9e"
+    static let kBLEServiceSearch_UUID = "1800"
+    static let kBLEService_UUID = "11223344-5566-7788-99AA-BBCCDDEEFFFF"
+    static let kBLE_Characteristic_uuid_Name = "BADDCAFE-0000-0000-0000-000000000001"
+    static let kBLE_Characteristic_uuid_PixelX = "BADDCAFE-0000-0000-0000-000000000002"
+    static let kBLE_Characteristic_uuid_PixelY = "BADDCAFE-0000-0000-0000-000000000003"
+    static let kBLE_Characteristic_uuid_Color = "BADDCAFE-0000-0000-0000-000000000004"
+    static let kBLE_Characteristic_uuid_Send = "BADDCAFE-0000-0000-0000-000000000005"
     static let MaxCharacters = 20
 
+    static let BLEServiceSearch_UUID = CBUUID(string: kBLEServiceSearch_UUID)
     static let BLEService_UUID = CBUUID(string: kBLEService_UUID)
-    static let BLE_Characteristic_uuid_Tx = CBUUID(string: kBLE_Characteristic_uuid_Tx)//(Property = Write without response)
-    static let BLE_Characteristic_uuid_Rx = CBUUID(string: kBLE_Characteristic_uuid_Rx)// (Property = Read/Notify)
-
+    //(Property = ReadOnly)
+    static let BLE_Characteristic_uuid_Name = CBUUID(string: kBLE_Characteristic_uuid_Name)
+    //(Property = Read and Write without response)
+    static let BLE_Characteristic_uuid_PixelX = CBUUID(string: kBLE_Characteristic_uuid_PixelX)
+    static let BLE_Characteristic_uuid_PixelY = CBUUID(string: kBLE_Characteristic_uuid_PixelY)
+    static let BLE_Characteristic_uuid_Color = CBUUID(string: kBLE_Characteristic_uuid_Color)
+    static let BLE_Characteristic_uuid_Send = CBUUID(string: kBLE_Characteristic_uuid_Send)
 }
