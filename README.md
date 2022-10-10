@@ -1,11 +1,4 @@
-# DevMob RGB Weather Kit
+# Basic-Chat
+Bluetooth Low Energy App for iOS using Swift 5 to communicate with another device that implements the Nordic UART Service.
 
-## Matériel utilisé : 
-- Matrice LED RGB 32*64
-- Raspberry Pi 3
-- Bonnet RGB Matrix pour Raspberry
-- Alimentation pour écran
-- Téléphone android 8 ou plus disposant de BLE.
-
-## But
-Affichage de la météo en fonction de la localisation du téléphone, ou un lieu spécifique incluant les conditions météorologiques, d’humidité et et température.
+This sample project is the source for [this tutorial](https://learn.adafruit.com/crack-the-code/overview). It is not meant to cover product ready iOS development. It is only an introduction to BLE and iOS.
