@@ -8,6 +8,25 @@
 import UIKit
 import CoreBluetooth
 
+@IBDesignable class MyButton: UIButton
+{
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        updateCornerRadius()
+    }
+
+    @IBInspectable var rounded: Bool = false {
+        didSet {
+            updateCornerRadius()
+        }
+    }
+
+    func updateCornerRadius() {
+        layer.cornerRadius = rounded ? frame.size.height / 2 : 0
+    }
+}
+
 class ConsoleViewController: UIViewController {
 
     //Data
@@ -22,20 +41,35 @@ class ConsoleViewController: UIViewController {
     @IBOutlet weak var yPosValue: UILabel!
     @IBOutlet weak var xPosSlider: UISlider!
     @IBOutlet weak var yPosSlider: UISlider!
-    @IBOutlet weak var testLabel: UILabel!
     @IBOutlet weak var sendButton: UIButton!
+    @IBOutlet weak var colorView: UIStackView!
     
     var testInt : Int = 0
+    let colorWell: UIColorWell =
+        {
+            let colorWell = UIColorWell()
+            colorWell.supportsAlpha = true
+            colorWell.selectedColor = .white
+            colorWell.title = "Pixel Color"
+            return colorWell
+        }()
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        colorView.addSubview(colorWell)
+        //colorView.addArrangedSubview(colorWell)
+        //colorView.autoresizesSubviews
+        //colorView.sizeToFit()
+        
+        //view.addSubview(colorWell)
 
+        xPosValue.text = "\(Int(xPosSlider.value))"
+        xPosValue.sizeToFit()
+        yPosValue.text = "\(Int(yPosSlider.value))"
+        yPosValue.sizeToFit()
         keyboardNotifications()
 
-        /*NotificationCenter.default.addObserver(self, selector: #selector(self.appendRxDataToTextView(notification:)), name: NSNotification.Name(rawValue: "Notify"), object: nil)*/
-        //sendButton.addTarget(self, action: #selector(self.onClick(_:)), for: .touchDown)
-        //sendButton.addTarget(self, action: #selector(self.onRelease(_:)), for: .touchUpInside)
         peripheralLabel.text = BlePeripheral.connectedPeripheral?.name
     
         if (BlePeripheral.connectedService != nil) {
@@ -51,21 +85,17 @@ class ConsoleViewController: UIViewController {
     {
         xPosValue.text = "\(Int(xPosSlider.value))"
         xPosValue.sizeToFit()
-        sendButton.tintColor = UIColor.gray
     }
     
     @IBAction func yPosSliding(_ sender: Any)
     {
         yPosValue.text = "\(Int(yPosSlider.value))"
         yPosValue.sizeToFit()
-        sendButton.tintColor = UIColor.black
     }
     @IBAction func onClick(_ sender: Any)
     {
         print("Pressed")
         testInt+=1
-        testLabel.text = "Test Var: \(testInt)"
-        testLabel.sizeToFit()
         sendBT(xPos: Int(xPosSlider.value), yPos: Int(yPosSlider.value))
     }
     
@@ -113,14 +143,21 @@ class ConsoleViewController: UIViewController {
         var send = 1
         let xPosData = Data(bytes: &pxPos, count: 1)
         let yPosData = Data(bytes: &pyPos, count: 1)
-        let colorString = ("test" as NSString).data(using: String.Encoding.ascii.rawValue)
+        var color = [Int8]()
+//        colorWell.selectedColor?.rgba(color[0], color[1], color[2], color[3])
+        let colorData = Data(bytes: &color, count: 3)
         let sendData = Data(bytes: &send, count: 1)
         //change the "data" to valueString
         let blePeripheral = BlePeripheral.connectedPeripheral
         blePeripheral!.writeValue(xPosData, for: BlePeripheral.connectedPixelXChar!, type: CBCharacteristicWriteType.withoutResponse)
         blePeripheral!.writeValue(yPosData, for: BlePeripheral.connectedPixelYChar!, type: CBCharacteristicWriteType.withoutResponse)
-        blePeripheral!.writeValue(colorString!, for: BlePeripheral.connectedColorChar!, type: CBCharacteristicWriteType.withoutResponse)
+        blePeripheral!.writeValue(colorData, for: BlePeripheral.connectedColorChar!, type: CBCharacteristicWriteType.withoutResponse)
         blePeripheral!.writeValue(sendData, for: BlePeripheral.connectedSendChar!, type: CBCharacteristicWriteType.withoutResponse)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        colorWell.frame = CGRect(x:20, y: view.safeAreaInsets.top, width: view.frame.size.width-40, height:350)
     }
 }
 
@@ -152,4 +189,12 @@ extension ConsoleViewController: CBPeripheralManagerDelegate {
 
 }
 
-
+extension UIColor {
+    var rgba: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
+        var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+        if getRed(&r, green: &g, blue: &b, alpha: &a) {
+            return (r,g,b,a)
+        }
+        return (0, 0, 0, 0)
+    }
+}
