@@ -43,6 +43,11 @@ class ConsoleViewController: UIViewController {
     @IBOutlet weak var yPosSlider: UISlider!
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var colorView: UIStackView!
+    @IBOutlet weak var colorLabel: UILabel!
+    @IBOutlet weak var rLabel: UILabel!
+    @IBOutlet weak var bLabel: UILabel!
+    @IBOutlet weak var aLabel: UILabel!
+    @IBOutlet weak var gLabel: UILabel!
     
     var testInt : Int = 0
     let colorWell: UIColorWell =
@@ -54,16 +59,30 @@ class ConsoleViewController: UIViewController {
             return colorWell
         }()
     
+    //Test function for color Weel
+    /*@objc private func changeColor()
+    {
+        var rColor: CGFloat = 0
+        var gColor: CGFloat = 0
+        var bColor: CGFloat = 0
+        var aColor: CGFloat = 0
+        
+        colorWell.selectedColor?.getRed(&rColor, green: &gColor, blue: &bColor, alpha: &aColor)
+        
+        rLabel.text = String(format:"%02X",Int8(truncatingIfNeeded: Int(rColor*255)))
+        gLabel.text = String(format:"%02X",Int8(truncatingIfNeeded: Int(gColor*255)))
+        bLabel.text = String(format:"%02X",Int8(truncatingIfNeeded: Int(bColor*255)))
+        aLabel.text = String(format:"%02X",Int8(truncatingIfNeeded: Int(aColor*255)))
+    }*/
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
         colorView.addSubview(colorWell)
-        //colorView.addArrangedSubview(colorWell)
-        //colorView.autoresizesSubviews
-        //colorView.sizeToFit()
+        colorWell.frame = CGRect(x:150, y: view.safeAreaInsets.top, width: view.frame.size.width-40, height:350)
         
-        //view.addSubview(colorWell)
-
+        //colorWell.addTarget(self, action: #selector(changeColor), for: .valueChanged)
+        
         xPosValue.text = "\(Int(xPosSlider.value))"
         xPosValue.sizeToFit()
         yPosValue.text = "\(Int(yPosSlider.value))"
@@ -135,17 +154,29 @@ class ConsoleViewController: UIViewController {
     {
         print("Disconnect for peripheral.")
     }
-
+    
     // Write functions
     func sendBT(xPos: Int, yPos: Int){
         var pxPos = xPos
         var pyPos = yPos
         var send = 1
+        var rColor: CGFloat = 0
+        var gColor: CGFloat = 0
+        var bColor: CGFloat = 0
+        var aColor: CGFloat = 0
+        var Colors: [Int8] = [0,0,0]
+        
+        colorWell.selectedColor?.getRed(&rColor, green: &gColor, blue: &bColor, alpha: &aColor)
+        
+        Colors[0] = Int8(truncatingIfNeeded: Int(rColor*255))
+        Colors[1] = Int8(truncatingIfNeeded: Int(gColor*255))
+        Colors[2] = Int8(truncatingIfNeeded: Int(bColor*255))
+        
         let xPosData = Data(bytes: &pxPos, count: 1)
         let yPosData = Data(bytes: &pyPos, count: 1)
-        var color = [Int8]()
-//        colorWell.selectedColor?.rgba(color[0], color[1], color[2], color[3])
-        let colorData = Data(bytes: &color, count: 3)
+        let colorData = Data(bytes: &Colors, count: 3)
+        
+        //let colorData = Data(bytes: &color, count: 3)
         let sendData = Data(bytes: &send, count: 1)
         //change the "data" to valueString
         let blePeripheral = BlePeripheral.connectedPeripheral
@@ -153,11 +184,6 @@ class ConsoleViewController: UIViewController {
         blePeripheral!.writeValue(yPosData, for: BlePeripheral.connectedPixelYChar!, type: CBCharacteristicWriteType.withoutResponse)
         blePeripheral!.writeValue(colorData, for: BlePeripheral.connectedColorChar!, type: CBCharacteristicWriteType.withoutResponse)
         blePeripheral!.writeValue(sendData, for: BlePeripheral.connectedSendChar!, type: CBCharacteristicWriteType.withoutResponse)
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        colorWell.frame = CGRect(x:20, y: view.safeAreaInsets.top, width: view.frame.size.width-40, height:350)
     }
 }
 

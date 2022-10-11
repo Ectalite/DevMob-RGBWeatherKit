@@ -315,7 +315,6 @@ extension ViewController: UITableViewDataSource {
     
     cell.peripheralLabel.text = peripheralFound.name
     cell.rssiLabel.text = "RSSI: \(rssiFound)"
-    cell.numberLabel.text = "\(indexPath.row)"
     
     return cell
   }
