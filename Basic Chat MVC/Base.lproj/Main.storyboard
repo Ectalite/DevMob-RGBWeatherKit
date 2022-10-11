@@ -270,34 +270,6 @@
                                     <action selector="onClick:" destination="qte-y8-9X3" eventType="touchUpInside" id="efs-hY-dPP"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vPF-mT-IYh" userLabel="b">
-                                <rect key="frame" x="186" y="558" width="42" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oWM-qp-X0U" userLabel="a">
-                                <rect key="frame" x="186" y="599" width="42" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WLV-zo-hck" userLabel="g">
-                                <rect key="frame" x="186" y="507" width="42" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nxm-ro-fLt" userLabel="r">
-                                <rect key="frame" x="186" y="466" width="42" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="BOL-Mc-Q7L"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -315,13 +287,9 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="aLabel" destination="oWM-qp-X0U" id="RLo-lw-uE1"/>
-                        <outlet property="bLabel" destination="vPF-mT-IYh" id="xSF-ff-Yfv"/>
                         <outlet property="colorLabel" destination="ykF-ZJ-Uzt" id="2qO-jM-EZe"/>
                         <outlet property="colorView" destination="6fF-48-7SJ" id="f9M-Af-eW3"/>
-                        <outlet property="gLabel" destination="WLV-zo-hck" id="qKA-n6-Bgw"/>
                         <outlet property="peripheralLabel" destination="CQO-jE-RZp" id="DKu-As-o4e"/>
-                        <outlet property="rLabel" destination="nxm-ro-fLt" id="SsW-d9-2ih"/>
                         <outlet property="sendButton" destination="JkP-Ni-Beq" id="5q9-Gs-hH3"/>
                         <outlet property="serviceLabel" destination="otG-r3-io9" id="ufY-M5-gwb"/>
                         <outlet property="xPosLabel" destination="gLN-Mg-4nP" id="Ndg-f3-0Qs"/>

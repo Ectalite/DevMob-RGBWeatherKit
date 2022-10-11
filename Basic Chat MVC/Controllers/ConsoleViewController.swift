@@ -44,10 +44,6 @@ class ConsoleViewController: UIViewController {
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var colorView: UIStackView!
     @IBOutlet weak var colorLabel: UILabel!
-    @IBOutlet weak var rLabel: UILabel!
-    @IBOutlet weak var bLabel: UILabel!
-    @IBOutlet weak var aLabel: UILabel!
-    @IBOutlet weak var gLabel: UILabel!
     
     var testInt : Int = 0
     let colorWell: UIColorWell =
