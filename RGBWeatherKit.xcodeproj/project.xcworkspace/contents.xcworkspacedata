@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:">
+      location = "self:/Users/xavierhueber/Downloads/Basic-Chat/RGBWeatherKit.xcodeproj">
    </FileRef>
 </Workspace>
