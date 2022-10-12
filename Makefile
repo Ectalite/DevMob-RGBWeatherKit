@@ -1,8 +1,11 @@
-CC   = gcc
+CC	 = gcc
+CXX  = g++ -std=gnu++17
 RM   = rm -f
 LIB  = ./lib
-INC  = -I. -I include/
+INC  = -I . -I include/
 OBJ  = main.o
+OUTPUTDIR = ./bin/
+MKDIR = mkdir -p $(OUTPUTDIR)
 RGB_LIB_DISTRIBUTION = .
 RGB_LIBDIR=$(RGB_LIB_DISTRIBUTION)/lib
 RGB_LIBRARY_NAME=rgbmatrix
@@ -12,13 +15,16 @@ default: all
 
 all: main
 
-%.o: %.c
+%.o: %.cc
 	$(MAKE) -C $(LIB)
-	$(CC) $(INC) -c $<
+	$(CXX) $(INC) -c $<
 
 main: $(OBJ)
-	$(CC) $< -o $@ $(LDFLAGS) btlib.c -lstdc++
+	$(MKDIR)
+	$(CC) $(INC) -c $(LIB)/btlib.c -o $(OUTPUTDIR)btlib.o
+	$(CXX) $(OUTPUTDIR)btlib.o $< -o $@ $(LDFLAGS) -lstdc++
 
 clean veryclean:
+	$(RM) -rf $(OUTPUTDIR)
 	$(RM) main
 	$(RM) *.o
