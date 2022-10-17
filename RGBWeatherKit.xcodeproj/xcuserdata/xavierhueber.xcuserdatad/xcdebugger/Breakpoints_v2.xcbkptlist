@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "1E5E8B1E-7DDD-4028-A332-FBEE53F68FF9"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7425BC49-88ED-4AE0-9D31-BD0CACC30D3F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Basic Chat MVC/Controllers/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "137"
+            endingLineNumber = "137"
+            landmarkName = "centralManagerDidUpdateState(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F377D911-F0E7-495C-8001-6397338CB567"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Basic Chat MVC/Controllers/ConsoleViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
+            landmarkName = "ConsoleViewController"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  uuid = "F377D911-F0E7-495C-8001-6397338CB567 - c0ca38af29f7c8a6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Basic_Chat_MVC.ConsoleViewController.yPosLabel.getter : Swift.Optional&lt;__C.UILabel&gt;"
+                  moduleName = "Basic Chat MVC"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xavierhueber/Downloads/Basic-Chat/Basic%20Chat%20MVC/Controllers/ConsoleViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "39"
+                  endingLineNumber = "39"
+                  offsetFromSymbolStart = "104">
+               </Location>
+               <Location
+                  uuid = "F377D911-F0E7-495C-8001-6397338CB567 - bc93830f21bda4b2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Basic_Chat_MVC.ConsoleViewController.yPosLabel.setter : Swift.Optional&lt;__C.UILabel&gt;"
+                  moduleName = "Basic Chat MVC"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xavierhueber/Downloads/Basic-Chat/Basic%20Chat%20MVC/Controllers/ConsoleViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "39"
+                  endingLineNumber = "39"
+                  offsetFromSymbolStart = "148">
+               </Location>
+               <Location
+                  uuid = "F377D911-F0E7-495C-8001-6397338CB567 - 688513005dd9b8aa"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Basic_Chat_MVC.ConsoleViewController.yPosLabel.modify : Swift.Optional&lt;__C.UILabel&gt;"
+                  moduleName = "Basic Chat MVC"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xavierhueber/Downloads/Basic-Chat/Basic%20Chat%20MVC/Controllers/ConsoleViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "60">
+               </Location>
+               <Location
+                  uuid = "F377D911-F0E7-495C-8001-6397338CB567 - 497343f32263596f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Basic_Chat_MVC.ConsoleViewController.yPosLabel.modify : Swift.Optional&lt;__C.UILabel&gt; with unmangled suffix &quot;.resume.0&quot;"
+                  moduleName = "Basic Chat MVC"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xavierhueber/Downloads/Basic-Chat/Basic%20Chat%20MVC/Controllers/ConsoleViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "39"
+                  endingLineNumber = "39"
+                  offsetFromSymbolStart = "72">
+               </Location>
+               <Location
+                  uuid = "F377D911-F0E7-495C-8001-6397338CB567 - bf070e767b06b05b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Basic_Chat_MVC.ConsoleViewController.init(nibName: Swift.Optional&lt;Swift.String&gt;, bundle: Swift.Optional&lt;__C.NSBundle&gt;) -&gt; Basic_Chat_MVC.ConsoleViewController"
+                  moduleName = "Basic Chat MVC"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xavierhueber/Downloads/Basic-Chat/Basic%20Chat%20MVC/Controllers/ConsoleViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "39"
+                  endingLineNumber = "39"
+                  offsetFromSymbolStart = "692">
+               </Location>
+               <Location
+                  uuid = "F377D911-F0E7-495C-8001-6397338CB567 - cffb47927f7c741f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Basic_Chat_MVC.ConsoleViewController.init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;Basic_Chat_MVC.ConsoleViewController&gt;"
+                  moduleName = "Basic Chat MVC"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xavierhueber/Downloads/Basic-Chat/Basic%20Chat%20MVC/Controllers/ConsoleViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "39"
+                  endingLineNumber = "39"
+                  offsetFromSymbolStart = "668">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
