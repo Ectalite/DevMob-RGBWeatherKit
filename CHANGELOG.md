@@ -7,3 +7,5 @@ Début de la programmation du Raspberry PI, ajout de la librairie de BLE.
 Cassage de tête 
 ## 10 octobre 2022
 Programme raspberry prêt, développement iOS fonctionnel
+## 17 octobre 2022
+Changement du nom de l'application
