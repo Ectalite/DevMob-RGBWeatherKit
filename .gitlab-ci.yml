@@ -8,4 +8,4 @@ build:
       - apt update && apt -y install npm
       - npm install -g appcenter-cli
       - appcenter login --token 0c401d01262d964684b318504d7aaa49a2522aa6
-      - appcenter build queue --app "DevMob WeatherKit/WeatherKit" --branch iOS --token 0c401d01262d964684b318504d7aaa49a2522aa6
+      - appcenter build queue --app "DevMob-WeatherKit/WeatherKit" --branch iOS --token 0c401d01262d964684b318504d7aaa49a2522aa6
