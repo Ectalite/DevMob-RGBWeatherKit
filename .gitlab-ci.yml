@@ -1,0 +1,11 @@
+#Run pipeline on Microsoft AppCenter
+
+image: alpine:latest
+
+build:
+  stage: build
+  script:
+      - apt update && apt -y install npm
+      - npm install -g appcenter-cli
+      - appcenter login --token 8193a8606ab17da9dd48aece51d417f524a6d212
+      - appcenter build queue --app "DevMob WeatherKit/WeatherKit" --branch iOS --token 8193a8606ab17da9dd48aece51d417f524a6d212
