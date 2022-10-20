@@ -1,10 +1,10 @@
 #From https://about.gitlab.com/blog/2018/10/24/setting-up-gitlab-ci-for-android-projects/
 
-image: openjdk:8-jdk
+image: openjdk:11-jdk
 
 variables:
-  ANDROID_COMPILE_SDK: "33"
-  ANDROID_BUILD_TOOLS: "33.0.0"
+  ANDROID_COMPILE_SDK: "32"
+  ANDROID_BUILD_TOOLS: "32.0.0"
   ANDROID_SDK_TOOLS:   "8512546"
 
 before_script:
@@ -35,11 +35,11 @@ before_script:
 
   # use yes to accept all licenses
   - yes | sdkmanager --licenses || true
-  - sdkmanager "platforms;android-32"
-  #- sdkmanager "platforms;android-${ANDROID_COMPILE_SDK}"
+  #- sdkmanager "platforms;android-32"
+  - sdkmanager "platforms;android-${ANDROID_COMPILE_SDK}"
   - sdkmanager "platform-tools"
-  - sdkmanager "build-tools;32.0.0"
-  #- sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}"
+  #- sdkmanager "build-tools;32.0.0"
+  - sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}"
 
   # Not necessary, but just for surity
   - chmod +x ./gradlew
