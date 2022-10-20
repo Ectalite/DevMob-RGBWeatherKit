@@ -9,3 +9,9 @@ Cassage de tête
 Programme raspberry prêt, développement iOS fonctionnel
 ## 17 octobre 2022
 Changement du nom de l'application
+## 18 octobre 2022
+Fin de la création du cahier des charges (voir pdf).  
+Création du Gantt.  
+Création de l'interface graphique sur Balsamiq.
+## 20 octobre 2022
+Démarrage de la création de l'application Android.
