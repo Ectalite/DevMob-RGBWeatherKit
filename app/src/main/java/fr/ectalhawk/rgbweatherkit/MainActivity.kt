@@ -16,6 +16,9 @@ class MainActivity : AppCompatActivity() {
         val oBLEInterface = BLEinterface(this, applicationContext)
         //Initialisation du BLE et démarrage du scan
         oBLEInterface.prepareAndStartBleScan()
+
+        //Stopper après 10sec, aucune idée de comment faire ?
+        oBLEInterface.safeStopBleScan()
     }
 
     override fun onStop() {
