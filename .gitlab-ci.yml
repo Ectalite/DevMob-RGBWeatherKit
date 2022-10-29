@@ -49,12 +49,12 @@ stages:
   - build
   - test
 
-lintDebug:
+Interface Graphique:
   stage: build
   script:
     - ./gradlew -Pci --console=plain :app:lintDebug -PbuildDir=lint
 
-assembleDebug:
+Code (Kotlin):
   stage: build
   script:
     - ./gradlew assembleDebug
@@ -62,7 +62,7 @@ assembleDebug:
     paths:
     - app/build/outputs/
 
-debugTests:
+Tests:
   stage: test
   script:
     - ./gradlew -Pci --console=plain :app:testDebug
