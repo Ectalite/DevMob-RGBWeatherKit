@@ -1,7 +1,10 @@
 package fr.ectalhawk.rgbweatherkit
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,11 +17,14 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         //Création d'un objet BLEInterface servant à la communication entre android et le rapsberry Pi
         val oBLEInterface = BLEinterface(this, applicationContext)
-        //Initialisation du BLE et démarrage du scan
-        oBLEInterface.prepareAndStartBleScan()
+        val button = findViewById<Button>(R.id.button)
+        button.setOnClickListener {
+            //Initialisation du BLE et démarrage du scan
+            oBLEInterface.prepareAndStartBleScan()
+        }
 
         //Stopper après 10sec, aucune idée de comment faire ?
-        oBLEInterface.safeStopBleScan()
+        //oBLEInterface.safeStopBleScan()
     }
 
     override fun onStop() {
