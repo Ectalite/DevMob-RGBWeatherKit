@@ -13,15 +13,10 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.widget.ArrayAdapter
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog.Builder
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.ContextCompat.startActivity
 import java.util.*
-import kotlin.collections.ArrayList
 
 private const val ENABLE_BLUETOOTH_REQUEST_CODE = 1
 private const val LOCATION_PERMISSION_REQUEST_CODE = 2
@@ -45,27 +40,29 @@ class BLEinterface(private val act: Activity, private val context: Context) {
         AskOnce,
         InsistUntilSuccess
     }
-    private val bluetoothAdapter: BluetoothAdapter by lazy {
-        val  bluetoothManager = getSystemService(context, BluetoothManager::class.java)
+    private val bluetoothAdapter: BluetoothAdapter by lazy{
+        val bluetoothManager: BluetoothManager? = act.getSystemService(BluetoothManager::class.java)
+        if(bluetoothManager == null)
+        {
+            myLogger("BluetoothManager was null")
+        }
         bluetoothManager!!.adapter
     }
+
+    private val bleScanner by lazy {
+        bluetoothAdapter.bluetoothLeScanner
+    }
+
     private var isScanning = false
     private var connectedGatt: BluetoothGatt? = null
     private var pixelXCharacteristic: BluetoothGattCharacteristic? = null
     private var pixelYCharacteristic: BluetoothGattCharacteristic? = null
     private var colorCharacteristic: BluetoothGattCharacteristic? = null
     private var sendCharacteristic: BluetoothGattCharacteristic? = null
-    /*private val scanFilter = ScanFilter.Builder()
-        .setServiceUuid(ParcelUuid(UUID.fromString(SERVICE_UUID)))
-        .build()
-    */
-    val list = act.findViewById<ListView>(R.id.deviceList)!!
-    val deviceList = ArrayList<BluetoothDevice>()
-    val deviceListAdapter = ArrayAdapter(context, android.R.layout.simple_list_item_1,deviceList)
 
-    private val bleScanner by lazy {
-        bluetoothAdapter.bluetoothLeScanner
-    }
+    private val list = act.findViewById<ListView>(R.id.deviceList)!!
+    private val deviceList = ArrayList<BluetoothDevice>()
+    private val deviceListAdapter = MyListAdapter(act,deviceList)
 
     private var lifecycleState = BLELifecycleState.Disconnected
         @SuppressLint("SetTextI18n")
@@ -77,11 +74,20 @@ class BLEinterface(private val act: Activity, private val context: Context) {
             textViewLifecycleState.text = "State: ${value.name}"
         }
 
+    //Constructeur appelé à l'instanciation
+    init {
+        list.adapter = deviceListAdapter
+        list.setOnItemClickListener(){adapterView,view,position,id->
+            val itemAtPos = adapterView.getItemAtPosition(position)
+            val itemIdAtPos = adapterView.getItemIdAtPosition(position)
+            Toast.makeText(context, "Click on item at $itemAtPos its item id $itemIdAtPos", Toast.LENGTH_LONG).show()
+        }
+    }
+
     //Fonctions pouvant être utilisés en instanciant la classe
 
     fun prepareAndStartBleScan(){
         myLogger("Start scanning")
-        //safeStartBleScan()
         ensureBluetoothCanBeUsed { isSuccess, message ->
             myLogger(message)
             if (isSuccess) {
@@ -151,9 +157,6 @@ class BLEinterface(private val act: Activity, private val context: Context) {
             myLogger("Already scanning")
             return
         }
-        myLogger("Starting BLE scan")
-        //val serviceFilter = scanFilter.serviceUuid?.uuid.toString()
-        //myLogger("Starting BLE scan, filter: $serviceFilter")
 
         isScanning = true
         lifecycleState = BLELifecycleState.Scanning
@@ -165,6 +168,11 @@ class BLEinterface(private val act: Activity, private val context: Context) {
             act.startActivity(intent)
             return
         }
+        myLogger("Starting BLE scan")
+        val handler = Handler()
+        handler.postDelayed({
+            safeStopBleScan()
+        },10000)
         bleScanner.startScan(scanCallback)
     }
 
@@ -179,10 +187,28 @@ class BLEinterface(private val act: Activity, private val context: Context) {
                 return
             }
             val name: String? = result.scanRecord?.deviceName ?: result.device.name
-            myLogger("onScanResult name=$name address= ${result.device?.address}")
+            myLogger("Got result!")
 
-            deviceList.add(result.device)
-            list.adapter = deviceListAdapter
+
+            if (result.device.name != null) {
+                myLogger("onScanResult name=$name address= ${result.device?.address}")
+                val uuidList = getServiceUUIDsList(result)
+                for (uuidnumber in 1 until uuidList!!.size) {
+                    myLogger("UUID " + uuidnumber + " : " + uuidList[uuidnumber].toString())
+                }
+                deviceList.add(result.device)
+                deviceListAdapter.notifyDataSetChanged()
+            }
+        }
+
+        private fun getServiceUUIDsList(scanResult: ScanResult): List<UUID>? {
+            val parcelUuids = scanResult.scanRecord!!.serviceUuids
+            val serviceList: MutableList<UUID> = ArrayList()
+            for (i in parcelUuids.indices) {
+                val serviceUUID = parcelUuids[i].uuid
+                if (!serviceList.contains(serviceUUID)) serviceList.add(serviceUUID)
+            }
+            return serviceList
         }
 
         override fun onBatchScanResults(results: MutableList<ScanResult>?) {
