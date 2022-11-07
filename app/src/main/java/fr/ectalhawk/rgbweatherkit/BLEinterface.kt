@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.bluetooth.*
+import android.bluetooth.BluetoothDevice.TRANSPORT_LE
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanResult
 import android.content.Context
@@ -17,6 +18,7 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog.Builder
 import androidx.core.app.ActivityCompat
 import java.util.*
+
 
 private const val ENABLE_BLUETOOTH_REQUEST_CODE = 1
 private const val LOCATION_PERMISSION_REQUEST_CODE = 2
@@ -77,10 +79,17 @@ class BLEinterface(private val act: Activity, private val context: Context) {
     //Constructeur appelé à l'instanciation
     init {
         list.adapter = deviceListAdapter
-        list.setOnItemClickListener(){adapterView,view,position,id->
-            val itemAtPos = adapterView.getItemAtPosition(position)
-            val itemIdAtPos = adapterView.getItemIdAtPosition(position)
-            Toast.makeText(context, "Click on item at $itemAtPos its item id $itemIdAtPos", Toast.LENGTH_LONG).show()
+        list.setOnItemClickListener{ adapterView, _, position, _ ->
+            val itemAtPos = adapterView.getItemAtPosition(position) as? BluetoothDevice
+            //val itemIdAtPos = adapterView.getItemIdAtPosition(position)
+            if(itemAtPos != null)
+            {
+                connectToDevice(itemAtPos)
+            }
+            else
+            {
+                Toast.makeText(context,"Could not connect to device please select another one", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
@@ -88,15 +97,19 @@ class BLEinterface(private val act: Activity, private val context: Context) {
 
     fun prepareAndStartBleScan(){
         myLogger("Start scanning")
+        val scanButton = act.findViewById<Button>(R.id.scanButton)
         ensureBluetoothCanBeUsed { isSuccess, message ->
             myLogger(message)
             if (isSuccess) {
+                scanButton.isEnabled = false
                 safeStartBleScan()
             }
         }
     }
 
     fun safeStopBleScan() {
+        val scanButton = act.findViewById<Button>(R.id.scanButton)
+        scanButton.isEnabled = true
         if (!isScanning) {
             myLogger("Already stopped")
             return
@@ -115,7 +128,7 @@ class BLEinterface(private val act: Activity, private val context: Context) {
         bleScanner.stopScan(scanCallback)
     }
 
-    fun connectToDevice(device : BluetoothDevice)
+    private fun connectToDevice(device : BluetoothDevice)
     {
         lifecycleState = BLELifecycleState.Connecting
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT
@@ -126,7 +139,11 @@ class BLEinterface(private val act: Activity, private val context: Context) {
             act.startActivity(intent)
             return
         }
-        device.connectGatt(context, false, gattCallback)
+        act.runOnUiThread {
+            device.connectGatt(context, false, gattCallback, TRANSPORT_LE)
+            //YOU HAVE TO SET TRANSPORT_LE OR IT WONT WORK
+            //https://medium.com/@martijn.van.welie/making-android-ble-work-part-2-47a3cdaade07
+        }
     }
 
 
@@ -160,16 +177,19 @@ class BLEinterface(private val act: Activity, private val context: Context) {
 
         isScanning = true
         lifecycleState = BLELifecycleState.Scanning
-        if (ActivityCompat.checkSelfPermission( context, Manifest.permission.BLUETOOTH_SCAN
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            myLogger("safeStartBleScan n'a pas les permissions nécessaires pour scanner")
-            val intent = Intent(act, NoBLEAuthorization::class.java)
-            act.startActivity(intent)
-            return
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+        {
+            if (ActivityCompat.checkSelfPermission( context, Manifest.permission.BLUETOOTH_SCAN
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                myLogger("safeStartBleScan n'a pas les permissions nécessaires pour scanner")
+                val intent = Intent(act, NoBLEAuthorization::class.java)
+                act.startActivity(intent)
+                return
+            }
         }
         myLogger("Starting BLE scan")
-        val handler = Handler()
+        val handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
             safeStopBleScan()
         },10000)
@@ -192,16 +212,16 @@ class BLEinterface(private val act: Activity, private val context: Context) {
 
             if (result.device.name != null) {
                 myLogger("onScanResult name=$name address= ${result.device?.address}")
-                val uuidList = getServiceUUIDsList(result)
-                for (uuidnumber in 1 until uuidList!!.size) {
+                //val uuidList = getServiceUUIDsList(result)
+                /*for (uuidnumber in 1 until uuidList.size) {
                     myLogger("UUID " + uuidnumber + " : " + uuidList[uuidnumber].toString())
-                }
+                }*/
                 deviceList.add(result.device)
                 deviceListAdapter.notifyDataSetChanged()
             }
         }
 
-        private fun getServiceUUIDsList(scanResult: ScanResult): List<UUID>? {
+        /*private fun getServiceUUIDsList(scanResult: ScanResult): List<UUID> {
             val parcelUuids = scanResult.scanRecord!!.serviceUuids
             val serviceList: MutableList<UUID> = ArrayList()
             for (i in parcelUuids.indices) {
@@ -209,7 +229,7 @@ class BLEinterface(private val act: Activity, private val context: Context) {
                 if (!serviceList.contains(serviceUUID)) serviceList.add(serviceUUID)
             }
             return serviceList
-        }
+        }*/
 
         override fun onBatchScanResults(results: MutableList<ScanResult>?) {
             myLogger("onBatchScanResults, ignoring")
@@ -227,7 +247,7 @@ class BLEinterface(private val act: Activity, private val context: Context) {
         override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
             val deviceAddress = gatt.device.address
 
-            if (status == BluetoothGatt.GATT_SUCCESS) {
+            if (status == BluetoothGatt.GATT_SUCCESS ) {
                 if (newState == BluetoothProfile.STATE_CONNECTED) {
                     myLogger("Connected to $deviceAddress")
 
@@ -250,6 +270,17 @@ class BLEinterface(private val act: Activity, private val context: Context) {
                     lifecycleState = BLELifecycleState.Disconnected
                     bleRestartLifecycle()
                 }
+            } else if ((status == 8) || (status == 133)) {
+                //https://stackoverflow.com/questions/55529511/android-ble-connectgatt-timeout
+                myLogger("Le telephone a du se reconnecter parce qu'il est malfaisant: $status")
+                gatt.disconnect()
+                gatt.close()
+                //Fix #xxx1 https://stackoverflow.com/questions/45442838/type-checking-has-run-into-a-recursive-in-kotlin
+                val mHandler = Handler(context.mainLooper);
+                // Connect to BLE device from mHandler
+                mHandler.post {
+                    gatt.device.connectGatt(context, false, this)
+                }
             } else {
 
                 myLogger("ERROR: onConnectionStateChange status=$status deviceAddress=$deviceAddress, disconnecting")
@@ -257,7 +288,7 @@ class BLEinterface(private val act: Activity, private val context: Context) {
                 setConnectedGattToNull()
                 gatt.close()
                 lifecycleState = BLELifecycleState.Disconnected
-                bleRestartLifecycle()
+                //bleRestartLifecycle()
             }
         }
 
@@ -301,7 +332,7 @@ class BLEinterface(private val act: Activity, private val context: Context) {
             if(pixelXCharacteristic == null || pixelYCharacteristic == null ||
                 colorCharacteristic == null || sendCharacteristic == null){
                 myLogger("Could not find the right chracteristics on the device, disconnecting...")
-
+                gatt.disconnect()
             }
         }
 
@@ -310,7 +341,8 @@ class BLEinterface(private val act: Activity, private val context: Context) {
         override fun onCharacteristicRead(gatt: BluetoothGatt, characteristic: BluetoothGattCharacteristic, status: Int) {
             if (characteristic.uuid == UUID.fromString(CHAR_FOR_READ_UUID)) {
                 val strValue = characteristic.value.toString(Charsets.UTF_8)
-                val log = "onCharacteristicRead " + when (status) {
+                val log = "onCharacteristicRead " + when (status)
+                {
                     BluetoothGatt.GATT_SUCCESS -> "OK, value=\"$strValue\""
                     BluetoothGatt.GATT_READ_NOT_PERMITTED -> "not allowed"
                     else -> "error $status"
@@ -340,21 +372,21 @@ class BLEinterface(private val act: Activity, private val context: Context) {
     }
 
     private fun ensureBluetoothCanBeUsed(completion: (Boolean, String) -> Unit) {
-        grantBluetoothCentralPermissions(AskType.AskOnce) { isGranted ->
+        grantBluetoothCentralPermissions(AskType.InsistUntilSuccess) { isGranted ->
             if (!isGranted) {
                 completion(false, "Bluetooth permissions denied")
                 myLogger("Bluetooth permissions denied, asking for Permission")
                 return@grantBluetoothCentralPermissions
             }
 
-            enableBluetooth(AskType.AskOnce) { isEnabled ->
+            enableBluetooth(AskType.InsistUntilSuccess) { isEnabled ->
                 if (!isEnabled) {
                     completion(false, "Bluetooth OFF")
                     myLogger("Bluetooth is off, enabling it")
                     return@enableBluetooth
                 }
 
-                grantLocationPermissionIfRequired(AskType.AskOnce) { isGranted ->
+                grantLocationPermissionIfRequired(AskType.InsistUntilSuccess) { isGranted ->
                     if (!isGranted) {
                         completion(false, "Location permission denied")
                         myLogger("Location permission denied, asking it")
@@ -425,7 +457,13 @@ class BLEinterface(private val act: Activity, private val context: Context) {
     }
 
     private fun grantLocationPermissionIfRequired(askType: AskType, completion: (Boolean) -> Unit) {
-        val wantedPermissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+        val wantedPermissions = arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.BLUETOOTH_SCAN,
+            Manifest.permission.BLUETOOTH_CONNECT,
+            Manifest.permission.BLUETOOTH
+        )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             // BLUETOOTH_SCAN permission has flag "neverForLocation", so location not needed
             completion(true)
@@ -450,6 +488,7 @@ class BLEinterface(private val act: Activity, private val context: Context) {
                     if (isSuccess || askType != AskType.InsistUntilSuccess) {
                         permissionResultHandlers.remove(requestCode)
                         completion(isSuccess)
+                        myLogger("Permission was given")
                     } else {
                         // show motivation message again
                         builder.create().show()
@@ -474,9 +513,9 @@ class BLEinterface(private val act: Activity, private val context: Context) {
     }
 
     private fun bleRestartLifecycle() {
-        act.runOnUiThread {
+        /*act.runOnUiThread {
             prepareAndStartBleScan()
-        }
+        }*/
     }
 
     private fun hasPermissions(permissions: Array<String>): Boolean = permissions.all {

@@ -5,11 +5,12 @@ plugins {
 
 android {
     namespace 'fr.ectalhawk.rgbweatherkit'
-    compileSdk 33
+    //noinspection GradleCompatible
+    compileSdk 31
 
     defaultConfig {
         applicationId "fr.ectalhawk.rgbweatherkit"
-        minSdk 26
+        minSdk 24
         targetSdk 33
         versionCode 1
         versionName "1.0"
