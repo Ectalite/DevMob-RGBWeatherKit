@@ -1,6 +1,7 @@
 package fr.ectalhawk.rgbweatherkit
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
@@ -11,15 +12,15 @@ import android.widget.Button
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import yuku.ambilwarna.AmbilWarnaDialog;
+import yuku.ambilwarna.AmbilWarnaDialog
 
 
 class TestActivity : AppCompatActivity() {
     private var selectedColor = Color.RED
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
@@ -31,7 +32,7 @@ class TestActivity : AppCompatActivity() {
                 return
             }
         }
-        if(AppBLEInterface.oBLEInterface != null  && AppBLEInterface.oBLEInterface.connectedGatt!!.device.name != null) {
+        if(AppBLEInterface.oBLEInterface.connectedGatt!!.device.name != null) {
             val textViewName = findViewById<TextView>(R.id.textConnected)
             val deviceName = AppBLEInterface.oBLEInterface.connectedGatt!!.device.name
             textViewName.text = "Connected to: $deviceName"
@@ -52,6 +53,7 @@ class TestActivity : AppCompatActivity() {
         pixelYBar.max = 31
 
         pixelXBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+            @SuppressLint("SetTextI18n")
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 pixelXTextView.text = "PixelX: $progress"
             }
@@ -59,6 +61,7 @@ class TestActivity : AppCompatActivity() {
             override fun onStopTrackingTouch(p0: SeekBar?) {}
         })
         pixelYBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+            @SuppressLint("SetTextI18n")
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 pixelYTextView.text = "PixelY: $progress"
             }

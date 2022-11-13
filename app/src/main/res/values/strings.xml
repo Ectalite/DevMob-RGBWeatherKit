@@ -4,4 +4,7 @@
     <string name="gatt_service_description">A background BLE GATT service</string>
     <string name="gatt_service_running_notification">\"Managing BLE GATT service\"</string>
     <string name="pair_the_ble_gatt_server_via_settings">Pair the ble-gatt-server via settings</string>
+    <string name="status">Status</string>
+    <string name="list_of_discovered_devices">List of discovered devices:</string>
+    <string name="scan_pls">Scan PLS</string>
 </resources>

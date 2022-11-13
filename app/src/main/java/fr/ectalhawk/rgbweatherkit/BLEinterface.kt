@@ -139,15 +139,14 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
             return
         }
         //characteristicForWrite.writeType = BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT
-        var bufferPosx = ByteArray(1)
-        var bufferPosY = ByteArray(1)
-        var bufferColor = ByteArray(3)
-        var bufferSend = ByteArray(1)
+        val bufferPosx = ByteArray(1)
+        val bufferPosY = ByteArray(1)
+        val bufferSend = ByteArray(1)
         bufferPosx[0] = posX.toByte()
         pixelXCharacteristic!!.value = bufferPosx
         bufferPosY[0] = posY.toByte()
         pixelYCharacteristic!!.value = bufferPosY
-        bufferColor = byteArrayOf(color.toByte(), color.shr(8).toByte(), color.shr(16).toByte())
+        val bufferColor = byteArrayOf(color.toByte(), color.shr(8).toByte(), color.shr(16).toByte())
         colorCharacteristic!!.value = bufferColor
         bufferSend[0] = 1
         sendCharacteristic!!.value = bufferSend

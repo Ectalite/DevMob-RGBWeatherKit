@@ -1,6 +1,7 @@
 package fr.ectalhawk.rgbweatherkit
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.bluetooth.BluetoothDevice
 import android.content.Intent
@@ -13,10 +14,8 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import org.w3c.dom.Text
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onStart() {
         super.onStart()
         //Création d'un objet BLEInterface servant à la communication entre android et le rapsberry Pi
@@ -99,6 +99,7 @@ class MainActivity : AppCompatActivity() {
 
 class MyListAdapter(private val context: Activity, private val device: ArrayList<BluetoothDevice>)
     : ArrayAdapter<BluetoothDevice>(context, R.layout.device_list, device) {
+    @SuppressLint("ViewHolder", "SetTextI18n", "InflateParams")
     override fun getView(position: Int, view: View?, parent: ViewGroup): View { val inflater = context.layoutInflater
         val rowView = inflater.inflate(R.layout.device_list, null, true)
         val nameText = rowView.findViewById(R.id.Name) as TextView
