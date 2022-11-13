@@ -5,6 +5,7 @@ import android.app.Activity
 import android.bluetooth.BluetoothDevice
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -15,6 +16,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import org.w3c.dom.Text
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,11 +39,15 @@ class MainActivity : AppCompatActivity() {
 
         val button = findViewById<Button>(R.id.scanButton)
 
-        //val oBLEInterface = BLEinterface(this, applicationContext) not compatible with android 7
-        val oBLEInterface = BLEinterface(this, MainActivity@this)
+        val text = findViewById<TextView>(R.id.textViewLifecycleState)
+        text.text = "Status: BuildSDK ${Build.VERSION.SDK_INT}"
+
+        AppBLEInterface.oBLEInterface = BLEinterface(this, applicationContext) //not compatible with android 7
+        //AppBLEInterface.oBLEInterface = BLEinterface(this, MainActivity@this)
+
         button.setOnClickListener {
             //Initialisation du BLE et démarrage du scan
-            oBLEInterface.prepareAndStartBleScan()
+            AppBLEInterface.oBLEInterface.prepareAndStartBleScan()
         }
 
 
@@ -60,8 +66,14 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun goToTest(){
+        Log.d("BLEinterface", "GoToTest was called")
+        val intent = Intent(this, TestActivity::class.java)
+        startActivity(intent)
+    }
+
     //La fonction est buggé pour android < 9.0
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>,
+    /*override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>,
                                    grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         Log.d("BLEinterface", "onRequestPermissionsResult was called")
@@ -82,7 +94,7 @@ class MainActivity : AppCompatActivity() {
                 return
             }
         }
-    }
+    }*/
 }
 
 class MyListAdapter(private val context: Activity, private val device: ArrayList<BluetoothDevice>)
@@ -91,14 +103,14 @@ class MyListAdapter(private val context: Activity, private val device: ArrayList
         val rowView = inflater.inflate(R.layout.device_list, null, true)
         val nameText = rowView.findViewById(R.id.Name) as TextView
         val uuidText = rowView.findViewById(R.id.UUID) as TextView
-        if (ActivityCompat.checkSelfPermission(
-                context,
-                Manifest.permission.BLUETOOTH_CONNECT
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            Log.d("BLEinterface","safeStartBleScan n'a pas les permissions nécessaires pour scanner")
-            val intent = Intent(context, NoBLEAuthorization::class.java)
-            context.startActivity(intent)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                Log.d("BLEinterface", "MyListAdapter n'a pas les permissions nécessaires pour scanner")
+                val intent = Intent(context, NoBLEAuthorization::class.java)
+                context.startActivity(intent)
+            }
         }
         if (device[position].name == "") {
             nameText.text = "no name"
