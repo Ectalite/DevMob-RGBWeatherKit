@@ -10,12 +10,15 @@ import android.bluetooth.le.ScanResult
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.*
+import android.provider.Settings
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AlertDialog.Builder
 import androidx.core.app.ActivityCompat
 import java.util.*
+
 
 private const val ENABLE_BLUETOOTH_REQUEST_CODE = 1
 private const val LOCATION_PERMISSION_REQUEST_CODE = 2
@@ -98,10 +101,13 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
         myLogger("Start scanning")
         val scanButton = act.findViewById<Button>(R.id.scanButton)
         ensureBluetoothCanBeUsed { isSuccess, message ->
-            myLogger(message)
-            if (isSuccess) {
-                scanButton.isEnabled = false
-                safeStartBleScan()
+            if(verifyLocation()) //verify if localisation is on or ask to go to settings
+            {
+                myLogger(message)
+                if (isSuccess) {
+                    scanButton.isEnabled = false
+                    safeStartBleScan()
+                }
             }
         }
     }
@@ -554,6 +560,51 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
                 // show motivation message
                 builder.create().show()
             }
+        }
+    }
+
+    private fun verifyLocation(): Boolean {
+        val lm = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        var gpsEnabled = false
+        var networkEnabled = false
+
+        try {
+            gpsEnabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        } catch (ex: Exception) {
+            myLogger(ex.toString())
+        }
+
+        try {
+            networkEnabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+        } catch (ex: Exception) {
+            myLogger(ex.toString())
+        }
+
+        if (!gpsEnabled && !networkEnabled) {
+            // notify user
+            Builder(act)
+                .setMessage(R.string.gps_network_not_enabled)
+                .setPositiveButton(R.string.open_location_settings
+                ) { _, _ ->
+                    act.startActivity(
+                        Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    )
+                }
+                .setNegativeButton(R.string.Cancel
+                ) { _, _ ->
+                    myLogger("La localisation est éteinte")
+                    val intent = Intent(act, NoBLEAuthorization::class.java)
+                    act.startActivity(intent)
+                }
+                .setOnDismissListener {
+                    Toast.makeText(context,R.string.dismissLocationError, Toast.LENGTH_LONG).show()
+                }
+                .show()
+            return false
+        }
+        else
+        {
+            return true
         }
     }
 
