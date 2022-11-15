@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         val text = findViewById<TextView>(R.id.textViewLifecycleState)
         text.text = "Status: BuildSDK ${Build.VERSION.SDK_INT}"
 
-        AppBLEInterface.oBLEInterface = BLEinterface(this, applicationContext) //not compatible with android 7
+        AppBLEInterface.oBLEInterface = BLEinterface(MainActivity@this, applicationContext) //not compatible with android 7
         //AppBLEInterface.oBLEInterface = BLEinterface(this, MainActivity@this)
 
         button.setOnClickListener {
