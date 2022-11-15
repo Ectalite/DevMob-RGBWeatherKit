@@ -15,4 +15,11 @@
     <string name="weather_page">Vous voulez afficher la météo sur la matrice ?</string>
     <string name="draw_page">Vous voulez directement dessiner sur la matrice ?</string>
     <string name="no_auth">L\'application ne dispose pas des permissions suffisantes pour fonctionner normalement. Veuillez vérifier les paramètres.</string>
+    <string name="status">Status</string>
+    <string name="list_of_discovered_devices">Liste des appareils trouvés:</string>
+    <string name="scan_pls">Scanner SVP</string>
+    <string name="gps_network_not_enabled">La localisation n\'est pas activée</string>
+    <string name="open_location_settings">Ouvrir les reglages</string>
+    <string name="Cancel">Annuler</string>
+    <string name="dismissLocationError">Activez la localisation</string>
 </resources>

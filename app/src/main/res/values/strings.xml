@@ -20,4 +20,8 @@
     <string name="weather_page">Want to cast the weather on the matrix ?</string>
     <string name="draw_page">Want to draw directly on the matrix ?</string>
     <string name="no_auth">The app doesn\'t have the sufficient permissions to work normally. Please check your settings.</string>
+    <string name="gps_network_not_enabled">Location is not enabled</string>
+    <string name="open_location_settings">Open settings</string>
+    <string name="Cancel">Cancel</string>
+    <string name="dismissLocationError">Please turn on location</string>
 </resources>
