@@ -14,12 +14,12 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         //Création d'un objet BLEInterface servant à la communication entre android et le rapsberry Pi
-        val oBLEInterface = BLEinterface(this, applicationContext)
+        /*val oBLEInterface = BLEinterface(this, applicationContext)
         val button = findViewById<Button>(R.id.button)
         button.setOnClickListener {
             //Initialisation du BLE et démarrage du scan
-            oBLEInterface.prepareAndStartBleScan()
-        }
+            //oBLEInterface.prepareAndStartBleScan()
+        }*/
 
         //Stopper après 10sec, aucune idée de comment faire ?
         //oBLEInterface.safeStopBleScan()

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RGBWeatherKit</string>
+    <string name="title_home">Menu</string>
+    <string name="gatt_service_description">Arrière plan de Service BLE</string>
+    <string name="gatt_service_running_notification">Gèrer le service BLE</string>
+    <string name="pair_the_ble_gatt_server_via_settings">Appairer le serveur BLE via les paramètres</string>
+    <string name="next">Suivant</string>
+    <string name="previous">Précédent</string>
+    <string name="title_activity_menu_principal">Menu Principal</string>
+    <string name="title_btsettings">Liste BT</string>
+    <string name="title_weather">Météo</string>
+    <string name="connected_to">"Vous êtes connectés à "</string>
+    <string name="change_bt_device">Vous voulez changer l\'appareil Bluetooth auquel vous êtes connectés ?</string>
+    <string name="weather_page">Vous voulez afficher la météo sur la matrice ?</string>
+    <string name="draw_page">Vous voulez directement dessiner sur la matrice ?</string>
+    <string name="no_auth">L\'application ne dispose pas des permissions suffisantes pour fonctionner normalement. Veuillez vérifier les paramètres.</string>
+</resources>

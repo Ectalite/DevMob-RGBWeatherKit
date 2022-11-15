@@ -1,20 +1,23 @@
 <resources>
     <string name="app_name">RGBWeatherKit</string>
-    <string name="gatt_service_name">BLE Gatt Service</string>
+    <string name="gatt_service_name" translatable="false">BLE Gatt Service</string>
     <string name="gatt_service_description">A background BLE GATT service</string>
-    <string name="gatt_service_running_notification">\"Managing BLE GATT service\"</string>
+    <string name="gatt_service_running_notification">Managing BLE GATT service</string>
     <string name="pair_the_ble_gatt_server_via_settings">Pair the ble-gatt-server via settings</string>
-    <string name="title_activity_main2">MainActivity2</string>
+
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="title_activity_menu_principal">MenuPrincipal</string>
+    <string name="title_activity_menu_principal">Main Menu</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_pixels" translatable="false">Pixels</string>
+    <string name="title_btsettings">BT List</string>
+    <string name="title_weather">Weather</string>
+    <string name="connected_to">You are connected to</string>
+    <string name="change_bt_device">Want to change the Bluetooth device you are currently connected to ?</string>
+    <string name="weather_page">Want to cast the weather on the matrix ?</string>
+    <string name="draw_page">Want to draw directly on the matrix ?</string>
+    <string name="no_auth">The app doesn\'t have the sufficient permissions to work normally. Please check your settings.</string>
+
 </resources>
