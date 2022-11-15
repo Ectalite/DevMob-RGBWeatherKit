@@ -129,6 +129,7 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
 
 
     //Methodes utilisées exclusivement par la classe
+    @Suppress("DEPRECATION")
     fun sendPixel(posX: Int, posY: Int, color: Int) {
         val gatt = connectedGatt ?: run {
             myLogger("ERROR: write failed, no connected device")
@@ -143,13 +144,10 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
         val bufferPosY = ByteArray(1)
         val bufferSend = ByteArray(1)
         bufferPosx[0] = posX.toByte()
-        pixelXCharacteristic!!.value = bufferPosx
         bufferPosY[0] = posY.toByte()
-        pixelYCharacteristic!!.value = bufferPosY
         val bufferColor = byteArrayOf(color.toByte(), color.shr(8).toByte(), color.shr(16).toByte())
-        colorCharacteristic!!.value = bufferColor
         bufferSend[0] = 1
-        sendCharacteristic!!.value = bufferSend
+
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (ActivityCompat.checkSelfPermission(
                     context, Manifest.permission.BLUETOOTH_CONNECT
@@ -162,14 +160,31 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
             }
         }
         val time : Long = 50 //Have to wait before sending the next one
-        gatt.writeCharacteristic(pixelXCharacteristic)
-        Thread.sleep(time)
-        gatt.writeCharacteristic(pixelYCharacteristic)
-        Thread.sleep(time)
-        gatt.writeCharacteristic(colorCharacteristic)
-        Thread.sleep(time)
-        gatt.writeCharacteristic(sendCharacteristic)
-        Thread.sleep(time)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+        {
+            gatt.writeCharacteristic(pixelXCharacteristic!!,bufferPosx,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+            gatt.writeCharacteristic(pixelYCharacteristic!!,bufferPosY,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+            gatt.writeCharacteristic(colorCharacteristic!!,bufferColor,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+            gatt.writeCharacteristic(sendCharacteristic!!,bufferSend,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+        }
+        else
+        {
+            pixelXCharacteristic!!.value = bufferPosx
+            pixelYCharacteristic!!.value = bufferPosY
+            colorCharacteristic!!.value = bufferColor
+            sendCharacteristic!!.value = bufferSend
+            gatt.writeCharacteristic(pixelXCharacteristic)
+            Thread.sleep(time)
+            gatt.writeCharacteristic(pixelYCharacteristic)
+            Thread.sleep(time)
+            gatt.writeCharacteristic(colorCharacteristic)
+            Thread.sleep(time)
+            gatt.writeCharacteristic(sendCharacteristic)
+            Thread.sleep(time)
+        }
+
+
+
 
     }
 

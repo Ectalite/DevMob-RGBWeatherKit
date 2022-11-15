@@ -40,9 +40,10 @@
         android:theme="@style/Theme.RGBWeatherKit"
         tools:targetApi="31">
         <activity
-        android:name=".TestActivity"
-        android:screenOrientation="portrait"
-        android:exported="false">
+            android:name=".TestActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
+            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -50,6 +51,7 @@
         <activity
             android:name=".Weather"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -58,6 +60,7 @@
         <activity
             android:name=".NoBLEAuthorization"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -66,6 +69,7 @@
         <activity
             android:name=".Logo"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -75,7 +79,8 @@
             android:name=".MenuPrincipal"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:label="@string/title_activity_menu_principal">
+            android:label="@string/title_activity_menu_principal"
+            tools:ignore="LockedOrientationActivity">
             <!--Force l'orientation écran en vertical -->
             <meta-data
                 android:name="android.app.lib_name"
@@ -83,6 +88,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
