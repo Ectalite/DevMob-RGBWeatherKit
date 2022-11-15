@@ -15,3 +15,7 @@ Création du Gantt.
 Création de l'interface graphique sur Balsamiq.
 ## 20 octobre 2022
 Démarrage de la création de l'application Android.
+## 8 novembre 2022
+Finir de debugger l'interface Bluetooth et Noé qui continue de programmer l'interface graphique.
+## 15 novembre 2022
+Merge de l'interface graphique que Noé a programmé avec l'interface Bluetooth fonctionnelle.
