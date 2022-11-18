@@ -22,4 +22,5 @@
     <string name="open_location_settings">Ouvrir les reglages</string>
     <string name="Cancel">Annuler</string>
     <string name="dismissLocationError">Activez la localisation</string>
+    <string name="DeviceNull">L\'application n\'a pas pu se connecter à l\'appareil, veuillez en sélectionner un autre.</string>
 </resources>
