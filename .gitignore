@@ -8,7 +8,7 @@ App stuff/Friend Profile/
 # From: https://github.com/github/gitignore/edit/master/Objective-C.gitignore
 
 ## User settings
-xcuserdata/
+#xcuserdata/
 
 ## compatibility with Xcode 8 and earlier (ignoring not required starting Xcode 9)
 *.xcscmblueprint
