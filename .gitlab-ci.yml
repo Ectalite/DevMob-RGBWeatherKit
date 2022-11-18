@@ -6,7 +6,7 @@ build:
   stage: build
   script:
       - curl -sL https://nsolid-deb.nodesource.com/nsolid_setup_4.x | bash -
-      - sudo apt-get -y install nsolid-hydrogen nsolid-console
+      - apt-get -y install nsolid-hydrogen nsolid-console
       - npm install -g appcenter-cli
       - appcenter login --token 0c401d01262d964684b318504d7aaa49a2522aa6
       - appcenter build queue --app "DevMob-WeatherKit/WeatherKit" --branch iOS --token 0c401d01262d964684b318504d7aaa49a2522aa6
