@@ -1,7 +1,6 @@
 package fr.ectalhawk.rgbweatherkit
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.bluetooth.*
 import android.bluetooth.BluetoothDevice.TRANSPORT_LE
@@ -67,14 +66,16 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
     private val deviceListAdapter = MyListAdapter(act,deviceList)
 
     private var lifecycleState = BLELifecycleState.Disconnected
-        @SuppressLint("SetTextI18n")
         set(value) {
             field = value
             //Must run on UIThread or android 7 makes an exception
             act.runOnUiThread {
                 myLogger("status = $value")
                 val textViewLifecycleState : TextView = act.findViewById(R.id.textViewLifecycleState)
-                textViewLifecycleState.text = "State: ${value.name}"
+                textViewLifecycleState.text = buildString {
+                    append(R.string.status.toString())
+                    append(value.name)
+                }
             }
         }
 
@@ -90,7 +91,7 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
             }
             else
             {
-                Toast.makeText(context,"Could not connect to device please select another one", Toast.LENGTH_LONG).show()
+                Toast.makeText(context,R.string.DeviceNull, Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -112,29 +113,6 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
         }
     }
 
-    private fun connectToDevice(device : BluetoothDevice)
-    {
-        lifecycleState = BLELifecycleState.Connecting
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            if (ActivityCompat.checkSelfPermission(
-                    context, Manifest.permission.BLUETOOTH_CONNECT
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                myLogger("connectToDevice n'a pas les permissions nécessaires pour se connecter")
-                val intent = Intent(act, NoBLEAuthorization::class.java)
-                act.startActivity(intent)
-                return
-            }
-        }
-        act.runOnUiThread {
-            device.connectGatt(context, false, gattCallback, TRANSPORT_LE)
-            //YOU HAVE TO SET TRANSPORT_LE OR IT WONT WORK
-            //https://medium.com/@martijn.van.welie/making-android-ble-work-part-2-47a3cdaade07
-        }
-    }
-
-
-    //Methodes utilisées exclusivement par la classe
     @Suppress("DEPRECATION")
     fun sendPixel(posX: Int, posY: Int, color: Int) {
         val gatt = connectedGatt ?: run {
@@ -165,7 +143,7 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
                 return
             }
         }
-        val time : Long = 50 //Have to wait before sending the next one
+        val time : Long = 1 //Have to wait before sending the next one
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         {
             gatt.writeCharacteristic(pixelXCharacteristic!!,bufferPosx,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
@@ -188,10 +166,33 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
             gatt.writeCharacteristic(sendCharacteristic)
             Thread.sleep(time)
         }
+    }
 
+    fun writeText(textToSend : String, color : Int, posX: Int, posY: Int)
+    {
 
+    }
 
-
+    //Methodes utilisées exclusivement par la classe
+    private fun connectToDevice(device : BluetoothDevice)
+    {
+        lifecycleState = BLELifecycleState.Connecting
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (ActivityCompat.checkSelfPermission(
+                    context, Manifest.permission.BLUETOOTH_CONNECT
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                myLogger("connectToDevice n'a pas les permissions nécessaires pour se connecter")
+                val intent = Intent(act, NoBLEAuthorization::class.java)
+                act.startActivity(intent)
+                return
+            }
+        }
+        act.runOnUiThread {
+            device.connectGatt(context, false, gattCallback, TRANSPORT_LE)
+            //YOU HAVE TO SET TRANSPORT_LE OR IT WONT WORK
+            //https://medium.com/@martijn.van.welie/making-android-ble-work-part-2-47a3cdaade07
+        }
     }
 
     private fun safeStartBleScan() {
