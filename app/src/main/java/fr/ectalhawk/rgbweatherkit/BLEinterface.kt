@@ -143,7 +143,7 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
                 return
             }
         }
-        val time : Long = 1 //Have to wait before sending the next one
+        val time : Long = 10 //Have to wait before sending the next one
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         {
             gatt.writeCharacteristic(pixelXCharacteristic!!,bufferPosx,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
@@ -166,11 +166,6 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
             gatt.writeCharacteristic(sendCharacteristic)
             Thread.sleep(time)
         }
-    }
-
-    fun writeText(textToSend : String, color : Int, posX: Int, posY: Int)
-    {
-
     }
 
     //Methodes utilisées exclusivement par la classe
@@ -635,7 +630,7 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
         ActivityCompat.requestPermissions(act, permissions, requestCode)
     }
 
-    private fun myLogger(message: String) {
+    fun myLogger(message: String) {
         Log.d("BLEinterface", message)
     }
 }

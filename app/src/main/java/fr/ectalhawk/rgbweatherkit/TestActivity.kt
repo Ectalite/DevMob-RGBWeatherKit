@@ -80,6 +80,13 @@ class TestActivity : AppCompatActivity() {
                     "PosX ${pixelYBar.progress} | color ${Integer.toHexString(sendColor)}")
             AppBLEInterface.oBLEInterface.sendPixel(pixelXBar.progress,pixelYBar.progress,sendColor)
         }
+
+        val btnWriteText = findViewById<Button>(R.id.btnWriteText)
+        btnWriteText.setOnClickListener {
+            val textManager = TextManager()
+            textManager.loadFont(this)
+            textManager.writeText("TEST",5,5,0xFFFFFF)
+        }
     }
 
     private fun openColorPickerDialogue(selectedColor : Int) {
