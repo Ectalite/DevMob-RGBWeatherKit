@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
@@ -18,12 +19,15 @@ import yuku.ambilwarna.AmbilWarnaDialog
 
 
 class TestActivity : AppCompatActivity() {
-    private var selectedColor = Color.RED
+    private var selectedColor = Color.WHITE
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
+        val previewColor = findViewById<View>(R.id.preview_selected_color)
+        previewColor.setBackgroundColor(selectedColor)
+
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (ActivityCompat.checkSelfPermission(
                     this, Manifest.permission.BLUETOOTH_CONNECT
@@ -89,7 +93,24 @@ class TestActivity : AppCompatActivity() {
             //textManager.loadFont(this)
             //textManager.writeText("TEST",5,5,0xFFFFFF)
             //NEW:
-            AppBLEInterface.oBLEInterface.sendText(pixelXBar.progress,pixelYBar.progress,0xFFFFFF,"TEST",true)
+            val sendColor = selectedColor and 0x00FFFFFF
+            val sendText = findViewById<EditText>(R.id.matrixText)
+            AppBLEInterface.oBLEInterface.sendText(pixelXBar.progress,pixelYBar.progress,sendColor,sendText.text.toString(),true)
+        }
+
+        val btnClearMatrix = findViewById<Button>(R.id.clearButton)
+        btnClearMatrix.setOnClickListener {
+            AppBLEInterface.oBLEInterface.clearMatrix()
+        }
+
+        val lgbt = findViewById<Button>(R.id.lgbt)
+        lgbt.setOnClickListener {
+            AppBLEInterface.oBLEInterface.sendText(pixelXBar.progress,pixelYBar.progress,0xFF0000,"L",true)
+            AppBLEInterface.oBLEInterface.sendText(pixelXBar.progress+5,pixelYBar.progress,0xE26F24,"G",true)
+            AppBLEInterface.oBLEInterface.sendText(pixelXBar.progress+10,pixelYBar.progress,0xEBE51F,"B",true)
+            AppBLEInterface.oBLEInterface.sendText(pixelXBar.progress+15,pixelYBar.progress,0x2FC60A,"T",true)
+            AppBLEInterface.oBLEInterface.sendText(pixelXBar.progress+20,pixelYBar.progress,0x0A0FC6,"Q",true)
+            AppBLEInterface.oBLEInterface.sendText(pixelXBar.progress+25,pixelYBar.progress,0x9911EA,"+",true)
         }
     }
 
@@ -104,19 +125,19 @@ class TestActivity : AppCompatActivity() {
 
                     override fun onOk(dialog: AmbilWarnaDialog?, color: Int) {
                         this@TestActivity.selectedColor = color
-                        previewColor.setBackgroundColor(selectedColor)
+                        previewColor.setBackgroundColor(color)
                     }
                 })
             colorPickerDialogue.show()
         } else {
-            val colorPickerDialogue = AmbilWarnaDialog(this, 0,
+            val colorPickerDialogue = AmbilWarnaDialog(this, selectedColor,
                 object : AmbilWarnaDialog.OnAmbilWarnaListener {
                     override fun onCancel(dialog: AmbilWarnaDialog?) {
                     }
 
                     override fun onOk(dialog: AmbilWarnaDialog?, color: Int) {
                         this@TestActivity.selectedColor = color
-                        previewColor.setBackgroundColor(selectedColor)
+                        previewColor.setBackgroundColor(color)
                     }
                 })
             colorPickerDialogue.show()
