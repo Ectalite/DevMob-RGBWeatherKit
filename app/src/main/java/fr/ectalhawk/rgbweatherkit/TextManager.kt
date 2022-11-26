@@ -4,6 +4,7 @@ import android.content.Context
 import fr.ectalhawk.rgbweatherkit.AppBLEInterface.Companion.oBLEInterface
 import java.util.*
 
+//Old TextManager, was replaced by BLEinterface sendText because it was too slow.
 //Trying to repoduce https://github.com/hzeller/rpi-rgb-led-matrix/blob/master/lib/bdf-font.cc in Kotlin
 class TextManager {
     //Singleton glyph
@@ -130,11 +131,11 @@ class TextManager {
             {
                 for (X in 0 until Glyph.width) {
                     if(Glyph.alphabet[index][Y][X]) {
-                        oBLEInterface.sendPixel(X+posX, Y+posY, color)
+                        oBLEInterface.sendPixel(X+posX, Y+posY, color, true)
                     }
                     else {
                         //Remove pixel -> black pixel
-                        oBLEInterface.sendPixel(X+posX, Y+posY, 0x000000)
+                        oBLEInterface.sendPixel(X+posX, Y+posY, 0x000000, true)
                     }
                 }
             }

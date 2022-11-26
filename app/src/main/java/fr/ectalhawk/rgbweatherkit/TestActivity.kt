@@ -78,14 +78,18 @@ class TestActivity : AppCompatActivity() {
             val sendColor = selectedColor and 0x00FFFFFF
             Log.d("BLEinterface", "Sending pixel PosX ${pixelXBar.progress} | " +
                     "PosX ${pixelYBar.progress} | color ${Integer.toHexString(sendColor)}")
-            AppBLEInterface.oBLEInterface.sendPixel(pixelXBar.progress,pixelYBar.progress,sendColor)
+            AppBLEInterface.oBLEInterface.sendPixel(pixelXBar.progress,pixelYBar.progress,sendColor,true)
         }
 
         val btnWriteText = findViewById<Button>(R.id.btnWriteText)
         btnWriteText.setOnClickListener {
-            val textManager = TextManager()
-            textManager.loadFont(this)
-            textManager.writeText("TEST",5,5,0xFFFFFF)
+            //val sendColor = selectedColor and 0x00FFFFFF
+            //OLD:
+            //val textManager = TextManager()
+            //textManager.loadFont(this)
+            //textManager.writeText("TEST",5,5,0xFFFFFF)
+            //NEW:
+            AppBLEInterface.oBLEInterface.sendText(pixelXBar.progress,pixelYBar.progress,0xFFFFFF,"TEST",true)
         }
     }
 

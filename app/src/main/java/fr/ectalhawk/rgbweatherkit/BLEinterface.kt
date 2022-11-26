@@ -114,7 +114,7 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
     }
 
     @Suppress("DEPRECATION")
-    fun sendPixel(posX: Int, posY: Int, color: Int) {
+    fun sendPixel(posX: Int, posY: Int, color: Int, bDisplay : Boolean) {
         val gatt = connectedGatt ?: run {
             myLogger("ERROR: write failed, no connected device")
             return
@@ -123,14 +123,75 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
             myLogger("ERROR: pixel is offgrid. PosX : $posX PosY : $posY")
             return
         }
-        //characteristicForWrite.writeType = BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT
         val bufferPosx = ByteArray(1)
         val bufferPosY = ByteArray(1)
         val bufferSend = ByteArray(1)
         bufferPosx[0] = posX.toByte()
         bufferPosY[0] = posY.toByte()
         val bufferColor = byteArrayOf(color.toByte(), color.shr(8).toByte(), color.shr(16).toByte())
-        bufferSend[0] = 1
+        bufferSend[0] = ((1 shl 2) or ((if (bDisplay) 1 else 0) shl 1) or (1 shl 0)).toByte()
+        //                1 = TextMode      1 = Display                    1 = Send
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (ActivityCompat.checkSelfPermission(
+                    context, Manifest.permission.BLUETOOTH_CONNECT
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                myLogger("sendPixel n'a pas les permissions nécessaires pour envoyer les données")
+                val intent = Intent(act, NoBLEAuthorization::class.java)
+                act.startActivity(intent)
+                return
+            }
+        }
+        val time : Long = 10 //Have to wait before sending the next one
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+        {
+            gatt.writeCharacteristic(pixelXCharacteristic!!,bufferPosx,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+            gatt.writeCharacteristic(pixelYCharacteristic!!,bufferPosY,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+            gatt.writeCharacteristic(colorCharacteristic!!,bufferColor,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+            gatt.writeCharacteristic(sendCharacteristic!!,bufferSend,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+        }
+        else
+        {
+            pixelXCharacteristic!!.value = bufferPosx
+            pixelYCharacteristic!!.value = bufferPosY
+            colorCharacteristic!!.value = bufferColor
+            sendCharacteristic!!.value = bufferSend
+            gatt.writeCharacteristic(pixelXCharacteristic)
+            Thread.sleep(time)
+            gatt.writeCharacteristic(pixelYCharacteristic)
+            Thread.sleep(time)
+            gatt.writeCharacteristic(colorCharacteristic)
+            Thread.sleep(time)
+            gatt.writeCharacteristic(sendCharacteristic)
+            Thread.sleep(time)
+        }
+    }
+
+    @Suppress("DEPRECATION")
+    fun sendText(posX: Int, posY: Int, color: Int, text: String, bDisplay : Boolean) {
+        val gatt = connectedGatt ?: run {
+            myLogger("ERROR: write failed, no connected device")
+            return
+        }
+        if (posX > 63 || posY > 31) {
+            myLogger("ERROR: pixel is offgrid. PosX : $posX PosY : $posY")
+            return
+        }
+        val bufferPosx = ByteArray(1)
+        val bufferPosY = ByteArray(1)
+        val bufferSend = ByteArray(1)
+        val bufferText = ByteArray(20)
+        bufferPosx[0] = posX.toByte()
+        bufferPosY[0] = posY.toByte()
+        val bufferColor = byteArrayOf(color.toByte(), color.shr(8).toByte(), color.shr(16).toByte())
+        bufferSend[0] = ((1 shl 2) or ((if (bDisplay) 1 else 0) shl 1) or (1 shl 0)).toByte()
+        //                1 = TextMode          1 = Display                1 = Send
+
+        for (charNumber in text.indices)
+        {
+            bufferText[charNumber] = text[charNumber].code.toByte()
+        }
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (ActivityCompat.checkSelfPermission(
