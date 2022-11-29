@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">RGBWeatherKit</string>
+    <string name="gatt_service_name" translatable="false">BLE Gatt Service</string>
+    <string name="gatt_service_description">A background BLE GATT service</string>
+    <string name="gatt_service_running_notification">Managing BLE GATT service</string>
+    <string name="pair_the_ble_gatt_server_via_settings">Pair the ble-gatt-server via settings</string>
+    <string name="status">Status</string>
+    <string name="list_of_discovered_devices">List of discovered devices:</string>
+    <string name="scan_pls">Scan PLS</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="title_activity_menu_principal">Main Menu</string>
+    <string name="title_home">Home</string>
+    <string name="title_pixels" translatable="false">Pixels</string>
+    <string name="title_btsettings">BT List</string>
+    <string name="title_weather">Weather</string>
+    <string name="connected_to">You are connected to</string>
+    <string name="change_bt_device">Want to change the Bluetooth device you are currently connected to ?</string>
+    <string name="weather_page">Want to cast the weather on the matrix ?</string>
+    <string name="draw_page">Want to draw directly on the matrix ?</string>
+    <string name="no_auth">The app doesn\'t have the sufficient permissions to work normally. Please check your settings.</string>
+    <string name="gps_network_not_enabled">Location is not enabled</string>
+    <string name="open_location_settings">Open settings</string>
+    <string name="Cancel">Cancel</string>
+    <string name="dismissLocationError">Please turn on location</string>
+</resources>
