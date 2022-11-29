@@ -19,3 +19,9 @@ Démarrage de la création de l'application Android.
 Finir de debugger l'interface Bluetooth et Noé qui continue de programmer l'interface graphique.
 ## 15 novembre 2022
 Merge de l'interface graphique que Noé a programmé avec l'interface Bluetooth fonctionnelle.
+## 16 novembre 2022 
+Test d'une première API pour écrire du texte sur la matrice (Ancienne API).
+## 24-25 novembre 2022
+Adaptation du programme C pour écrire du texte depuis le téléphone (Nouvelle API).
+## 28-29 novembre 2022
+Recherche d'une API météo (on utilisera openweathermap au final), adaptation de l'API sur l'application android actuelle et merge de la nouvelle application C depuis le Raspberry.
