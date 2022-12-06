@@ -2,9 +2,26 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".TestActivity">
+
+    <Button
+        android:id="@+id/lgbt"
+        android:layout_width="110dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginBottom="116dp"
+        android:backgroundTint="#FFAB40"
+        android:backgroundTintMode="src_over"
+        android:rotation="-90"
+        android:rotationX="0"
+        android:rotationY="0"
+        android:text="LGBT"
+        app:icon="@drawable/ic_baseline_cloud_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnWriteText" />
 
     <TextView
         android:id="@+id/textConnected"
@@ -118,9 +135,45 @@
         android:id="@+id/buttonSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
         android:text="Send"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pick_color_button" />
+
+    <Button
+        android:id="@+id/btnWriteText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Write Text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSend" />
+
+    <Button
+        android:id="@+id/clearButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Clear Matrix"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnWriteText" />
+
+    <EditText
+        android:id="@+id/matrixText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:maxLength="19"
+        android:minHeight="48dp"
+        android:text="Send this Text"
+        app:layout_constraintBottom_toTopOf="@+id/btnWriteText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,4 +24,5 @@
     <string name="open_location_settings">Open settings</string>
     <string name="Cancel">Cancel</string>
     <string name="dismissLocationError">Please turn on location</string>
+    <string name="DeviceNull">Could not connect to device please select another one</string>
 </resources>

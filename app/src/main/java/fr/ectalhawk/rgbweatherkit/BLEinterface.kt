@@ -1,7 +1,6 @@
 package fr.ectalhawk.rgbweatherkit
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.bluetooth.*
 import android.bluetooth.BluetoothDevice.TRANSPORT_LE
@@ -27,6 +26,7 @@ private const val UUID_CHAR_PIXELX = "BADDCAFE-0000-0000-0000-000000000002"
 private const val UUID_CHAR_PIXELY = "BADDCAFE-0000-0000-0000-000000000003"
 private const val UUID_CHAR_COLOR = "BADDCAFE-0000-0000-0000-000000000004"
 private const val UUID_CHAR_SEND = "BADDCAFE-0000-0000-0000-000000000005"
+private const val UUID_CHAR_TEXT = "BADDCAFE-0000-0000-0000-000000000006"
 
 data class BLEinterface(val act: MainActivity, val context: Context) {
     //Enum and variables of class
@@ -61,20 +61,23 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
     private var pixelYCharacteristic: BluetoothGattCharacteristic? = null
     private var colorCharacteristic: BluetoothGattCharacteristic? = null
     private var sendCharacteristic: BluetoothGattCharacteristic? = null
+    private var textCharacteristic: BluetoothGattCharacteristic? = null
 
     private val list = act.findViewById<ListView>(R.id.deviceList)!!
     private val deviceList = ArrayList<BluetoothDevice>()
     private val deviceListAdapter = MyListAdapter(act,deviceList)
 
     private var lifecycleState = BLELifecycleState.Disconnected
-        @SuppressLint("SetTextI18n")
         set(value) {
             field = value
             //Must run on UIThread or android 7 makes an exception
             act.runOnUiThread {
                 myLogger("status = $value")
                 val textViewLifecycleState : TextView = act.findViewById(R.id.textViewLifecycleState)
-                textViewLifecycleState.text = "State: ${value.name}"
+                textViewLifecycleState.text = buildString {
+                    append(R.string.status.toString())
+                    append(value.name)
+                }
             }
         }
 
@@ -90,7 +93,7 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
             }
             else
             {
-                Toast.makeText(context,"Could not connect to device please select another one", Toast.LENGTH_LONG).show()
+                Toast.makeText(context,R.string.DeviceNull, Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -112,31 +115,8 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
         }
     }
 
-    private fun connectToDevice(device : BluetoothDevice)
-    {
-        lifecycleState = BLELifecycleState.Connecting
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            if (ActivityCompat.checkSelfPermission(
-                    context, Manifest.permission.BLUETOOTH_CONNECT
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                myLogger("connectToDevice n'a pas les permissions nécessaires pour se connecter")
-                val intent = Intent(act, NoBLEAuthorization::class.java)
-                act.startActivity(intent)
-                return
-            }
-        }
-        act.runOnUiThread {
-            device.connectGatt(context, false, gattCallback, TRANSPORT_LE)
-            //YOU HAVE TO SET TRANSPORT_LE OR IT WONT WORK
-            //https://medium.com/@martijn.van.welie/making-android-ble-work-part-2-47a3cdaade07
-        }
-    }
-
-
-    //Methodes utilisées exclusivement par la classe
     @Suppress("DEPRECATION")
-    fun sendPixel(posX: Int, posY: Int, color: Int) {
+    fun sendPixel(posX: Int, posY: Int, color: Int, bDisplay : Boolean) {
         val gatt = connectedGatt ?: run {
             myLogger("ERROR: write failed, no connected device")
             return
@@ -145,14 +125,14 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
             myLogger("ERROR: pixel is offgrid. PosX : $posX PosY : $posY")
             return
         }
-        //characteristicForWrite.writeType = BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT
         val bufferPosx = ByteArray(1)
         val bufferPosY = ByteArray(1)
         val bufferSend = ByteArray(1)
         bufferPosx[0] = posX.toByte()
         bufferPosY[0] = posY.toByte()
-        val bufferColor = byteArrayOf(color.toByte(), color.shr(8).toByte(), color.shr(16).toByte())
-        bufferSend[0] = 1
+        val bufferColor = byteArrayOf(color.shr(16).toByte(), color.shr(8).toByte(), color.toByte())
+        bufferSend[0] = ((0 shl 2) or ((if (bDisplay) 1 else 0) shl 1) or (1 shl 0)).toByte()
+        //                0 = PixelMode      1 = Display                    1 = Send
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (ActivityCompat.checkSelfPermission(
@@ -165,7 +145,7 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
                 return
             }
         }
-        val time : Long = 50 //Have to wait before sending the next one
+        val time : Long = 10 //Have to wait before sending the next one
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         {
             gatt.writeCharacteristic(pixelXCharacteristic!!,bufferPosx,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
@@ -188,10 +168,127 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
             gatt.writeCharacteristic(sendCharacteristic)
             Thread.sleep(time)
         }
+    }
 
+    @Suppress("DEPRECATION")
+    fun clearMatrix() {
+        val gatt = connectedGatt ?: run {
+            myLogger("ERROR: write failed, no connected device")
+            return
+        }
+        val bufferSend = ByteArray(1)
+        bufferSend[0] = ((1 shl 3) or (1 shl 0)).toByte()
+        //                Bit 3 : Clear Matrix Bit 0: Send
 
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (ActivityCompat.checkSelfPermission(
+                    context, Manifest.permission.BLUETOOTH_CONNECT
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                myLogger("sendPixel n'a pas les permissions nécessaires pour envoyer les données")
+                val intent = Intent(act, NoBLEAuthorization::class.java)
+                act.startActivity(intent)
+                return
+            }
+        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+        {
+            gatt.writeCharacteristic(sendCharacteristic!!,bufferSend,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+        }
+        else
+        {
+            sendCharacteristic!!.value = bufferSend
+            gatt.writeCharacteristic(sendCharacteristic)
+        }
+    }
 
+    @Suppress("DEPRECATION")
+    fun sendText(posX: Int, posY: Int, color: Int, text: String, bDisplay : Boolean) {
+        val gatt = connectedGatt ?: run {
+            myLogger("ERROR: write failed, no connected device")
+            return
+        }
+        if (posX > 63 || posY > 31) {
+            myLogger("ERROR: pixel is offgrid. PosX : $posX PosY : $posY")
+            return
+        }
+        val bufferPosx = ByteArray(1)
+        val bufferPosY = ByteArray(1)
+        val bufferSend = ByteArray(1)
+        val bufferText = ByteArray(20)
+        bufferPosx[0] = posX.toByte()
+        bufferPosY[0] = posY.toByte()
+        val bufferColor = byteArrayOf(color.shr(16).toByte(), color.shr(8).toByte(), color.toByte())
+        bufferSend[0] = ((1 shl 2) or ((if (bDisplay) 1 else 0) shl 1) or (1 shl 0)).toByte()
+        //                1 = TextMode          1 = Display                1 = Send
 
+        myLogger("Received this text to send: $text")
+        for (charNumber in text.indices)
+        {
+            bufferText[charNumber] = text[charNumber].code.toByte()
+            //myLogger("${bufferText[charNumber]} | ${text[charNumber].code} | ${text[charNumber]}")
+        }
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (ActivityCompat.checkSelfPermission(
+                    context, Manifest.permission.BLUETOOTH_CONNECT
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                myLogger("sendPixel n'a pas les permissions nécessaires pour envoyer les données")
+                val intent = Intent(act, NoBLEAuthorization::class.java)
+                act.startActivity(intent)
+                return
+            }
+        }
+        val time : Long = 10 //Have to wait before sending the next one
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+        {
+            gatt.writeCharacteristic(pixelXCharacteristic!!,bufferPosx,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+            gatt.writeCharacteristic(pixelYCharacteristic!!,bufferPosY,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+            gatt.writeCharacteristic(colorCharacteristic!!,bufferColor,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+            gatt.writeCharacteristic(textCharacteristic!!,bufferText,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+            gatt.writeCharacteristic(sendCharacteristic!!,bufferSend,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+        }
+        else
+        {
+            pixelXCharacteristic!!.value = bufferPosx
+            pixelYCharacteristic!!.value = bufferPosY
+            colorCharacteristic!!.value = bufferColor
+            textCharacteristic!!.value = bufferText
+            sendCharacteristic!!.value = bufferSend
+            gatt.writeCharacteristic(pixelXCharacteristic)
+            Thread.sleep(time)
+            gatt.writeCharacteristic(pixelYCharacteristic)
+            Thread.sleep(time)
+            gatt.writeCharacteristic(colorCharacteristic)
+            Thread.sleep(time)
+            gatt.writeCharacteristic(textCharacteristic)
+            Thread.sleep(time)
+            gatt.writeCharacteristic(sendCharacteristic)
+            Thread.sleep(time)
+        }
+    }
+
+    //Methodes utilisées exclusivement par la classe
+    private fun connectToDevice(device : BluetoothDevice)
+    {
+        lifecycleState = BLELifecycleState.Connecting
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (ActivityCompat.checkSelfPermission(
+                    context, Manifest.permission.BLUETOOTH_CONNECT
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                myLogger("connectToDevice n'a pas les permissions nécessaires pour se connecter")
+                val intent = Intent(act, NoBLEAuthorization::class.java)
+                act.startActivity(intent)
+                return
+            }
+        }
+        act.runOnUiThread {
+            device.connectGatt(context, false, gattCallback, TRANSPORT_LE)
+            //YOU HAVE TO SET TRANSPORT_LE OR IT WONT WORK
+            //https://medium.com/@martijn.van.welie/making-android-ble-work-part-2-47a3cdaade07
+        }
     }
 
     private fun safeStartBleScan() {
@@ -379,9 +476,11 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
                 pixelYCharacteristic = service.getCharacteristic(UUID.fromString(UUID_CHAR_PIXELY))
                 colorCharacteristic = service.getCharacteristic(UUID.fromString(UUID_CHAR_COLOR))
                 sendCharacteristic = service.getCharacteristic(UUID.fromString(UUID_CHAR_SEND))
+                textCharacteristic = service.getCharacteristic(UUID.fromString(UUID_CHAR_TEXT))
                 if(pixelXCharacteristic != null && pixelYCharacteristic != null &&
-                    colorCharacteristic != null && sendCharacteristic != null){
-                    myLogger("Found all 4 characteristics, YEAH !")
+                    colorCharacteristic != null && sendCharacteristic != null &&
+                    textCharacteristic != null){
+                    myLogger("Found all 5 characteristics, YEAH !")
                     lifecycleState = BLELifecycleState.Connected
                     act.runOnUiThread { //FUCK android 7
                         safeStopBleScan() //Stop scanning to reduce logs
@@ -634,7 +733,7 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
         ActivityCompat.requestPermissions(act, permissions, requestCode)
     }
 
-    private fun myLogger(message: String) {
+    fun myLogger(message: String) {
         Log.d("BLEinterface", message)
     }
 }
