@@ -1,17 +1,17 @@
-package com.example.myweather.respository
+package fr.ectalhawk.rgbweatherkit.weatherAPI.respository
 
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.myweather.api.MyWeatherServiceInterface
-import com.example.myweather.dataModels.MyWeather
-import com.example.myweather.utils.NetworkUtils
+import fr.ectalhawk.rgbweatherkit.weatherAPI.api.MyWeatherServiceInterface
+import fr.ectalhawk.rgbweatherkit.weatherAPI.utils.NetworkUtils
+import fr.ectalhawk.rgbweatherkit.weatherAPI.dataModels.MyWeather
 import java.util.*
 
 //Repository is used to manage our data. It needs access to retrofit service to do so.
 class WeatherRepository(
-    private val myWeatherService: MyWeatherServiceInterface,
-    private val applicationContext: Context
+        private val myWeatherService: MyWeatherServiceInterface,
+        private val applicationContext: Context
 ) {
 
     private val weatherLiveData = MutableLiveData<Response<MyWeather>>()

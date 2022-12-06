@@ -23,7 +23,7 @@ class TextManager {
         var letter = 0
         var row = -1
         var fontHeight : Int
-        var tempChar = ""
+        //var tempChar = ""
         var letterBitsets = mutableListOf<BitSet>()
         val myFont = readFile("textBitmap/4x6.bdf", context)
         if(myFont != null)

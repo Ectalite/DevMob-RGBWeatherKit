@@ -1,4 +1,4 @@
-package com.example.myweather.respository
+package fr.ectalhawk.rgbweatherkit.weatherAPI.respository
 
 sealed class Response<T>(val data: T? = null, val errorMessage: String? = null){
     class Loading<T>: Response<T>()
