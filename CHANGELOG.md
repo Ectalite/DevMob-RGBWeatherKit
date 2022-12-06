@@ -25,3 +25,5 @@ Test d'une première API pour écrire du texte sur la matrice (Ancienne API).
 Adaptation du programme C pour écrire du texte depuis le téléphone (Nouvelle API).
 ## 28-29 novembre 2022
 Recherche d'une API météo (on utilisera openweathermap au final), adaptation de l'API sur l'application android actuelle et merge de la nouvelle application C depuis le Raspberry.
+## 6 décembre 2022
+Pas mal de debug et trouvé un exemple pour la partie dessin en pixel art.
