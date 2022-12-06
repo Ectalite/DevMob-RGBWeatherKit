@@ -1,4 +1,4 @@
-package com.example.myweather.api
+package fr.ectalhawk.rgbweatherkit.weatherAPI.api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

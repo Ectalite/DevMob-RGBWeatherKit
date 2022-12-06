@@ -2,6 +2,7 @@ package fr.ectalhawk.rgbweatherkit
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
@@ -15,6 +16,8 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import fr.ectalhawk.rgbweatherkit.weatherAPI.WeatherAPI
+import fr.ectalhawk.rgbweatherkit.weatherAPI.viewmodel.MainViewModel
 import yuku.ambilwarna.AmbilWarnaDialog
 
 
@@ -111,6 +114,12 @@ class TestActivity : AppCompatActivity() {
             AppBLEInterface.oBLEInterface.sendText(pixelXBar.progress+15,pixelYBar.progress,0x2FC60A,"T",true)
             AppBLEInterface.oBLEInterface.sendText(pixelXBar.progress+20,pixelYBar.progress,0x0A0FC6,"Q",true)
             AppBLEInterface.oBLEInterface.sendText(pixelXBar.progress+25,pixelYBar.progress,0x9911EA,"+",true)
+        }
+
+        val btnWeather = findViewById<Button>(R.id.btnWeatherAPI)
+        btnWeather.setOnClickListener {
+            val intent = Intent(this, WeatherAPI::class.java)
+            startActivity(intent)
         }
     }
 

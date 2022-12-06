@@ -16,6 +16,10 @@ import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AlertDialog.Builder
 import androidx.core.app.ActivityCompat
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -149,8 +153,11 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         {
             gatt.writeCharacteristic(pixelXCharacteristic!!,bufferPosx,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+            Thread.sleep(time)
             gatt.writeCharacteristic(pixelYCharacteristic!!,bufferPosY,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+            Thread.sleep(time)
             gatt.writeCharacteristic(colorCharacteristic!!,bufferColor,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+            Thread.sleep(time)
             gatt.writeCharacteristic(sendCharacteristic!!,bufferSend,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
         }
         else
@@ -240,14 +247,19 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
                 return
             }
         }
-        val time : Long = 10 //Have to wait before sending the next one
+        val time : Long = 15 //Have to wait before sending the next one
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         {
             gatt.writeCharacteristic(pixelXCharacteristic!!,bufferPosx,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+            Thread.sleep(time)
             gatt.writeCharacteristic(pixelYCharacteristic!!,bufferPosY,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+            Thread.sleep(time)
             gatt.writeCharacteristic(colorCharacteristic!!,bufferColor,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+            Thread.sleep(time)
             gatt.writeCharacteristic(textCharacteristic!!,bufferText,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+            Thread.sleep(time)
             gatt.writeCharacteristic(sendCharacteristic!!,bufferSend,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+            Thread.sleep(time)
         }
         else
         {
@@ -267,9 +279,24 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
             gatt.writeCharacteristic(sendCharacteristic)
             Thread.sleep(time)
         }
+
+        /*fun writeCharacteristic(gatt : BluetoothGatt, characteristic: BluetoothGattCharacteristic, buffer : ByteArray) {
+            characteristic!!.value = buffer
+            gatt.writeCharacteristic(characteristic)
+            gatt.readCharacteristic(characteristic)
+            val dummyArray: ByteArray
+            dummyArray[0] = 0.toByte()
+            while(dummyArray != buffer)
+            {
+
+            }
+        }*/
     }
 
+
+
     //Methodes utilisées exclusivement par la classe
+    @OptIn(DelicateCoroutinesApi::class)
     private fun connectToDevice(device : BluetoothDevice)
     {
         lifecycleState = BLELifecycleState.Connecting
@@ -289,6 +316,9 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
             //YOU HAVE TO SET TRANSPORT_LE OR IT WONT WORK
             //https://medium.com/@martijn.van.welie/making-android-ble-work-part-2-47a3cdaade07
         }
+        /*GlobalScope.launch(Dispatchers.Main){
+
+        }*/
     }
 
     private fun safeStartBleScan() {

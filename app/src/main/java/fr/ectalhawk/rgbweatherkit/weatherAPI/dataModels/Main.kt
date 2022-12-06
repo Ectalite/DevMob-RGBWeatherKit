@@ -1,4 +1,4 @@
-package com.example.myweather.dataModels
+package fr.ectalhawk.rgbweatherkit.weatherAPI.dataModels
 
 data class Main(
     val feels_like: Double,

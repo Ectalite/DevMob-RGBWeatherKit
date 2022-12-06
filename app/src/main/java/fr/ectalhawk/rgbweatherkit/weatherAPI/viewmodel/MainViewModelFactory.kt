@@ -1,8 +1,8 @@
-package com.example.myweather.viewmodel
+package fr.ectalhawk.rgbweatherkit.weatherAPI.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.myweather.respository.WeatherRepository
+import fr.ectalhawk.rgbweatherkit.weatherAPI.respository.WeatherRepository
 
 //Helps in creating ViewModel objects.
 class MainViewModelFactory(private val repository: WeatherRepository): ViewModelProvider.Factory {
