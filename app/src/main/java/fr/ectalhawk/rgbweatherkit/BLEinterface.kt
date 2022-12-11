@@ -16,11 +16,8 @@ import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AlertDialog.Builder
 import androidx.core.app.ActivityCompat
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 private const val ENABLE_BLUETOOTH_REQUEST_CODE = 1
@@ -46,6 +43,20 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
         //AskOnce,
         InsistUntilSuccess
     }
+    //L'enum, la classe et la variable sont utilisé en tant que buffer d'envoi de characteristic
+    enum class CharacteristicEnum {
+        PixelX,
+        PixelY,
+        Color,
+        Text,
+        Send
+    }
+    class CharacteristicList(characteristic_ : CharacteristicEnum, buffer_ : ByteArray) {
+        val characteristic = characteristic_
+        val buffer = buffer_
+    }
+    private val sendList = ArrayList<CharacteristicList>()
+
     private val bluetoothAdapter: BluetoothAdapter by lazy{
         val bluetoothManager: BluetoothManager? = act.getSystemService(BluetoothManager::class.java)
         if(bluetoothManager == null)
@@ -103,7 +114,6 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
     }
 
     //Fonctions pouvant être utilisés en instanciant la classe
-
     fun prepareAndStartBleScan(){
         myLogger("Start scanning")
         val scanButton = act.findViewById<Button>(R.id.scanButton)
@@ -138,6 +148,7 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
         bufferSend[0] = ((0 shl 2) or ((if (bDisplay) 1 else 0) shl 1) or (1 shl 0)).toByte()
         //                0 = PixelMode      1 = Display                    1 = Send
 
+        //Permission check
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (ActivityCompat.checkSelfPermission(
                     context, Manifest.permission.BLUETOOTH_CONNECT
@@ -149,32 +160,32 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
                 return
             }
         }
-        val time : Long = 10 //Have to wait before sending the next one
+        sendList.add(CharacteristicList(CharacteristicEnum.PixelY,bufferPosY))
+        sendList.add(CharacteristicList(CharacteristicEnum.Color,bufferColor))
+        sendList.add(CharacteristicList(CharacteristicEnum.Send,bufferSend))
+
+        //nouvelles méthode buggé à ne jamais UTILISER
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         {
             gatt.writeCharacteristic(pixelXCharacteristic!!,bufferPosx,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
-            Thread.sleep(time)
-            gatt.writeCharacteristic(pixelYCharacteristic!!,bufferPosY,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
-            Thread.sleep(time)
-            gatt.writeCharacteristic(colorCharacteristic!!,bufferColor,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
-            Thread.sleep(time)
-            gatt.writeCharacteristic(sendCharacteristic!!,bufferSend,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
         }
         else
         {
             pixelXCharacteristic!!.value = bufferPosx
-            pixelYCharacteristic!!.value = bufferPosY
-            colorCharacteristic!!.value = bufferColor
-            sendCharacteristic!!.value = bufferSend
             gatt.writeCharacteristic(pixelXCharacteristic)
-            Thread.sleep(time)
-            gatt.writeCharacteristic(pixelYCharacteristic)
-            Thread.sleep(time)
-            gatt.writeCharacteristic(colorCharacteristic)
-            Thread.sleep(time)
-            gatt.writeCharacteristic(sendCharacteristic)
-            Thread.sleep(time)
         }
+        /*pixelXCharacteristic!!.value = bufferPosx
+        pixelYCharacteristic!!.value = bufferPosY
+        colorCharacteristic!!.value = bufferColor
+        sendCharacteristic!!.value = bufferSend
+        gatt.writeCharacteristic(pixelXCharacteristic)
+        Thread.sleep(time)
+        gatt.writeCharacteristic(pixelYCharacteristic)
+        Thread.sleep(time)
+        gatt.writeCharacteristic(colorCharacteristic)
+        Thread.sleep(time)
+        gatt.writeCharacteristic(sendCharacteristic)
+        Thread.sleep(time)*/
     }
 
     @Suppress("DEPRECATION")
@@ -247,56 +258,26 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
                 return
             }
         }
-        val time : Long = 15 //Have to wait before sending the next one
+
+        sendList.add(CharacteristicList(CharacteristicEnum.PixelY,bufferPosY))
+        sendList.add(CharacteristicList(CharacteristicEnum.Color,bufferColor))
+        sendList.add(CharacteristicList(CharacteristicEnum.Text,bufferText))
+        sendList.add(CharacteristicList(CharacteristicEnum.Send,bufferSend))
+
+        //nouvelles méthode buggé à ne jamais UTILISER
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         {
             gatt.writeCharacteristic(pixelXCharacteristic!!,bufferPosx,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
-            Thread.sleep(time)
-            gatt.writeCharacteristic(pixelYCharacteristic!!,bufferPosY,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
-            Thread.sleep(time)
-            gatt.writeCharacteristic(colorCharacteristic!!,bufferColor,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
-            Thread.sleep(time)
-            gatt.writeCharacteristic(textCharacteristic!!,bufferText,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
-            Thread.sleep(time)
-            gatt.writeCharacteristic(sendCharacteristic!!,bufferSend,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
-            Thread.sleep(time)
         }
         else
         {
             pixelXCharacteristic!!.value = bufferPosx
-            pixelYCharacteristic!!.value = bufferPosY
-            colorCharacteristic!!.value = bufferColor
-            textCharacteristic!!.value = bufferText
-            sendCharacteristic!!.value = bufferSend
             gatt.writeCharacteristic(pixelXCharacteristic)
-            Thread.sleep(time)
-            gatt.writeCharacteristic(pixelYCharacteristic)
-            Thread.sleep(time)
-            gatt.writeCharacteristic(colorCharacteristic)
-            Thread.sleep(time)
-            gatt.writeCharacteristic(textCharacteristic)
-            Thread.sleep(time)
-            gatt.writeCharacteristic(sendCharacteristic)
-            Thread.sleep(time)
         }
-
-        /*fun writeCharacteristic(gatt : BluetoothGatt, characteristic: BluetoothGattCharacteristic, buffer : ByteArray) {
-            characteristic!!.value = buffer
-            gatt.writeCharacteristic(characteristic)
-            gatt.readCharacteristic(characteristic)
-            val dummyArray: ByteArray
-            dummyArray[0] = 0.toByte()
-            while(dummyArray != buffer)
-            {
-
-            }
-        }*/
     }
 
 
-
     //Methodes utilisées exclusivement par la classe
-    @OptIn(DelicateCoroutinesApi::class)
     private fun connectToDevice(device : BluetoothDevice)
     {
         lifecycleState = BLELifecycleState.Connecting
@@ -548,20 +529,72 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
                 appendLog("onCharacteristicRead unknown uuid $characteristic.uuid")
             }
         }
+        */
 
+        //Utilisé pour envoyé chaque éléments de SendList une fois celui d'avant envoyé
+        @Suppress("DEPRECATION")
         override fun onCharacteristicWrite(gatt: BluetoothGatt, characteristic: BluetoothGattCharacteristic, status: Int) {
-            if (characteristic.uuid == UUID.fromString(CHAR_FOR_WRITE_UUID)) {
-                val log: String = "onCharacteristicWrite " + when (status) {
-                    BluetoothGatt.GATT_SUCCESS -> "OK"
-                    BluetoothGatt.GATT_WRITE_NOT_PERMITTED -> "not allowed"
-                    BluetoothGatt.GATT_INVALID_ATTRIBUTE_LENGTH -> "invalid length"
-                    else -> "error $status"
+            if(sendList.isNotEmpty()){
+                val charToSend = sendList[0]
+                sendList.removeAt(0)
+                //Permission check
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    if (ActivityCompat.checkSelfPermission(
+                            context, Manifest.permission.BLUETOOTH_CONNECT
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        myLogger("sendPixel n'a pas les permissions nécessaires pour envoyer les données")
+                        val intent = Intent(act, NoBLEAuthorization::class.java)
+                        act.startActivity(intent)
+                        return
+                    }
                 }
-                appendLog(log)
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    when(charToSend.characteristic){
+                        CharacteristicEnum.PixelX -> {
+                            gatt.writeCharacteristic(pixelXCharacteristic!!,charToSend.buffer,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+                        }
+                        CharacteristicEnum.PixelY -> {
+                            gatt.writeCharacteristic(pixelYCharacteristic!!,charToSend.buffer,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+                        }
+                        CharacteristicEnum.Color -> {
+                            gatt.writeCharacteristic(colorCharacteristic!!,charToSend.buffer,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+                        }
+                        CharacteristicEnum.Text -> {
+                            gatt.writeCharacteristic(textCharacteristic!!,charToSend.buffer,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+                        }
+                        CharacteristicEnum.Send -> {
+                            gatt.writeCharacteristic(sendCharacteristic!!,charToSend.buffer,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+                        }
+                    }
+                } else {
+                    when(charToSend.characteristic){
+                        CharacteristicEnum.PixelX -> {
+                            pixelXCharacteristic!!.value = charToSend.buffer
+                            gatt.writeCharacteristic(pixelXCharacteristic)
+                        }
+                        CharacteristicEnum.PixelY -> {
+                            pixelYCharacteristic!!.value = charToSend.buffer
+                            gatt.writeCharacteristic(pixelYCharacteristic)
+                        }
+                        CharacteristicEnum.Color -> {
+                            colorCharacteristic!!.value = charToSend.buffer
+                            gatt.writeCharacteristic(colorCharacteristic)
+                        }
+                        CharacteristicEnum.Text -> {
+                            textCharacteristic!!.value = charToSend.buffer
+                            gatt.writeCharacteristic(textCharacteristic)
+                        }
+                        CharacteristicEnum.Send -> {
+                            sendCharacteristic!!.value = charToSend.buffer
+                            gatt.writeCharacteristic(sendCharacteristic)
+                        }
+                    }
+                }
             } else {
-                appendLog("onCharacteristicWrite unknown uuid $characteristic.uuid")
+                //myLogger("Nothing to send anymore")
             }
-        }*/
+        }
     }
 
     private fun ensureBluetoothCanBeUsed(completion: (Boolean, String) -> Unit) {

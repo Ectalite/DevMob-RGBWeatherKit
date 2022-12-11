@@ -17,6 +17,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 
+
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,19 +57,10 @@ class MainActivity : AppCompatActivity() {
         //oBLEInterface.safeStopBleScan()
     }
 
-    override fun onStop() {
-        super.onStop()
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-    }
-
     fun goToTest(){
         Log.d("BLEinterface", "GoToTest was called")
         val intent = Intent(this, TestActivity::class.java)
+        //val intent = Intent(this, MenuPrincipal::class.java)
         startActivity(intent)
     }
 
