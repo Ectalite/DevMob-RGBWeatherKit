@@ -56,19 +56,10 @@ class MainActivity : AppCompatActivity() {
         //oBLEInterface.safeStopBleScan()
     }
 
-    override fun onStop() {
-        super.onStop()
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-    }
-
     fun goToTest(){
         Log.d("BLEinterface", "GoToTest was called")
         val intent = Intent(this, TestActivity::class.java)
+        //val intent = Intent(this, MenuPrincipal::class.java)
         startActivity(intent)
     }
 

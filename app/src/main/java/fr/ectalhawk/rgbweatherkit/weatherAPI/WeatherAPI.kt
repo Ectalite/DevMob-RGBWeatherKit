@@ -28,6 +28,8 @@ class WeatherAPI : AppCompatActivity() {
         val btnResearch = findViewById<ImageView>(R.id.btnResearch)
         val iconWeather = findViewById<ImageView>(R.id.iconWeather)
 
+        textCity.setText("")
+
         btnResearch.setOnClickListener {
             btnResearch.isEnabled = false
             Toast.makeText(this, R.string.researchWeather, Toast.LENGTH_SHORT).show()
@@ -55,20 +57,23 @@ class WeatherAPI : AppCompatActivity() {
                             Glide.with(this)
                                 .load("https://openweathermap.org/img/wn/".plus(it.weather[0].icon).plus("@4x.png"))
                                 .into(iconWeather)
-                            AppBLEInterface.oBLEInterface.clearMatrix()
-                            AppBLEInterface.oBLEInterface.sendText(
-                                0, 0,0xFFFFFF,"Weather:",false)
-                            AppBLEInterface.oBLEInterface.sendText(
-                                0, 10,0xFFFFFF, it.name,false)
-                            AppBLEInterface.oBLEInterface.sendText(
-                                0, 22,0xFFFFFF,it.main.temp.toString().plus(" ° C"),true)
 
+                            if(!btnResearch.isEnabled) {
+                                AppBLEInterface.oBLEInterface.clearMatrix()
+                                AppBLEInterface.oBLEInterface.sendText(
+                                    0, 0,0xFFFFFF,"Weather:",false)
+                                AppBLEInterface.oBLEInterface.sendText(
+                                    0, 10,0xFFFFFF, it.name,false)
+                                AppBLEInterface.oBLEInterface.sendText(
+                                    0, 22,0xFFFFFF,it.main.temp.toString().plus(" ° C"),true)
+                                btnResearch.isEnabled = true
+                            }
                         }
 
                     }
                 }
             }
-            btnResearch.isEnabled = true
+
         }
 
         val btnReturn = findViewById<Button>(R.id.btnReturn)
