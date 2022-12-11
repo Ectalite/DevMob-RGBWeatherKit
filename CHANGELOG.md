@@ -27,3 +27,7 @@ Adaptation du programme C pour écrire du texte depuis le téléphone (Nouvelle 
 Recherche d'une API météo (on utilisera openweathermap au final), adaptation de l'API sur l'application android actuelle et merge de la nouvelle application C depuis le Raspberry.
 ## 6 décembre 2022
 Pas mal de debug et trouvé un exemple pour la partie dessin en pixel art.
+## 11 décembre 2022
+Revert de ce qui a été fait le 6 décembre (Problème lié à la vitesse des appareils Android).  
+Test d'un fix définitif.  
+Début du merge de l'interface de Noé avec mon backend.
