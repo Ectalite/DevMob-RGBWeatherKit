@@ -1,3 +1,14 @@
+#BONJOUR JORDAN
+#Local properties
+local.properties
+
+#Gradle temp file
+.gradle
+.idea
+
+#MacOS temp file
+.DS_Store
+
 #Word file tmp
 ~$vMob CDC.docx
 
