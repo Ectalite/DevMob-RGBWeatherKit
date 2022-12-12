@@ -13,18 +13,18 @@ class MenuPrincipal : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMenuPrincipalBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //Init fragment
-        replaceFragment(FragmentHome())
+        //Init fragment, celui qui s'affichera en premier
+        replaceFragment(FragmentBTSettings())
 
         binding.bottomNavigation.setOnItemSelectedListener {
 
             when (it.itemId) {
-
+                R.id.navigation_btsettings -> replaceFragment(FragmentBTSettings())
                 R.id.navigation_home -> replaceFragment(FragmentHome())
-                R.id.navigation_btsettings -> replaceFragment(FragmentTest())
-                //R.id.navigation_weather -> replaceFragment(WeatherAPI())
+                R.id.navigation_weather -> replaceFragment(FragmentWeather())
+                R.id.navigation_pixels -> replaceFragment(FragmentMatrix())
                 else->{
-                    //On affiche le menu si on ne sait pas
+                    //On affiche le menu home si on ne sait pas
                     replaceFragment(FragmentHome())
                 }
 
