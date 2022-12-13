@@ -24,4 +24,9 @@
     <string name="dismissLocationError">Activez la localisation</string>
     <string name="DeviceNull">L\'application n\'a pas pu se connecter à l\'appareil, veuillez en sélectionner un autre.</string>
     <string name="returnButton">Retour</string>
+    <string name="researchWeather">Recherche de la météo</string>
+    <string name="loadingWeather">Chargement…</string>
+    <string name="weatherTextInputHint">Ville</string>
+    <string name="weather_title">Météo</string>
+    <string name="want_location">Je veux ma position</string>
 </resources>

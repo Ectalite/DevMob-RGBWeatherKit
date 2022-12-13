@@ -27,13 +27,13 @@
     <string name="DeviceNull">Could not connect to device please select another one</string>
     <string name="myweather" translatable="false">myWEATHER</string>
     <string name="returnButton">Return</string>
-    <string name="buttonResearch">buttonResearch</string>
+    <string name="buttonResearch" translatable="false">buttonResearch</string>
     <string name="researchWeather">Researching weather</string>
-    <string name="iconDescription">icon</string>
-    <string name="loadingWeather">Loading...</string>
+    <string name="iconDescription" translatable="false">icon</string>
+    <string name="loadingWeather">Loading…</string>
     <string name="weatherTextInputHint">City</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="weather_title">Send Weather</string>
     <string name="want_location">I want my location</string>
 </resources>
