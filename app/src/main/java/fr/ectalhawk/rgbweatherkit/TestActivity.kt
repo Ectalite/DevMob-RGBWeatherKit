@@ -17,7 +17,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import fr.ectalhawk.rgbweatherkit.weatherAPI.WeatherAPI
-import fr.ectalhawk.rgbweatherkit.weatherAPI.viewmodel.MainViewModel
 import yuku.ambilwarna.AmbilWarnaDialog
 
 
@@ -125,31 +124,16 @@ class TestActivity : AppCompatActivity() {
 
     private fun openColorPickerDialogue(selectedColor : Int) {
         val previewColor = findViewById<View>(R.id.preview_selected_color)
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-        {
-            val colorPickerDialogue = AmbilWarnaDialog(this, selectedColor,
-                object : AmbilWarnaDialog.OnAmbilWarnaListener {
-                    override fun onCancel(dialog: AmbilWarnaDialog?) {
-                    }
+        val colorPickerDialogue = AmbilWarnaDialog(this, selectedColor,
+            object : AmbilWarnaDialog.OnAmbilWarnaListener {
+                override fun onCancel(dialog: AmbilWarnaDialog?) {
+                }
 
-                    override fun onOk(dialog: AmbilWarnaDialog?, color: Int) {
-                        this@TestActivity.selectedColor = color
-                        previewColor.setBackgroundColor(color)
-                    }
-                })
-            colorPickerDialogue.show()
-        } else {
-            val colorPickerDialogue = AmbilWarnaDialog(this, selectedColor,
-                object : AmbilWarnaDialog.OnAmbilWarnaListener {
-                    override fun onCancel(dialog: AmbilWarnaDialog?) {
-                    }
-
-                    override fun onOk(dialog: AmbilWarnaDialog?, color: Int) {
-                        this@TestActivity.selectedColor = color
-                        previewColor.setBackgroundColor(color)
-                    }
-                })
-            colorPickerDialogue.show()
-        }
+                override fun onOk(dialog: AmbilWarnaDialog?, color: Int) {
+                    this@TestActivity.selectedColor = color
+                    previewColor.setBackgroundColor(color)
+                }
+            })
+        colorPickerDialogue.show()
     }
 }

@@ -38,6 +38,7 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.RGBWeatherKit.NoActionBar"
+        android:usesCleartextTraffic="false"
         tools:targetApi="31">
         <activity
             android:name=".weatherAPI.WeatherAPI"
@@ -105,14 +106,13 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
+            android:readPermission=".READ_PERMISSION"
+            android:writePermission=".WRITE_PERMISSION"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
-
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
     </application>
-
 </manifest>
