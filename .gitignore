@@ -2,6 +2,9 @@
 #Local properties
 local.properties
 
+#Build folder
+build
+
 #Gradle temp file
 .gradle
 
