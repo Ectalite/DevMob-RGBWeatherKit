@@ -3,11 +3,11 @@
 local.properties
 
 #Build folder
-.idea
-build
+.idea/
+build/
 
 #Gradle temp file
-.gradle
+.gradle/
 
 #MacOS temp file
 .DS_Store
