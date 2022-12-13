@@ -53,6 +53,9 @@ Interface Graphique:
   stage: build
   script:
     - ./gradlew -Pci --console=plain :app:lintDebug -PbuildDir=lint
+  artifacts:
+    paths:
+    - app/build/reports/
 
 Code (Kotlin):
   stage: build
@@ -71,3 +74,6 @@ Sonarcloud:
   stage: test
   script:
     - ./gradlew sonarqube
+  artifacts:
+    paths:
+    - app/build/reports/
