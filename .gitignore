@@ -3,6 +3,7 @@
 local.properties
 
 #Build folder
+.idea
 build
 
 #Gradle temp file

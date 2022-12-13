@@ -19,7 +19,6 @@ import androidx.core.app.ActivityCompat
 import fr.ectalhawk.rgbweatherkit.weatherAPI.WeatherAPI
 import yuku.ambilwarna.AmbilWarnaDialog
 
-
 class TestActivity : AppCompatActivity() {
     private var selectedColor = Color.WHITE
 
