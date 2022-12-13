@@ -66,3 +66,8 @@ Tests:
   stage: test
   script:
     - ./gradlew -Pci --console=plain :app:testDebug
+
+Sonarcloud:
+  stage: test
+  script:
+    - ./gradlew sonarqube
