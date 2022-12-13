@@ -4,8 +4,8 @@
 image: openjdk:11-jdk
 
 variables:
-  ANDROID_COMPILE_SDK: "32"
-  ANDROID_BUILD_TOOLS: "32.0.0"
+  ANDROID_COMPILE_SDK: "33"
+  ANDROID_BUILD_TOOLS: "33.0.0"
   ANDROID_SDK_TOOLS:   "8512546"
 
 before_script:
@@ -53,6 +53,9 @@ Interface Graphique:
   stage: build
   script:
     - ./gradlew -Pci --console=plain :app:lintDebug -PbuildDir=lint
+  artifacts:
+    paths:
+    - app/build/reports/
 
 Code (Kotlin):
   stage: build
@@ -66,3 +69,11 @@ Tests:
   stage: test
   script:
     - ./gradlew -Pci --console=plain :app:testDebug
+
+Sonarcloud:
+  stage: test
+  script:
+    - ./gradlew sonarqube
+  artifacts:
+    paths:
+    - app/build/reports/
