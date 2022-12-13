@@ -180,11 +180,13 @@
         android:id="@+id/btnWeatherAPI"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginBottom="60dp"
         android:backgroundTint="#448AFF"
         android:rotation="-90"
         android:text="weatherAPI"
         app:iconTint="#448AFF"
-        tools:layout_editor_absoluteX="311dp"
-        tools:layout_editor_absoluteY="348dp" />
+        app:layout_constraintBottom_toTopOf="@+id/matrixText"
+        app:layout_constraintStart_toEndOf="@+id/buttonSend" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
