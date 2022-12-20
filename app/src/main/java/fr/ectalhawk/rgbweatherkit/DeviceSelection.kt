@@ -37,24 +37,16 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         //Création d'un objet BLEInterface servant à la communication entre android et le rapsberry Pi
-
         val button = findViewById<Button>(R.id.scanButton)
-
         val text = findViewById<TextView>(R.id.textViewLifecycleState)
         text.text = "Status: BuildSDK ${Build.VERSION.SDK_INT}"
 
-        AppBLEInterface.oBLEInterface = BLEinterface(this, applicationContext) //not compatible with android 7
-        //AppBLEInterface.oBLEInterface = BLEinterface(this, MainActivity@this)
+        //AppBLEInterface.oBLEInterface = BLEinterface(this, applicationContext)
 
         button.setOnClickListener {
             //Initialisation du BLE et démarrage du scan
             AppBLEInterface.oBLEInterface.prepareAndStartBleScan()
         }
-
-
-
-        //Stopper après 10sec, aucune idée de comment faire ?
-        //oBLEInterface.safeStopBleScan()
     }
 
     fun goToTest(){

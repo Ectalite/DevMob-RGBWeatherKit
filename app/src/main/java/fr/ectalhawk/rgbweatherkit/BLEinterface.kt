@@ -16,6 +16,7 @@ import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AlertDialog.Builder
 import androidx.core.app.ActivityCompat
+import fr.ectalhawk.rgbweatherkit.databinding.FragmentBtSettingsBinding
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -29,7 +30,7 @@ private const val UUID_CHAR_COLOR = "BADDCAFE-0000-0000-0000-000000000004"
 private const val UUID_CHAR_SEND = "BADDCAFE-0000-0000-0000-000000000005"
 private const val UUID_CHAR_TEXT = "BADDCAFE-0000-0000-0000-000000000006"
 
-data class BLEinterface(val act: MainActivity, val context: Context) {
+data class BLEinterface(val act: MenuPrincipal, val context: Context) {
     //Enum and variables of class
     enum class BLELifecycleState {
         Disconnected,
@@ -81,6 +82,9 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
     private val list = act.findViewById<ListView>(R.id.deviceList)!!
     private val deviceList = ArrayList<BluetoothDevice>()
     private val deviceListAdapter = MyListAdapter(act,deviceList)
+    //Pour la prochaine ligne, BLEinterface doit être initialisé depuis FragmentBTSettings
+    private val scanButton = act.findViewById<Button>(R.id.scanButton)
+    private val textViewLifecycleState : TextView = act.findViewById(R.id.textViewLifecycleState)
 
     private var lifecycleState = BLELifecycleState.Disconnected
         set(value) {
@@ -88,7 +92,6 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
             //Must run on UIThread or android 7 makes an exception
             act.runOnUiThread {
                 myLogger("status = $value")
-                val textViewLifecycleState : TextView = act.findViewById(R.id.textViewLifecycleState)
                 textViewLifecycleState.text = buildString {
                     append(R.string.status.toString())
                     append(value.name)
@@ -116,7 +119,6 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
     //Fonctions pouvant être utilisés en instanciant la classe
     fun prepareAndStartBleScan(){
         myLogger("Start scanning")
-        val scanButton = act.findViewById<Button>(R.id.scanButton)
         ensureBluetoothCanBeUsed { isSuccess, message ->
             if(verifyLocation()) //verify if localisation is on or ask to go to settings
             {
@@ -330,7 +332,6 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
     }
 
     private fun safeStopBleScan() {
-        val scanButton = act.findViewById<Button>(R.id.scanButton)
         scanButton.isEnabled = true
         if (!isScanning) {
             myLogger("BLE scanning already stopped")
@@ -434,6 +435,12 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
                     gatt.close()
                     lifecycleState = BLELifecycleState.Disconnected
                     bleRestartLifecycle()
+                    //On désactive la navbar et on revient sur le menu de sélection des devices
+                    act.deactivateBottomNavigation()
+                    act.replaceFragment(FragmentBTSettings())
+                    act.runOnUiThread {
+                        act.binding.bottomNavigation.selectedItemId = R.id.navigation_btsettings
+                    }
                 }
             } else if ((status == 8) || (status == 133)) {
                 //https://stackoverflow.com/questions/55529511/android-ble-connectgatt-timeout
@@ -496,7 +503,12 @@ data class BLEinterface(val act: MainActivity, val context: Context) {
                     act.runOnUiThread { //FUCK android 7
                         safeStopBleScan() //Stop scanning to reduce logs
                     }
-                    act.goToTest()
+                    //Une fois connecté, on active les boutons de la navbar et on va au menu principal
+                    act.activateBottomNavigation()
+                    act.replaceFragment(FragmentHome())
+                    act.runOnUiThread {
+                        act.binding.bottomNavigation.selectedItemId = R.id.navigation_home
+                    }
                     break
                 }
             }

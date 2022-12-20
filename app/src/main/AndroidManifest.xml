@@ -87,7 +87,7 @@
         <activity
             android:name=".MenuPrincipal"
             android:exported="true"
-            android:label="@string/title_activity_menu_principal"
+            android:label="RGBWeatherKit"
             android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity">
 
@@ -107,8 +107,6 @@
             android:exported="true"
             android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity">
-
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

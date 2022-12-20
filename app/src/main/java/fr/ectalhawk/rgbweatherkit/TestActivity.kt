@@ -16,6 +16,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.view.isVisible
 import fr.ectalhawk.rgbweatherkit.weatherAPI.WeatherAPI
 import yuku.ambilwarna.AmbilWarnaDialog
 

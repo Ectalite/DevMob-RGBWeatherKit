@@ -1,7 +1,10 @@
 package fr.ectalhawk.rgbweatherkit
 
+import android.content.Intent
 import android.view.View
 import android.widget.SeekBar
+import androidx.core.content.ContextCompat.startActivity
+import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
@@ -25,10 +28,12 @@ class TodoDetailsActivityTest {
 
     @Test
     fun verifySeekBarX() {
-        val r = Random
-        val progressX = r.nextInt(0,63)
-        onView(withId(R.id.pixelXBar)).perform(setProgress(progressX))
-        onView(withText("PixelX: $progressX")).check(matches(isDisplayed()))
+        launchActivity<TestActivity>().use {
+            val r = Random
+            val progressX = r.nextInt(0,63)
+            onView(withId(R.id.pixelXBar)).perform(setProgress(progressX))
+            onView(withText("PixelX: $progressX")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
