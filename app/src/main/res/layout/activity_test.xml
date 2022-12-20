@@ -18,17 +18,18 @@
         android:rotation="-90"
         android:rotationX="0"
         android:rotationY="0"
-        android:text="LGBT"
+        android:text="@string/LGBT"
         app:icon="@drawable/ic_baseline_cloud_24"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnWriteText" />
+        app:layout_constraintStart_toEndOf="@+id/btnWriteText"
+        tools:ignore="TextContrastCheck" />
 
     <TextView
         android:id="@+id/textConnected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:text="Connected to:"
+        android:text="@string/connected_to"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -55,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:layout_weight="1"
-            android:text="PixelX: "
+            android:text="@string/PixelX"
             android:textAlignment="center" />
     </LinearLayout>
 
@@ -81,7 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="39dp"
             android:layout_weight="1"
-            android:text="PixelY:"
+            android:text="@string/PixelY"
             android:textAlignment="center" />
     </LinearLayout>
 
@@ -90,10 +91,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Pick Color"
+        android:text="@string/pick_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+        tools:ignore="TextContrastCheck" />
 
     <LinearLayout
         android:id="@+id/linearLayout3"
@@ -110,7 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="32dp"
-            android:text="Your picked color is:"
+            android:text="@string/selectec_color"
             android:textSize="18sp" />
 
         <Space
@@ -136,45 +138,50 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
-        android:text="Send"
+        android:text="@string/send_pixel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pick_color_button" />
+        app:layout_constraintTop_toBottomOf="@+id/pick_color_button"
+        tools:ignore="TextContrastCheck" />
 
     <Button
         android:id="@+id/btnWriteText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Write Text"
+        android:text="@string/send_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSend" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonSend"
+        tools:ignore="TextContrastCheck" />
 
     <Button
         android:id="@+id/clearButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="Clear Matrix"
+        android:text="@string/clear_matrix"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnWriteText" />
+        app:layout_constraintTop_toBottomOf="@+id/btnWriteText"
+        tools:ignore="TextContrastCheck" />
 
     <EditText
         android:id="@+id/matrixText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
+        android:autofillHints=""
         android:ems="10"
+        android:hint="@string/send_text_hint"
         android:inputType="textPersonName"
         android:maxLength="19"
         android:minHeight="48dp"
-        android:text="Send this Text"
         app:layout_constraintBottom_toTopOf="@+id/btnWriteText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="TextContrastCheck" />
 
     <Button
         android:id="@+id/btnWeatherAPI"
@@ -184,9 +191,10 @@
         android:layout_marginBottom="60dp"
         android:backgroundTint="#448AFF"
         android:rotation="-90"
-        android:text="weatherAPI"
+        android:text="@string/WeatherAPI"
         app:iconTint="#448AFF"
         app:layout_constraintBottom_toTopOf="@+id/matrixText"
-        app:layout_constraintStart_toEndOf="@+id/buttonSend" />
+        app:layout_constraintStart_toEndOf="@+id/buttonSend"
+        tools:ignore="TextContrastCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
