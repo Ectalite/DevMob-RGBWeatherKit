@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">RGBWeatherKit</string>
+    <string name="app_name" translatable="false">RGBWeatherKit</string>
     <string name="gatt_service_name" translatable="false">BLE Gatt Service</string>
     <string name="gatt_service_description">A background BLE GATT service</string>
     <string name="gatt_service_running_notification">Managing BLE GATT service</string>
     <string name="pair_the_ble_gatt_server_via_settings">Pair the ble-gatt-server via settings</string>
     <string name="status">Status</string>
-    <string name="list_of_discovered_devices">List of discovered devices:</string>
-    <string name="scan_pls">Scan PLS</string>
+    <string name="list_of_discovered_devices">List of nearby discovered devices:</string>
+    <string name="scan_pls">Scan for nearby devices</string>
     <!-- Strings used for fragments for navigation -->
     <string name="next">Next</string>
     <string name="previous">Previous</string>
@@ -19,21 +19,31 @@
     <string name="change_bt_device">Want to change the Bluetooth device you are currently connected to ?</string>
     <string name="weather_page">Want to cast the weather on the matrix ?</string>
     <string name="draw_page">Want to draw directly on the matrix ?</string>
-    <string name="no_auth">The app doesn\'t have the sufficient permissions to work normally. Please check your settings.</string>
+    <string name="no_auth">The app doesn\'t have the sufficient permissions to work normally. Please check your settings and retry.</string>
     <string name="gps_network_not_enabled">Location is not enabled</string>
     <string name="open_location_settings">Open settings</string>
     <string name="Cancel">Cancel</string>
     <string name="dismissLocationError">Please turn on location</string>
     <string name="DeviceNull">Could not connect to device please select another one</string>
-    <string name="myweather" translatable="false">myWEATHER</string>
+    <string name="myweather">myWEATHER</string>
     <string name="returnButton">Return</string>
-    <string name="buttonResearch" translatable="false">buttonResearch</string>
-    <string name="researchWeather">Researching weather</string>
-    <string name="iconDescription" translatable="false">icon</string>
+    <string name="buttonResearch">buttonResearch</string>
+    <string name="researchWeather">Searching weather</string>
+    <string name="iconDescription">Icon</string>
     <string name="loadingWeather">Loading…</string>
     <string name="weatherTextInputHint">City</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
-    <string name="weather_title">Send Weather</string>
+    <string name="weather_title">Weather</string>
     <string name="want_location">I want my location</string>
+    <string name="send_pixel">Send pixel</string>
+    <string name="send_text">Send text</string>
+    <string name="pick_color">Pick color</string>
+    <string name="clear_matrix">Clear matrix</string>
+    <string name="send_text_hint">Send this text</string>
+    <string name="selectec_color">Selected color:</string>
+    <string name="PixelY" translatable="false">Pixel Y</string>
+    <string name="PixelX" translatable="false">Pixel X</string>
+    <string name="WeatherAPI">Weather API</string>
+    <string name="LGBT" translatable="false">LGBTQ+</string>
 </resources>
