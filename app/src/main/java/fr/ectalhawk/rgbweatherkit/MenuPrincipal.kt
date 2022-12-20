@@ -6,6 +6,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import fr.ectalhawk.rgbweatherkit.databinding.ActivityMenuPrincipalBinding
+import fr.ectalhawk.rgbweatherkit.weatherAPI.api.MyWeatherServiceInterface
+import fr.ectalhawk.rgbweatherkit.weatherAPI.api.RetrofitHelper
 
 class MenuPrincipal : AppCompatActivity() {
 
@@ -29,6 +31,10 @@ class MenuPrincipal : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMenuPrincipalBinding.inflate(layoutInflater)
         binding.bottomNavigation.itemTextColor = myList
+
+        //Initialisation Instance Retrofit
+        AppBLEInterface.weatherService= RetrofitHelper.getRetrofitInstance().create(
+            MyWeatherServiceInterface::class.java)
 
         //On est pas encore connecté en bluetooth -> navbar désactivé
         deactivateBottomNavigation()

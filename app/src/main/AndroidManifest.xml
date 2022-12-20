@@ -58,15 +58,6 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".Weather"
-            android:exported="false"
-            android:screenOrientation="sensorPortrait"
-            tools:ignore="LockedOrientationActivity">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".NoBLEAuthorization"
             android:exported="false"
             android:screenOrientation="sensorPortrait"

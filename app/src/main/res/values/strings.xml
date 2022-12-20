@@ -46,4 +46,7 @@
     <string name="PixelX" translatable="false">Pixel X</string>
     <string name="WeatherAPI">Weather API</string>
     <string name="LGBT" translatable="false">LGBTQ+</string>
+    <string name="locationButton">I want my location</string>
+    <string name="sendWeatherTitle">Send Weather</string>
+    <string name="mapViewDescription">Google Maps</string>
 </resources>
