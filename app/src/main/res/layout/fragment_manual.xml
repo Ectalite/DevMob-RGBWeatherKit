@@ -7,29 +7,12 @@
     android:layout_height="match_parent"
     tools:context=".TestActivity">
 
-    <Button
-        android:id="@+id/lgbt"
-        android:layout_width="110dp"
-        android:layout_height="59dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginBottom="116dp"
-        android:backgroundTint="#FFAB40"
-        android:backgroundTintMode="src_over"
-        android:rotation="-90"
-        android:rotationX="0"
-        android:rotationY="0"
-        android:text="@string/LGBT"
-        app:icon="@drawable/ic_baseline_cloud_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnWriteText"
-        tools:ignore="TextContrastCheck" />
-
     <TextView
         android:id="@+id/textTitleManual"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="@string/connected_to"
+        android:text="@string/titleManual"
+        android:textSize="60sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,7 +20,7 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
-        android:layout_height="34dp"
+        android:layout_height="42dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:orientation="horizontal"
@@ -48,13 +31,13 @@
         <SeekBar
             android:id="@+id/pixelXBar"
             android:layout_width="wrap_content"
-            android:layout_height="32dp"
+            android:layout_height="match_parent"
             android:layout_weight="1" />
 
         <TextView
             android:id="@+id/PixelX"
             android:layout_width="wrap_content"
-            android:layout_height="32dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/PixelX"
             android:textAlignment="center" />
@@ -62,7 +45,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="365dp"
+        android:layout_width="0dp"
         android:layout_height="42dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
@@ -74,13 +57,13 @@
         <SeekBar
             android:id="@+id/pixelYBar"
             android:layout_width="wrap_content"
-            android:layout_height="39dp"
+            android:layout_height="match_parent"
             android:layout_weight="1" />
 
         <TextView
             android:id="@+id/PixelY"
             android:layout_width="wrap_content"
-            android:layout_height="39dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/PixelY"
             android:textAlignment="center" />
@@ -137,7 +120,7 @@
         android:id="@+id/buttonSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="10dp"
         android:text="@string/send_pixel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -148,12 +131,12 @@
     <Button
         android:id="@+id/btnWriteText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="30dp"
         android:text="@string/send_text"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSend"
+        app:layout_constraintTop_toBottomOf="@+id/matrixText"
         tools:ignore="TextContrastCheck" />
 
     <Button
@@ -171,30 +154,16 @@
         android:id="@+id/matrixText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="100dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="@string/send_text_hint"
         android:inputType="textPersonName"
         android:maxLength="19"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnWriteText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="TextContrastCheck" />
-
-    <Button
-        android:id="@+id/btnWeatherAPI"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginBottom="60dp"
-        android:backgroundTint="#448AFF"
-        android:rotation="-90"
-        android:text="@string/WeatherAPI"
-        app:iconTint="#448AFF"
-        app:layout_constraintBottom_toTopOf="@+id/matrixText"
-        app:layout_constraintStart_toEndOf="@+id/buttonSend"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSend"
         tools:ignore="TextContrastCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

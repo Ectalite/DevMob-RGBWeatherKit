@@ -10,9 +10,9 @@
         android:id="@+id/textCity5"
         android:layout_width="310dp"
         android:layout_height="79dp"
+        android:layout_marginTop="20dp"
         android:hint="@string/weatherTextInputHint"
         android:inputType="textShortMessage"
-        app:layout_constraintBottom_toTopOf="@+id/button4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.485"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,9 +23,8 @@
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:text="@string/sendWeatherTitle"
-        android:textSize="24sp"
+        android:textSize="48sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -36,19 +35,19 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:text="@string/locationButton"
-        app:layout_constraintBottom_toTopOf="@+id/mapView4"
+        app:layout_constraintBottom_toTopOf="@+id/mapView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textCity5"
         tools:ignore="TextContrastCheck" />
 
     <com.google.android.gms.maps.MapView
-        android:id="@+id/mapView4"
+        android:id="@+id/mapView"
         android:layout_width="308dp"
         android:layout_height="380dp"
         android:layout_marginBottom="80dp"
         android:contentDescription="@string/mapViewDescription"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

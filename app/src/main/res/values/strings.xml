@@ -49,4 +49,6 @@
     <string name="locationButton">I want my location</string>
     <string name="sendWeatherTitle">Send Weather</string>
     <string name="mapViewDescription">Google Maps</string>
+    <string name="titleManual">Manual</string>
+    <string name="MenuPrincipalDescription">Menu Principal\n</string>
 </resources>

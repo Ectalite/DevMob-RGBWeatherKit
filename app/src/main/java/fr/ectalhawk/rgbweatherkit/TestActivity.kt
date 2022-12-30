@@ -16,7 +16,6 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.view.isVisible
 import fr.ectalhawk.rgbweatherkit.weatherAPI.WeatherAPI
 import yuku.ambilwarna.AmbilWarnaDialog
 
@@ -39,7 +38,7 @@ class TestActivity : AppCompatActivity() {
             }
         }
         if(AppBLEInterface.oBLEInterface.connectedGatt!!.device.name != null) {
-            val textViewName = findViewById<TextView>(R.id.textConnected)
+            val textViewName = findViewById<TextView>(R.id.textTitleManual)
             val deviceName = AppBLEInterface.oBLEInterface.connectedGatt!!.device.name
             textViewName.text = "Connected to: $deviceName"
         }

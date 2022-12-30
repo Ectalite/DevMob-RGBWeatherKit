@@ -1,13 +1,13 @@
 package fr.ectalhawk.rgbweatherkit
 
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import fr.ectalhawk.rgbweatherkit.databinding.ActivityMenuPrincipalBinding
 import fr.ectalhawk.rgbweatherkit.weatherAPI.api.MyWeatherServiceInterface
 import fr.ectalhawk.rgbweatherkit.weatherAPI.api.RetrofitHelper
+
 
 class MenuPrincipal : AppCompatActivity() {
 
@@ -48,7 +48,7 @@ class MenuPrincipal : AppCompatActivity() {
                 R.id.navigation_btsettings -> replaceFragment(FragmentBTSettings())
                 R.id.navigation_home -> replaceFragment(FragmentHome())
                 R.id.navigation_weather -> replaceFragment(FragmentWeather())
-                R.id.navigation_pixels -> replaceFragment(FragmentMatrix())
+                R.id.navigation_pixels -> replaceFragment(FragmentManual())
                 else->{
                     //On affiche le menu home si on ne sait pas
                     replaceFragment(FragmentHome())
