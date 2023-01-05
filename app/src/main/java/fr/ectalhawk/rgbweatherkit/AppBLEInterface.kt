@@ -48,7 +48,6 @@ class MyListAdapter(private val context: Activity, private val device: ArrayList
             nameText.text = device[position].name
         }
         uuidText.text = device[position].address
-        //Log.i("Bonjour", "Test1")
         return rowView
     }
 }

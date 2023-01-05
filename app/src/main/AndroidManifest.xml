@@ -26,7 +26,16 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" /> <!-- Needed only if your app communicates with already-paired Bluetooth devices. -->
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" /> <!-- Needed only if your app uses Bluetooth scan results to derive physical location. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- For Location Picker -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32"
+        tools:ignore="ScopedStorage" />
+
+    <uses-feature
+        android:name="android.hardware.location.network"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -39,6 +48,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RGBWeatherKit.NoActionBar"
         tools:targetApi="31">
+        <activity
+            android:name=".InfoPopUp"
+            android:exported="false" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDcTZkFzllJvhN2nqjusn0fn-2ULWsD0nw" />
+
         <activity
             android:name=".weatherAPI.WeatherAPI"
             android:exported="false"
@@ -81,7 +98,6 @@
             android:label="RGBWeatherKit"
             android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -94,13 +110,22 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.adevinta.leku.LocationPickerActivity"
             android:exported="true"
-            android:screenOrientation="sensorPortrait"
-            tools:ignore="LockedOrientationActivity">
+            android:label="@string/leku_title_activity_location_picker"
+            android:parentActivityName=".MenuPrincipal"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
             <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
+                android:name="android.app.searchable"
+                android:resource="@xml/leku_searchable" />
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MenuPrincipal" />
         </activity>
     </application>
 

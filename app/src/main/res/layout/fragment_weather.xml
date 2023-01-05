@@ -7,7 +7,7 @@
     tools:context=".FragmentWeather">
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textCity5"
+        android:id="@+id/inputTextCity"
         android:layout_width="310dp"
         android:layout_height="79dp"
         android:layout_marginTop="20dp"
@@ -16,11 +16,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.485"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11"
+        app:layout_constraintTop_toBottomOf="@+id/titleWeather"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/titleWeather"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sendWeatherTitle"
@@ -30,24 +30,25 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/btnSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="30dp"
         android:text="@string/locationButton"
-        app:layout_constraintBottom_toTopOf="@+id/mapView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textCity5"
+        app:layout_constraintTop_toBottomOf="@+id/inputTextCity"
         tools:ignore="TextContrastCheck" />
 
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/mapView"
-        android:layout_width="308dp"
-        android:layout_height="380dp"
-        android:layout_marginBottom="80dp"
-        android:contentDescription="@string/mapViewDescription"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <Button
+        android:id="@+id/btnMap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/btnMap"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSend"
+        tools:ignore="TextContrastCheck" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

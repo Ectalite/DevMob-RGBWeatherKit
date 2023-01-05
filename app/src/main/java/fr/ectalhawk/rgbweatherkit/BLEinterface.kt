@@ -16,9 +16,7 @@ import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AlertDialog.Builder
 import androidx.core.app.ActivityCompat
-import fr.ectalhawk.rgbweatherkit.databinding.FragmentBtSettingsBinding
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 private const val ENABLE_BLUETOOTH_REQUEST_CODE = 1

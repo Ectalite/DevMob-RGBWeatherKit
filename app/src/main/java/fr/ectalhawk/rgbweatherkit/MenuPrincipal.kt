@@ -1,5 +1,6 @@
 package fr.ectalhawk.rgbweatherkit
 
+import android.app.Activity
 import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -75,4 +76,6 @@ class MenuPrincipal : AppCompatActivity() {
     fun deactivateBottomNavigation(){
         binding.bottomNavigation.isEnabled = false
     }
+
+
 }

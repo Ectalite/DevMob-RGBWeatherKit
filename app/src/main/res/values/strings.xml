@@ -51,4 +51,9 @@
     <string name="mapViewDescription">Google Maps</string>
     <string name="titleManual">Manual</string>
     <string name="MenuPrincipalDescription">Menu Principal\n</string>
+    <string name="btnMap">Search place on Map</string>
+    <string name="descriptionLogo">Our Logo</string>
+    <string name="placeholderConnectedDevice">Device</string>
+    <string name="menuInfo">Information Menu</string>
+    <string name="placeholder">Placeholder</string>
 </resources>

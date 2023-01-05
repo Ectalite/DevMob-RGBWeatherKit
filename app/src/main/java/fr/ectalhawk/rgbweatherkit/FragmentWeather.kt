@@ -1,12 +1,21 @@
 package fr.ectalhawk.rgbweatherkit
 
+import android.app.Activity
+import android.content.Intent
+import android.location.Address
+import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
+import android.os.Parcelable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import com.adevinta.leku.ADDRESS
+import com.adevinta.leku.LocationPickerActivity
 import com.google.android.material.textfield.TextInputEditText
 import fr.ectalhawk.rgbweatherkit.weatherAPI.respository.Response
 import fr.ectalhawk.rgbweatherkit.weatherAPI.respository.WeatherRepository
@@ -25,10 +34,8 @@ class FragmentWeather : Fragment() {
         val weatherRepository = WeatherRepository(AppBLEInterface.weatherService, activity as MenuPrincipal)
         val mainViewModel = MainViewModel(weatherRepository)
 
-        val textCity = requireView().findViewById<TextInputEditText>(R.id.textCity5)
-        val btnResearch = requireView().findViewById<Button>(R.id.button4)
-
-        //textCity.setText("")
+        val textCity = requireView().findViewById<TextInputEditText>(R.id.inputTextCity)
+        val btnResearch = requireView().findViewById<Button>(R.id.btnSend)
 
         btnResearch.setOnClickListener {
             btnResearch.isEnabled = false
@@ -71,5 +78,99 @@ class FragmentWeather : Fragment() {
             }
 
         }
+
+        val btnMap = requireView().findViewById<Button>(R.id.btnMap)
+        btnMap.setOnClickListener {
+            //On crée un Intent avec l'activité de LocationPicker
+            //https://github.com/AdevintaSpain/Leku
+            val locationPickerIntent = LocationPickerActivity.Builder()
+                .withLocation(41.4036299, 2.1743558)
+                .withGeolocApiKey("AIzaSyDcTZkFzllJvhN2nqjusn0fn-2ULWsD0nw")
+                .withGooglePlacesApiKey("AIzaSyDkzRR9DFJ05Om8e_evsiee4iUhPsPiJ-4")
+                .withSearchZone("fr_CH")
+                //.withSearchZone(SearchZoneRect(LatLng(26.525467, -18.910366), LatLng(43.906271, 5.394197)))
+                .withDefaultLocaleSearchZone()
+                .shouldReturnOkOnBackPressed()
+                .withStreetHidden()
+                .withCityHidden()
+                .withZipCodeHidden()
+                .withSatelliteViewHidden()
+                //.withGooglePlacesEnabled()
+                .withGoogleTimeZoneEnabled()
+                .withVoiceSearchHidden()
+                .withUnnamedRoadHidden()
+                //.withSearchBarHidden()
+                .build(activity as MenuPrincipal)
+
+            resultLauncher.launch(locationPickerIntent)
+            //Deprecated
+            //startActivityForResult(locationPickerIntent, 1)
+        }
     }
+
+    //Fonction de retour de l'Intent google maps
+    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            //On récupère les données retourné par l'Intent
+            val data: Intent? = result.data
+            //On isole l'adresse
+            val fullAddress = data?.parcelable<Address>(ADDRESS)
+            if (fullAddress != null) {
+                val city =
+                    fullAddress.toString().substringAfterLast("locality=").substringBefore(",")
+                Log.d("City", city)
+                val textCity = requireView().findViewById<TextInputEditText>(R.id.inputTextCity)
+                textCity.setText(city)
+            }
+            // There are no request codes
+            /*val data: Intent? = result.data
+            Log.d("RESULT****", "OK")
+            val latitude = data?.getDoubleExtra(LATITUDE, 0.0)
+            Log.d("LATITUDE****", latitude.toString())
+            val longitude = data?.getDoubleExtra(LONGITUDE, 0.0)
+            Log.d("LONGITUDE****", longitude.toString())
+            val address = data?.getStringExtra(LOCATION_ADDRESS)
+            Log.d("ADDRESS****", address.toString())
+            val postalcode = data?.getStringExtra(ZIPCODE)
+            Log.d("POSTALCODE****", postalcode.toString())
+            val bundle = data?.getBundleExtra(TRANSITION_BUNDLE)
+            if (bundle != null) {
+                bundle.getString("test")?.let { Log.d("BUNDLE TEXT****", it) }
+            }
+
+                Log.d("FULL ADDRESS****", fullAddress.toString())
+            }
+            val timeZoneId = data?.getStringExtra(TIME_ZONE_ID)
+            if (timeZoneId != null) {
+                Log.d("TIME ZONE ID****", timeZoneId)
+            }
+            val timeZoneDisplayName = data?.getStringExtra(TIME_ZONE_DISPLAY_NAME)
+            if (timeZoneDisplayName != null) {
+                Log.d("TIME ZONE NAME****", timeZoneDisplayName)
+            }
+            /*if (requestCode == 1) {
+
+            } else if (requestCode == 2) {
+                val latitude = data.getDoubleExtra(LATITUDE, 0.0)
+                Log.d("LATITUDE****", latitude.toString())
+                val longitude = data.getDoubleExtra(LONGITUDE, 0.0)
+                Log.d("LONGITUDE****", longitude.toString())
+                val address = data.getStringExtra(LOCATION_ADDRESS)
+                Log.d("ADDRESS****", address.toString())
+                val lekuPoi = data.getParcelableExtra<LekuPoi>(LEKU_POI)
+                Log.d("LekuPoi****", lekuPoi.toString())
+            }*/
+        }
+        if (result.resultCode == Activity.RESULT_CANCELED) {
+            Log.d("RESULT****", "CANCELLED")
+        }*/
+        }
+    }
+}
+
+//https://stackoverflow.com/questions/73019160/android-getparcelableextra-deprecated
+//getParcelableExtra was deprecated in SDK < 33
+inline fun <reified T : Parcelable> Intent.parcelable(key: String): T? = when {
+    SDK_INT >= 33 -> getParcelableExtra(key, T::class.java)
+    else -> @Suppress("DEPRECATION") getParcelableExtra(key) as? T
 }
