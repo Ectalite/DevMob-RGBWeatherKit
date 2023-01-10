@@ -6,8 +6,6 @@ local.properties
 .idea/
 build/
 
-#Gradle temp file
-.gradle/
 
 #MacOS temp file
 .DS_Store
@@ -34,5 +32,7 @@ build/
 *.rar
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+#Gradle temp file
 hs_err_pid*
 /.idea/
+/.gradle/
