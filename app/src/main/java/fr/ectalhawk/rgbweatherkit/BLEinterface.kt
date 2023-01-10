@@ -174,18 +174,6 @@ data class BLEinterface(val act: MenuPrincipal, val context: Context) {
             pixelXCharacteristic!!.value = bufferPosx
             gatt.writeCharacteristic(pixelXCharacteristic)
         }
-        /*pixelXCharacteristic!!.value = bufferPosx
-        pixelYCharacteristic!!.value = bufferPosY
-        colorCharacteristic!!.value = bufferColor
-        sendCharacteristic!!.value = bufferSend
-        gatt.writeCharacteristic(pixelXCharacteristic)
-        Thread.sleep(time)
-        gatt.writeCharacteristic(pixelYCharacteristic)
-        Thread.sleep(time)
-        gatt.writeCharacteristic(colorCharacteristic)
-        Thread.sleep(time)
-        gatt.writeCharacteristic(sendCharacteristic)
-        Thread.sleep(time)*/
     }
 
     @Suppress("DEPRECATION")
@@ -297,9 +285,6 @@ data class BLEinterface(val act: MenuPrincipal, val context: Context) {
             //YOU HAVE TO SET TRANSPORT_LE OR IT WONT WORK
             //https://medium.com/@martijn.van.welie/making-android-ble-work-part-2-47a3cdaade07
         }
-        /*GlobalScope.launch(Dispatchers.Main){
-
-        }*/
     }
 
     private fun safeStartBleScan() {
@@ -366,31 +351,15 @@ data class BLEinterface(val act: MenuPrincipal, val context: Context) {
                 }
             }
             val name: String? = result.scanRecord?.deviceName ?: result.device.name
-            //myLogger("Got result!")
-
 
             if (result.device.name != null) {
                 myLogger("onScanResult name=$name address= ${result.device?.address}")
-                //val uuidList = getServiceUUIDsList(result)
-                /*for (uuidnumber in 1 until uuidList.size) {
-                    myLogger("UUID " + uuidnumber + " : " + uuidList[uuidnumber].toString())
-                }*/
                 if(!deviceList.contains(result.device)) {
                     deviceList.add(result.device)
                     deviceListAdapter.notifyDataSetChanged()
                 }
             }
         }
-
-        /*private fun getServiceUUIDsList(scanResult: ScanResult): List<UUID> {
-            val parcelUuids = scanResult.scanRecord!!.serviceUuids
-            val serviceList: MutableList<UUID> = ArrayList()
-            for (i in parcelUuids.indices) {
-                val serviceUUID = parcelUuids[i].uuid
-                if (!serviceList.contains(serviceUUID)) serviceList.add(serviceUUID)
-            }
-            return serviceList
-        }*/
 
         override fun onBatchScanResults(results: MutableList<ScanResult>?) {
             myLogger("onBatchScanResults, ignoring")
@@ -400,7 +369,6 @@ data class BLEinterface(val act: MenuPrincipal, val context: Context) {
             myLogger("onScanFailed errorCode=$errorCode")
             safeStopBleScan()
             lifecycleState = BLELifecycleState.Disconnected
-            bleRestartLifecycle()
         }
     }
 
@@ -432,7 +400,8 @@ data class BLEinterface(val act: MenuPrincipal, val context: Context) {
                     setConnectedGattToNull()
                     gatt.close()
                     lifecycleState = BLELifecycleState.Disconnected
-                    bleRestartLifecycle()
+                    //Si on se fait déconnecter, on l'écrit sur le menu home
+                    AppBLEInterface.connectedDevice = context.getString(R.string.disconnected)
                     //On désactive la navbar et on revient sur le menu de sélection des devices
                     act.deactivateBottomNavigation()
                     act.replaceFragment(FragmentBTSettings())
@@ -442,6 +411,7 @@ data class BLEinterface(val act: MenuPrincipal, val context: Context) {
                 }
             } else if ((status == 8) || (status == 133)) {
                 //https://stackoverflow.com/questions/55529511/android-ble-connectgatt-timeout
+                //Si la connection BLE fait un timeout
                 myLogger("Le telephone a du se reconnecter parce qu'il est malfaisant: $status")
                 gatt.disconnect()
                 gatt.close()
@@ -458,7 +428,6 @@ data class BLEinterface(val act: MenuPrincipal, val context: Context) {
                 setConnectedGattToNull()
                 gatt.close()
                 lifecycleState = BLELifecycleState.Disconnected
-                //bleRestartLifecycle()
             }
         }
 
@@ -501,11 +470,14 @@ data class BLEinterface(val act: MenuPrincipal, val context: Context) {
                     act.runOnUiThread { //FUCK android 7
                         safeStopBleScan() //Stop scanning to reduce logs
                     }
+                    //On récupère le nom du device pour pouvoir l'afficher dans le menu Home.
+                    AppBLEInterface.connectedDevice = gatt.device.name
                     //Une fois connecté, on active les boutons de la navbar et on va au menu principal
                     act.activateBottomNavigation()
                     act.replaceFragment(FragmentHome())
                     act.runOnUiThread {
                         act.binding.bottomNavigation.selectedItemId = R.id.navigation_home
+
                     }
                     break
                 }
@@ -519,27 +491,6 @@ data class BLEinterface(val act: MenuPrincipal, val context: Context) {
                 gatt.disconnect()
             }
         }
-
-        //TODO: Dans le futur: override ces fonction pour récupérer des logs ?
-        /*
-        override fun onCharacteristicRead(gatt: BluetoothGatt, characteristic: BluetoothGattCharacteristic, status: Int) {
-            if (characteristic.uuid == UUID.fromString(CHAR_FOR_READ_UUID)) {
-                val strValue = characteristic.value.toString(Charsets.UTF_8)
-                val log = "onCharacteristicRead " + when (status)
-                {
-                    BluetoothGatt.GATT_SUCCESS -> "OK, value=\"$strValue\""
-                    BluetoothGatt.GATT_READ_NOT_PERMITTED -> "not allowed"
-                    else -> "error $status"
-                }
-                appendLog(log)
-                runOnUiThread {
-                    textViewReadValue.text = strValue
-                }
-            } else {
-                appendLog("onCharacteristicRead unknown uuid $characteristic.uuid")
-            }
-        }
-        */
 
         //Utilisé pour envoyé chaque éléments de SendList une fois celui d'avant envoyé
         @Suppress("DEPRECATION")
@@ -639,7 +590,6 @@ data class BLEinterface(val act: MenuPrincipal, val context: Context) {
         if (bluetoothAdapter.isEnabled) {
             completion(true)
         } else {
-            //val intentString = BluetoothAdapter.ACTION_REQUEST_ENABLE
             val requestCode = ENABLE_BLUETOOTH_REQUEST_CODE
 
             // set activity result handler
@@ -648,14 +598,8 @@ data class BLEinterface(val act: MenuPrincipal, val context: Context) {
                 if (isSuccess || askType != AskType.InsistUntilSuccess) {
                     activityResultHandlers.remove(requestCode)
                     completion(isSuccess)
-                } else {
-                    // start activity for the request again
-                   // startActivityForResult(Intent(intentString), requestCode)
                 }
             }
-
-            // start activity for the request
-            //startActivityForResult(Intent(intentString), requestCode)
         }
     }
 
@@ -790,12 +734,6 @@ data class BLEinterface(val act: MenuPrincipal, val context: Context) {
         pixelYCharacteristic = null
         colorCharacteristic = null
         sendCharacteristic = null
-    }
-
-    private fun bleRestartLifecycle() {
-        /*act.runOnUiThread {
-            prepareAndStartBleScan()
-        }*/
     }
 
     private fun hasPermissions(permissions: Array<String>): Boolean = permissions.all {

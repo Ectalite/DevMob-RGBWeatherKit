@@ -20,6 +20,7 @@ import com.google.android.material.textfield.TextInputEditText
 import fr.ectalhawk.rgbweatherkit.weatherAPI.respository.Response
 import fr.ectalhawk.rgbweatherkit.weatherAPI.respository.WeatherRepository
 import fr.ectalhawk.rgbweatherkit.weatherAPI.viewmodel.MainViewModel
+import java.util.Locale
 
 class FragmentWeather : Fragment() {
 
@@ -63,8 +64,17 @@ class FragmentWeather : Fragment() {
                         fetchedData.data?.let {
                             if(!btnResearch.isEnabled) {
                                 AppBLEInterface.oBLEInterface.clearMatrix()
-                                AppBLEInterface.oBLEInterface.sendText(
-                                    0, 0,0xFFFFFF,"Weather:",false)
+                                //Si la langue du téléphone est le français alors on envoie Météo a la place de weather
+                                if(Locale.getDefault() == Locale.FRANCE)
+                                {
+                                    AppBLEInterface.oBLEInterface.sendText(
+                                        0, 0,0xFFFFFF,"Meteo:",false)
+                                }
+                                else
+                                {
+                                    AppBLEInterface.oBLEInterface.sendText(
+                                        0, 0,0xFFFFFF,"Weather:",false)
+                                }
                                 AppBLEInterface.oBLEInterface.sendText(
                                     0, 10,0xFFFFFF, it.name,false)
                                 AppBLEInterface.oBLEInterface.sendText(
@@ -122,48 +132,6 @@ class FragmentWeather : Fragment() {
                 val textCity = requireView().findViewById<TextInputEditText>(R.id.inputTextCity)
                 textCity.setText(city)
             }
-            // There are no request codes
-            /*val data: Intent? = result.data
-            Log.d("RESULT****", "OK")
-            val latitude = data?.getDoubleExtra(LATITUDE, 0.0)
-            Log.d("LATITUDE****", latitude.toString())
-            val longitude = data?.getDoubleExtra(LONGITUDE, 0.0)
-            Log.d("LONGITUDE****", longitude.toString())
-            val address = data?.getStringExtra(LOCATION_ADDRESS)
-            Log.d("ADDRESS****", address.toString())
-            val postalcode = data?.getStringExtra(ZIPCODE)
-            Log.d("POSTALCODE****", postalcode.toString())
-            val bundle = data?.getBundleExtra(TRANSITION_BUNDLE)
-            if (bundle != null) {
-                bundle.getString("test")?.let { Log.d("BUNDLE TEXT****", it) }
-            }
-
-                Log.d("FULL ADDRESS****", fullAddress.toString())
-            }
-            val timeZoneId = data?.getStringExtra(TIME_ZONE_ID)
-            if (timeZoneId != null) {
-                Log.d("TIME ZONE ID****", timeZoneId)
-            }
-            val timeZoneDisplayName = data?.getStringExtra(TIME_ZONE_DISPLAY_NAME)
-            if (timeZoneDisplayName != null) {
-                Log.d("TIME ZONE NAME****", timeZoneDisplayName)
-            }
-            /*if (requestCode == 1) {
-
-            } else if (requestCode == 2) {
-                val latitude = data.getDoubleExtra(LATITUDE, 0.0)
-                Log.d("LATITUDE****", latitude.toString())
-                val longitude = data.getDoubleExtra(LONGITUDE, 0.0)
-                Log.d("LONGITUDE****", longitude.toString())
-                val address = data.getStringExtra(LOCATION_ADDRESS)
-                Log.d("ADDRESS****", address.toString())
-                val lekuPoi = data.getParcelableExtra<LekuPoi>(LEKU_POI)
-                Log.d("LekuPoi****", lekuPoi.toString())
-            }*/
-        }
-        if (result.resultCode == Activity.RESULT_CANCELED) {
-            Log.d("RESULT****", "CANCELLED")
-        }*/
         }
     }
 }

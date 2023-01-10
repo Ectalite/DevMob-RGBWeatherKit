@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 
 class FragmentHome : Fragment() {
 
@@ -20,11 +21,15 @@ class FragmentHome : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //On affiche le nom du device connecté
+        val deviceString = requireView().findViewById<TextView>(R.id.connectedDevice)
+        deviceString.text = AppBLEInterface.connectedDevice
+
         val btnInfo = requireView().findViewById<ImageView>(R.id.btnInfo)
         btnInfo.setOnClickListener {
             val intent = Intent(activity as MenuPrincipal, InfoPopUp::class.java)
             intent.putExtra("popuptitle", "RGBWeatherKit")
-            intent.putExtra("popuptext", "Credits:\n - Leku https://adevintaspain.github.io/Leku/\n - BLE Library https://github.com/NordicSemiconductor/Android-BLE-Library\n")
+            intent.putExtra("popuptext", "Xavier Hueber et Noé Lindenlaub ©2022-2023\n\n Credits:\n - Google Maps (Leku)\n https://adevintaspain.github.io/Leku/\n - BLE Library\n https://github.com/NordicSemiconductor/Android-BLE-Library\n")
             intent.putExtra("popupbtn", "OK")
             intent.putExtra("darkstatusbar", false)
             startActivity(intent)

@@ -38,4 +38,12 @@
     <string name="send_text_hint">Envoyer du texte</string>
     <string name="selectec_color">Couleur sélectionnée:</string>
     <string name="WeatherAPI">Interface météo</string>
+    <string name="locationButton">Chercher la météo</string>
+    <string name="sendWeatherTitle">Météo</string>
+    <string name="titleManual">Manuel</string>
+    <string name="btnMap">Chercher un endroit sur la carte</string>
+    <string name="descriptionLogo">Notre Logo</string>
+    <string name="placeholderConnectedDevice">Appareil</string>
+    <string name="menuInfo">Menu d\'information</string>
+    <string name="disconnected">Déconnecté</string>
 </resources>

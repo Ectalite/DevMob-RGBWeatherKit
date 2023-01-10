@@ -22,6 +22,7 @@ class AppBLEInterface : Application() {
         @SuppressLint("StaticFieldLeak")
         lateinit var oBLEInterface : BLEinterface
         lateinit var weatherService: MyWeatherServiceInterface
+        var connectedDevice : String = "Device"
     }
 }
 
