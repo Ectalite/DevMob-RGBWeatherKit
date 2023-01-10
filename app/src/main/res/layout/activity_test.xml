@@ -19,7 +19,7 @@
         android:rotationX="0"
         android:rotationY="0"
         android:text="@string/LGBT"
-        app:icon="@drawable/ic_baseline_cloud_24"
+        app:icon="@drawable/menu_weather_icon_black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnWriteText"
         tools:ignore="TextContrastCheck" />

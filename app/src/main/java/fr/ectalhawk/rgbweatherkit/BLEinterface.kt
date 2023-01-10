@@ -403,9 +403,9 @@ data class BLEinterface(val act: MenuPrincipal, val context: Context) {
                     //Si on se fait déconnecter, on l'écrit sur le menu home
                     AppBLEInterface.connectedDevice = context.getString(R.string.disconnected)
                     //On désactive la navbar et on revient sur le menu de sélection des devices
-                    act.deactivateBottomNavigation()
-                    act.replaceFragment(FragmentBTSettings())
                     act.runOnUiThread {
+                        act.deactivateBottomNavigation()
+                        act.replaceFragment(FragmentBTSettings())
                         act.binding.bottomNavigation.selectedItemId = R.id.navigation_btsettings
                     }
                 }
@@ -473,11 +473,10 @@ data class BLEinterface(val act: MenuPrincipal, val context: Context) {
                     //On récupère le nom du device pour pouvoir l'afficher dans le menu Home.
                     AppBLEInterface.connectedDevice = gatt.device.name
                     //Une fois connecté, on active les boutons de la navbar et on va au menu principal
-                    act.activateBottomNavigation()
-                    act.replaceFragment(FragmentHome())
                     act.runOnUiThread {
+                        act.activateBottomNavigation()
+                        act.replaceFragment(FragmentHome())
                         act.binding.bottomNavigation.selectedItemId = R.id.navigation_home
-
                     }
                     break
                 }

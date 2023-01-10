@@ -1,10 +1,13 @@
 package fr.ectalhawk.rgbweatherkit
 
 import android.app.Activity
+import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import fr.ectalhawk.rgbweatherkit.databinding.ActivityMenuPrincipalBinding
 import fr.ectalhawk.rgbweatherkit.weatherAPI.api.MyWeatherServiceInterface
 import fr.ectalhawk.rgbweatherkit.weatherAPI.api.RetrofitHelper
@@ -37,12 +40,12 @@ class MenuPrincipal : AppCompatActivity() {
         AppBLEInterface.weatherService= RetrofitHelper.getRetrofitInstance().create(
             MyWeatherServiceInterface::class.java)
 
-        //On est pas encore connecté en bluetooth -> navbar désactivé
-        deactivateBottomNavigation()
-
         setContentView(binding.root)
         //Init fragment, celui qui s'affichera en premier
         replaceFragment(FragmentBTSettings())
+
+        //On est pas encore connecté en bluetooth -> navbar désactivé
+        deactivateBottomNavigation()
 
         binding.bottomNavigation.setOnItemSelectedListener {
             when (it.itemId) {
@@ -62,20 +65,36 @@ class MenuPrincipal : AppCompatActivity() {
 
 
     fun replaceFragment(fragment : Fragment){
-        //binding.bottomNavigation.itemTextColor = getColor(R.color.gray)
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frame_layout,fragment)
         fragmentTransaction.commit()
     }
 
+    //Fonction pour désactiver la navbar
     fun activateBottomNavigation(){
-        binding.bottomNavigation.isEnabled = true
+        val navView: BottomNavigationView = findViewById(R.id.bottom_navigation)
+
+        // Find the menu item and then disable it
+        navView.menu.findItem(R.id.navigation_home).isEnabled = true
+        navView.menu.findItem(R.id.navigation_home).setIcon(R.drawable.menu_home_icon_black)
+        navView.menu.findItem(R.id.navigation_weather).isEnabled = true
+        navView.menu.findItem(R.id.navigation_weather).setIcon(R.drawable.menu_weather_icon_black)
+        navView.menu.findItem(R.id.navigation_pixels).isEnabled = true
+        navView.menu.findItem(R.id.navigation_pixels).setIcon(R.drawable.menu_pixels_icon_black)
+
     }
 
+    //Fonction pour activer la navbar
     fun deactivateBottomNavigation(){
-        binding.bottomNavigation.isEnabled = false
+        val navView: BottomNavigationView = findViewById(R.id.bottom_navigation)
+
+        // Find the menu item and then disable it
+        navView.menu.findItem(R.id.navigation_home).isEnabled = false
+        navView.menu.findItem(R.id.navigation_home).setIcon(R.drawable.menu_home_icon_grey)
+        navView.menu.findItem(R.id.navigation_weather).isEnabled = false
+        navView.menu.findItem(R.id.navigation_weather).setIcon(R.drawable.menu_weather_icon_grey)
+        navView.menu.findItem(R.id.navigation_pixels).isEnabled = false
+        navView.menu.findItem(R.id.navigation_pixels).setIcon(R.drawable.menu_pixels_icon_grey)
     }
-
-
 }

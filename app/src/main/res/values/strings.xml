@@ -57,4 +57,5 @@
     <string name="menuInfo">Information Menu</string>
     <string name="placeholder" translatable="false">Placeholder</string>
     <string name="disconnected">Disconnected</string>
+    <string name="notConnected">You are not connected</string>
 </resources>
