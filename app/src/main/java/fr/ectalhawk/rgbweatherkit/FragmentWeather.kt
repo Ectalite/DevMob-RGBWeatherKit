@@ -38,6 +38,8 @@ class FragmentWeather : Fragment() {
         val textCity = requireView().findViewById<TextInputEditText>(R.id.inputTextCity)
         val btnResearch = requireView().findViewById<Button>(R.id.btnSend)
 
+        //Lors de l'appuie sur btnResearch on va venir chercher le temps qu'il fait pour le nom de la ville donné
+        //Recherche faite par une API vers openweathermap.org
         btnResearch.setOnClickListener {
             btnResearch.isEnabled = false
             Toast.makeText(activity as MenuPrincipal, R.string.researchWeather, Toast.LENGTH_SHORT).show()

@@ -18,6 +18,7 @@ import fr.ectalhawk.rgbweatherkit.weatherAPI.api.MyWeatherServiceInterface
 
 class AppBLEInterface : Application() {
     //Singleton for BLEinterface for entire Application. -> is created at start of application
+    //Ce Singleton sert à pouvoir accéder à l'interface BLEinterface à partir de l'ensemble de l'application
     companion object {
         @SuppressLint("StaticFieldLeak")
         lateinit var oBLEInterface : BLEinterface
@@ -26,6 +27,7 @@ class AppBLEInterface : Application() {
     }
 }
 
+//MyListAdapter est un adapteur pour avoir la liste des devices trouvés par Bluetooth
 class MyListAdapter(private val context: Activity, private val device: ArrayList<BluetoothDevice>)
     : ArrayAdapter<BluetoothDevice>(context, R.layout.device_list, device) {
     @SuppressLint("ViewHolder", "SetTextI18n", "InflateParams")
@@ -33,6 +35,7 @@ class MyListAdapter(private val context: Activity, private val device: ArrayList
         val rowView = inflater.inflate(R.layout.device_list, null, true)
         val nameText = rowView.findViewById(R.id.Name) as TextView
         val uuidText = rowView.findViewById(R.id.UUID) as TextView
+        //Si l'application pas les permissions suffisantes
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT
                 ) != PackageManager.PERMISSION_GRANTED
@@ -42,6 +45,7 @@ class MyListAdapter(private val context: Activity, private val device: ArrayList
                 context.startActivity(intent)
             }
         }
+        //On va afficher le nom du device dans la liste
         if (device[position].name == "") {
             nameText.text = "no name"
         }

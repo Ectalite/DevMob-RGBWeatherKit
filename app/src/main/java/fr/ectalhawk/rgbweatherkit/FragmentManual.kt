@@ -37,9 +37,11 @@ class FragmentManual : Fragment() {
         val pickColorButton = requireView().findViewById<Button>(R.id.pick_color_button)
         val sendButton = requireView().findViewById<Button>(R.id.buttonSend)
 
+        //La matrice fait 32x64 pixels, donc il faut limiter les sliders en taille.
         pixelXBar.max = 63
         pixelYBar.max = 31
 
+        //Fonctions qui vont mettre a jour le texte correspondant en fonction de la position du slider sélectionné
         pixelXBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             @SuppressLint("SetTextI18n")
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
@@ -57,10 +59,12 @@ class FragmentManual : Fragment() {
             override fun onStopTrackingTouch(p0: SeekBar?) {}
         })
 
+        //On vient ouvrir le color picker lorsqu'on appuie sur le bouton pickColorButton
         pickColorButton.setOnClickListener {
             openColorPickerDialogue(selectedColor)
         }
 
+        //On récupère les valeurs des sliders et la valeur de la couleur, que l'on va envoyer à la matrice.
         sendButton.setOnClickListener {
             //On enlève l'alpha de la couleur
             val sendColor = selectedColor and 0x00FFFFFF
@@ -69,6 +73,7 @@ class FragmentManual : Fragment() {
             AppBLEInterface.oBLEInterface.sendPixel(pixelXBar.progress,pixelYBar.progress,sendColor,true)
         }
 
+        //On vient envoyer le texte écrit ainsi que la position du haut-gauche du texte et la couleur qu'il doit avoir.
         val btnWriteText = requireView().findViewById<Button>(R.id.btnWriteText)
         btnWriteText.setOnClickListener {
             val sendColor = selectedColor and 0x00FFFFFF
@@ -76,12 +81,14 @@ class FragmentManual : Fragment() {
             AppBLEInterface.oBLEInterface.sendText(pixelXBar.progress,pixelYBar.progress,sendColor,sendText.text.toString(),true)
         }
 
+        //Bouton servant à effacer la matrice.
         val btnClearMatrix = requireView().findViewById<Button>(R.id.clearButton)
         btnClearMatrix.setOnClickListener {
             AppBLEInterface.oBLEInterface.clearMatrix()
         }
     }
 
+    //Color picker venant de la librairie ambilwarna
     private fun openColorPickerDialogue(selectedColor : Int) {
         val previewColor = requireView().findViewById<View>(R.id.preview_selected_color)
         val colorPickerDialogue = AmbilWarnaDialog(activity as MenuPrincipal, selectedColor,

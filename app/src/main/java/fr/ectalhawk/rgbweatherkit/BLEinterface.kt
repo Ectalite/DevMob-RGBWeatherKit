@@ -56,6 +56,7 @@ data class BLEinterface(val act: MenuPrincipal, val context: Context) {
     }
     private val sendList = ArrayList<CharacteristicList>()
 
+    //Cette méthode sert à récupérer l'adaptateur bluetooth d'android.
     private val bluetoothAdapter: BluetoothAdapter by lazy{
         val bluetoothManager: BluetoothManager? = act.getSystemService(BluetoothManager::class.java)
         if(bluetoothManager == null)
@@ -84,6 +85,7 @@ data class BLEinterface(val act: MenuPrincipal, val context: Context) {
     private val scanButton = act.findViewById<Button>(R.id.scanButton)
     private val textViewLifecycleState : TextView = act.findViewById(R.id.textViewLifecycleState)
 
+    //Cette variable sert à voir l'état de la connection Blueooth
     private var lifecycleState = BLELifecycleState.Disconnected
         set(value) {
             field = value
@@ -129,8 +131,10 @@ data class BLEinterface(val act: MenuPrincipal, val context: Context) {
         }
     }
 
+    //Cette fonction sert à envoyer un pixel sur la matrice de LED
     @Suppress("DEPRECATION")
     fun sendPixel(posX: Int, posY: Int, color: Int, bDisplay : Boolean) {
+        //On vient verifier que les paramètres sont bons
         val gatt = connectedGatt ?: run {
             myLogger("ERROR: write failed, no connected device")
             return
@@ -139,6 +143,7 @@ data class BLEinterface(val act: MenuPrincipal, val context: Context) {
             myLogger("ERROR: pixel is offgrid. PosX : $posX PosY : $posY")
             return
         }
+        //on vient remplir les ByteArray qui seront envoyer
         val bufferPosx = ByteArray(1)
         val bufferPosY = ByteArray(1)
         val bufferSend = ByteArray(1)
@@ -160,11 +165,12 @@ data class BLEinterface(val act: MenuPrincipal, val context: Context) {
                 return
             }
         }
+        //On vient ajouer les valeurs à envoyer dans la liste d'envoi
         sendList.add(CharacteristicList(CharacteristicEnum.PixelY,bufferPosY))
         sendList.add(CharacteristicList(CharacteristicEnum.Color,bufferColor))
         sendList.add(CharacteristicList(CharacteristicEnum.Send,bufferSend))
 
-        //nouvelles méthode buggé à ne jamais UTILISER
+        //writeCharacteristic étant deprecated depuis Android Tiramisu, on vient vérifier la version de SDK
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         {
             gatt.writeCharacteristic(pixelXCharacteristic!!,bufferPosx,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
@@ -176,6 +182,7 @@ data class BLEinterface(val act: MenuPrincipal, val context: Context) {
         }
     }
 
+    //Cette méthode sert à effacer la matrice.
     @Suppress("DEPRECATION")
     fun clearMatrix() {
         val gatt = connectedGatt ?: run {
@@ -208,6 +215,7 @@ data class BLEinterface(val act: MenuPrincipal, val context: Context) {
         }
     }
 
+    //Cette méthode sert à envoyer du texte sur la matrice
     @Suppress("DEPRECATION")
     fun sendText(posX: Int, posY: Int, color: Int, text: String, bDisplay : Boolean) {
         val gatt = connectedGatt ?: run {
@@ -252,7 +260,6 @@ data class BLEinterface(val act: MenuPrincipal, val context: Context) {
         sendList.add(CharacteristicList(CharacteristicEnum.Text,bufferText))
         sendList.add(CharacteristicList(CharacteristicEnum.Send,bufferSend))
 
-        //nouvelles méthode buggé à ne jamais UTILISER
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         {
             gatt.writeCharacteristic(pixelXCharacteristic!!,bufferPosx,BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
@@ -266,6 +273,9 @@ data class BLEinterface(val act: MenuPrincipal, val context: Context) {
 
 
     //Methodes utilisées exclusivement par la classe
+    //Elles viennent en grande partie du projet BLE Library, mais on été réécrite pour ne plus contenir de warning et
+    //pour convenir à nos besoins
+    //https://github.com/NordicSemiconductor/Android-BLE-Library
     private fun connectToDevice(device : BluetoothDevice)
     {
         lifecycleState = BLELifecycleState.Connecting
@@ -415,7 +425,7 @@ data class BLEinterface(val act: MenuPrincipal, val context: Context) {
                 myLogger("Le telephone a du se reconnecter parce qu'il est malfaisant: $status")
                 gatt.disconnect()
                 gatt.close()
-                //Fix #xxx1 https://stackoverflow.com/questions/45442838/type-checking-has-run-into-a-recursive-in-kotlin
+                //Fix https://stackoverflow.com/questions/45442838/type-checking-has-run-into-a-recursive-in-kotlin
                 val mHandler = Handler(context.mainLooper)
                 // Connect to BLE device from mHandler
                 mHandler.post {

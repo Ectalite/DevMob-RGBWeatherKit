@@ -55,36 +55,8 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDcTZkFzllJvhN2nqjusn0fn-2ULWsD0nw" />
-
-        <activity
-            android:name=".weatherAPI.WeatherAPI"
-            android:exported="false"
-            android:screenOrientation="sensorPortrait"
-            tools:ignore="LockedOrientationActivity">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".TestActivity"
-            android:exported="false"
-            android:screenOrientation="sensorPortrait"
-            tools:ignore="LockedOrientationActivity">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
         <activity
             android:name=".NoBLEAuthorization"
-            android:exported="false"
-            android:screenOrientation="sensorPortrait"
-            tools:ignore="LockedOrientationActivity">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".Logo"
             android:exported="false"
             android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity">

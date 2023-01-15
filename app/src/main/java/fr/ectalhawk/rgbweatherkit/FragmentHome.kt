@@ -25,9 +25,11 @@ class FragmentHome : Fragment() {
         val deviceString = requireView().findViewById<TextView>(R.id.connectedDevice)
         deviceString.text = AppBLEInterface.connectedDevice
 
+        //Bouton d'information qui affiche une popup
         val btnInfo = requireView().findViewById<ImageView>(R.id.btnInfo)
         btnInfo.setOnClickListener {
             val intent = Intent(activity as MenuPrincipal, InfoPopUp::class.java)
+            //On peut customiser la popup en lui donnant un titre, un texte et un bouton de retour.
             intent.putExtra("popuptitle", "RGBWeatherKit")
             intent.putExtra("popuptext", "Xavier Hueber et Noé Lindenlaub ©2022-2023\n\n Credits:\n - Google Maps (Leku)\n https://adevintaspain.github.io/Leku/\n - BLE Library\n https://github.com/NordicSemiconductor/Android-BLE-Library\n")
             intent.putExtra("popupbtn", "OK")

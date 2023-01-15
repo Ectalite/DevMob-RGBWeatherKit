@@ -25,7 +25,7 @@ import kotlin.random.Random
  */
 @RunWith(AndroidJUnit4::class)
 class TodoDetailsActivityTest {
-
+    /*
     @Test
     fun verifySeekBarX() {
         launchActivity<TestActivity>().use {
@@ -59,5 +59,5 @@ class TodoDetailsActivityTest {
                 return isAssignableFrom(SeekBar::class.java)
             }
         }
-    }
+    }*/
 }
