@@ -46,4 +46,5 @@
     <string name="placeholderConnectedDevice">Appareil</string>
     <string name="menuInfo">Menu d\'information</string>
     <string name="disconnected">Déconnecté</string>
+    <string name="notConnected">Vous n\'êtes pas connecté</string>
 </resources>
