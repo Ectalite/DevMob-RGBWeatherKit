@@ -39,7 +39,7 @@ android {
 }
 
 dependencies {
-    implementation 'no.nordicsemi.android:ble-ktx:2.6.0-alpha04'
+    implementation 'no.nordicsemi.android:ble-ktx:2.6.0'
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.0'
     implementation 'com.google.android.material:material:1.7.0'
@@ -53,14 +53,14 @@ dependencies {
 
     //Custom dependencies
     implementation 'com.github.yukuku:ambilwarna:2.0.1'
-    implementation 'org.jetbrains.kotlin:kotlin-android-extensions-runtime:1.7.20'
+    implementation 'org.jetbrains.kotlin:kotlin-android-extensions-runtime:1.8.0'
     implementation "androidx.navigation:navigation-fragment-ktx:2.6.0-alpha04"
     implementation "androidx.navigation:navigation-ui-ktx:2.6.0-alpha04"
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.github.bumptech.glide:glide:4.14.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
-    implementation 'com.adevinta.android:leku:9.1.4'
+    implementation 'com.adevinta.android:leku:10.0.3'
     implementation 'androidx.cardview:cardview:1.0.0'
 
     //Tests
