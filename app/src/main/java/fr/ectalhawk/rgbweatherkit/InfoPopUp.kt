@@ -5,10 +5,10 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.animation.DecelerateInterpolator
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -60,10 +60,12 @@ class InfoPopUp : AppCompatActivity() {
 
         // Close the Popup Window when you press the button
         windowButton.setOnClickListener {
+            @Suppress("DEPRECATION")
             onBackPressed()
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         // Fade animation for the background of Popup Window when you press the back button
         val alpha = 100 // between 0-255
