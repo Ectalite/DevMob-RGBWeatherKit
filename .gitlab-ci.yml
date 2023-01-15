@@ -44,7 +44,6 @@ before_script:
 
   # Not necessary, but just for surity
   - chmod +x ./gradlew
-  - ./gradlew wrapper
 
 stages:
   - build
