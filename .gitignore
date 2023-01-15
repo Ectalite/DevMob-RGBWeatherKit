@@ -36,3 +36,4 @@ build/
 hs_err_pid*
 /.idea/
 /.gradle/
+!gradle/wrapper/gradle-wrapper.jar
