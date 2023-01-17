@@ -46,4 +46,5 @@
     <string name="titleManual">Manuel</string>
     <string name="sendWeatherTitle">Envoi de la météo</string>
     <string name="locationButton">Valider cette localisation</string>
+    <string name="disconnected">Déconnecté</string>
 </resources>

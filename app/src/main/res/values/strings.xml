@@ -57,4 +57,5 @@
     <string name="placeholder" translatable="false">Placeholder</string>
     <string name="version" translatable="false">Version 1.0b</string>
     <string name="menuInfo">Information Menu</string>
+    <string name="disconnected">Disconnected</string>
 </resources>
