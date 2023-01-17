@@ -27,7 +27,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/_024x1024"
+        app:srcCompat="@drawable/logo1024"
         tools:ignore="ImageContrastCheck" />
 
     <TextView
@@ -127,7 +127,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/textView6"
         app:layout_constraintEnd_toStartOf="@+id/textView6"
         app:layout_constraintTop_toTopOf="@+id/textView6"
-        app:srcCompat="@drawable/ic_baseline_settings_bluetooth_24" />
+        app:srcCompat="@drawable/menu_bluetooth_icon_black" />
 
     <ImageView
         android:id="@+id/imageView9"
@@ -138,7 +138,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/textView7"
         app:layout_constraintEnd_toStartOf="@+id/textView7"
         app:layout_constraintTop_toTopOf="@+id/textView7"
-        app:srcCompat="@drawable/ic_baseline_cloud_24" />
+        app:srcCompat="@drawable/menu_weather_icon_black" />
 
     <ImageView
         android:id="@+id/imageView10"
@@ -149,6 +149,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/textView8"
         app:layout_constraintEnd_toStartOf="@+id/textView8"
         app:layout_constraintTop_toTopOf="@+id/textView8"
-        app:srcCompat="@drawable/ic_dashboard_black_24dp" />
+        app:srcCompat="@drawable/menu_pixels_icon_black" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
