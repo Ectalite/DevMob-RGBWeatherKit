@@ -1,12 +1,10 @@
 package fr.ectalhawk.rgbweatherkit
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 
 class FragmentBTSettings : Fragment() {
@@ -20,8 +18,6 @@ class FragmentBTSettings : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         //Création d'un objet BLEInterface servant à la communication entre android et le rapsberry Pi
         val button = requireView().findViewById<Button>(R.id.scanButton)
-        val text = requireView().findViewById<TextView>(R.id.textViewLifecycleState)
-        text.text = "Status: BuildSDK ${Build.VERSION.SDK_INT}"
 
         //Initalise BLEinterface
         AppBLEInterface.oBLEInterface = BLEinterface(activity as MenuPrincipal, requireActivity().applicationContext)

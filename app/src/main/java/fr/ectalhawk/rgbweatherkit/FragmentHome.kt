@@ -1,6 +1,7 @@
 package fr.ectalhawk.rgbweatherkit
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -31,7 +32,10 @@ class FragmentHome : Fragment() {
             val intent = Intent(activity as MenuPrincipal, InfoPopUp::class.java)
             //On peut customiser la popup en lui donnant un titre, un texte et un bouton de retour.
             intent.putExtra("popuptitle", "RGBWeatherKit")
-            intent.putExtra("popuptext", "Xavier Hueber et Noé Lindenlaub ©2022-2023\n\n Credits:\n - Google Maps (Leku)\n https://adevintaspain.github.io/Leku/\n - BLE Library\n https://github.com/NordicSemiconductor/Android-BLE-Library\n")
+            intent.putExtra("popuptext", "Xavier Hueber et Noé Lindenlaub ©2022-2023\n\n " +
+                    "BuildSDK \n${Build.VERSION.SDK_INT} " +
+                    "Credits:\n - Google Maps (Leku)\n https://adevintaspain.github.io/Leku/\n " +
+                    "- BLE Library\n https://github.com/NordicSemiconductor/Android-BLE-Library\n")
             intent.putExtra("popupbtn", "OK")
             intent.putExtra("darkstatusbar", false)
             startActivity(intent)
