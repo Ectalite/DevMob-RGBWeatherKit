@@ -44,4 +44,4 @@ WantedBy=multi-user.target
 3. Lancer le service
 `sudo systemctl start piLed.service`
 ### Automatique
-Lancer la commande `sudo make service`
+_A venir peut-être un jour_
