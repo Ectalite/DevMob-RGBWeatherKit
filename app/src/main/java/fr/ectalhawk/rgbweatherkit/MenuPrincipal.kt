@@ -1,8 +1,10 @@
 package fr.ectalhawk.rgbweatherkit
 
+import android.Manifest
 import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import fr.ectalhawk.rgbweatherkit.databinding.ActivityMenuPrincipalBinding
@@ -30,6 +32,16 @@ class MenuPrincipal : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //Request permissions to let the app work
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ),
+            1001
+        )
+
         binding = ActivityMenuPrincipalBinding.inflate(layoutInflater)
         binding.bottomNavigation.itemTextColor = myList
 
