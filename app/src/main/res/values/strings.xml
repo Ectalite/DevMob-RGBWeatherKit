@@ -46,16 +46,15 @@
     <string name="PixelX" translatable="false">Pixel X</string>
     <string name="WeatherAPI">Weather API</string>
     <string name="LGBT" translatable="false">LGBTQ+</string>
-    <string name="locationButton">Research the weather</string>
+    <string name="locationButton">Confirm this location</string>
     <string name="sendWeatherTitle">Send Weather</string>
     <string name="mapViewDescription" translatable="false">Google Maps</string>
     <string name="titleManual">Manual</string>
-    <string name="MenuPrincipalDescription" translatable="false">Menu Principal\n</string>
-    <string name="btnMap">Search place on Map</string>
+    <string name="MenuPrincipalDescription">Menu Principal\n</string>
+    <string name="btnMap">Open location tool</string>
     <string name="descriptionLogo">Our Logo</string>
     <string name="placeholderConnectedDevice">Device</string>
-    <string name="menuInfo">Information Menu</string>
     <string name="placeholder" translatable="false">Placeholder</string>
-    <string name="disconnected">Disconnected</string>
-    <string name="notConnected">You are not connected</string>
+    <string name="version" translatable="false">Version 1.0b</string>
+    <string name="menuInfo">Information Menu</string>
 </resources>
