@@ -17,3 +17,31 @@
 3. Lancer la commande `make`
 4. Lancer le logiciel avec `sudo ./main` 
 (Il est important de lancer l'application avec les droits d'administrateurs au risque que le Bluetooth ne fonctionne pas).
+
+## Lancement automatique
+Une fois que le logiciel a été build, on peut faire en sorte qu'il s'execute automatiquement:
+### Manuel
+1. Créer un nouveau fichier `/etc/systemd/system/piLed.service` et écrire ceci dedans:
+```
+# Contents of /etc/systemd/system/piLed.service
+[Unit]
+Description=piLed
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+User=root
+Group=root
+WorkingDirectory=<dossier cloné>
+ExecStart=<dossier cloné>/main --led-gpio-mapping=adafruit-hat
+
+[Install]
+WantedBy=multi-user.target
+```
+2. Activer le service
+`sudo systemctl enable piLed.service`
+3. Lancer le service
+`sudo systemctl start piLed.service`
+### Automatique
+Lancer la commande `sudo make service`
