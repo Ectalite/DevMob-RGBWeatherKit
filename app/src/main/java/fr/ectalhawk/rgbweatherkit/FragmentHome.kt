@@ -34,8 +34,10 @@ class FragmentHome : Fragment() {
             intent.putExtra("popuptitle", "RGBWeatherKit")
             intent.putExtra("popuptext", "Xavier Hueber et Noé Lindenlaub ©2022-2023\n\n " +
                     "BuildSDK \n${Build.VERSION.SDK_INT} " +
-                    "Credits:\n - Google Maps (Leku)\n https://adevintaspain.github.io/Leku/\n " +
-                    "- BLE Library\n https://github.com/NordicSemiconductor/Android-BLE-Library\n")
+                    "Credits:\n " +
+                    "- Google Maps (Leku)\n https://adevintaspain.github.io/Leku/\n " +
+                    "- BLE Library\n https://github.com/NordicSemiconductor/Android-BLE-Library\n" +
+                    "- myWeather\n https://github.com/Atifsid/myWeather\n")
             intent.putExtra("popupbtn", "OK")
             intent.putExtra("darkstatusbar", false)
             startActivity(intent)
