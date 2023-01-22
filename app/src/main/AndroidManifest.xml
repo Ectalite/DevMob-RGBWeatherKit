@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <!-- A partir de Android 13, il faut demander cette permission pour pouvoir demander les autres -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-feature android:name="android.hardware.location.gps" />
     <uses-feature
         android:name="android.hardware.bluetooth_le"
@@ -100,5 +101,4 @@
                 android:value=".MenuPrincipal" />
         </activity>
     </application>
-
 </manifest>
