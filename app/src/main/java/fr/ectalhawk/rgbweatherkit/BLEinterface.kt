@@ -50,10 +50,8 @@ data class BLEinterface(val act: MenuPrincipal, val context: Context) {
         Text,
         Send
     }
-    class CharacteristicList(characteristic_ : CharacteristicEnum, buffer_ : ByteArray) {
-        val characteristic = characteristic_
-        val buffer = buffer_
-    }
+    class CharacteristicList(val characteristic: CharacteristicEnum, val buffer: ByteArray)
+
     private val sendList = ArrayList<CharacteristicList>()
 
     //Cette méthode sert à récupérer l'adaptateur bluetooth d'android.
