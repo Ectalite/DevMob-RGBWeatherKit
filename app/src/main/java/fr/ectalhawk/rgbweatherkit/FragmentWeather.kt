@@ -97,8 +97,8 @@ class FragmentWeather : Fragment() {
             //https://github.com/AdevintaSpain/Leku
             val locationPickerIntent = LocationPickerActivity.Builder()
                 .withLocation(41.4036299, 2.1743558)
-                .withGeolocApiKey("AIzaSyDcTZkFzllJvhN2nqjusn0fn-2ULWsD0nw")
-                .withGooglePlacesApiKey("AIzaSyDkzRR9DFJ05Om8e_evsiee4iUhPsPiJ-4")
+                .withGeolocApiKey("AIzaSyAStdsGqDHjSPKIz3uCM3ZMyChOD07t9Qk")
+                .withGooglePlacesApiKey("AIzaSyBllxRcwb4JhG4hXS9PR4-r-S0mofNEK0E")
                 .withSearchZone("fr_CH")
                 //.withSearchZone(SearchZoneRect(LatLng(26.525467, -18.910366), LatLng(43.906271, 5.394197)))
                 .withDefaultLocaleSearchZone()

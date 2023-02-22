@@ -55,7 +55,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDcTZkFzllJvhN2nqjusn0fn-2ULWsD0nw" />
+            android:value="AIzaSyAStdsGqDHjSPKIz3uCM3ZMyChOD07t9Qk" />
         <activity
             android:name=".NoBLEAuthorization"
             android:exported="false"
