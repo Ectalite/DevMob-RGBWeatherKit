@@ -1,5 +1,7 @@
 # DevMob RGB Weather Kit
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/1a83e281d2354da2cb9c/maintainability)](https://codeclimate.com/github/Ectalite/DevMob-RGBWeatherKit/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/1a83e281d2354da2cb9c/test_coverage)](https://codeclimate.com/github/Ectalite/DevMob-RGBWeatherKit/test_coverage)
+
 ## Matériel utilisé : 
 - Matrice LED RGB 32*64
 - Raspberry Pi 3
